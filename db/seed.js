@@ -17,23 +17,38 @@ async function fetchPokemon(limit=50){
     return response.data.results
 }
 
-async function fetchMoves (limit = 2){
-    const response = await axios.get(`https://pokeapi.co/api/v2/move?limit=${limit}`);
+async function fetchMoves (limit = 5){
+    const moveList = await axios.get(`https://pokeapi.co/api/v2/move?limit=${limit}`);
     
-    const moveList = response.data.results;
-    
-
-    for(const {name} of moveList){
+    const getMovesData = async(name) =>{
         const response = await axios.get(`https://pokeapi.co/api/v2/move/${name}`)
-        //console.log(response.data.learned_by_pokemon)
-    }
+        //console.log(response.data.type.name)
+        return response.data;
 
-    return moveList;
+    }
+     const data = await Promise.all(
+        moveList.data.results.map(async(move) => {
+            const moveData = await getMovesData(move.name);
+            return({
+                    name: moveData.name, 
+                    type: moveData.type.name,
+                    power: moveData.power,
+                    damage_class: moveData.damage_class.name,
+                })
+        }
+
+     ));
+     console.log(data)
+     return data;
+
+    
+
+ 
 }
 
 async function fetchPokemonMoveSet(){
-    //moveList = fetchMoves();
-    pokemonList = fetchPokemon();
+    moveList = fetchMoves();
+    //pokemonList = fetchPokemon();
 
 }
 
