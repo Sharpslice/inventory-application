@@ -2,18 +2,13 @@ const axios = require("axios");
 
 async function fetchPokedex(region){
     const pokedex = await axios.get( `https://pokeapi.co/api/v2/pokedex/${region}`)
-    
 
     const pokemonList = await Promise.all(
         pokedex.data.pokemon_entries.map(async(pokemon)=>{
-            
             return (
                 {name: pokemon.pokemon_species.name}
             )
-
-
         })
-
 
     );
     
@@ -51,23 +46,47 @@ async function fetchPokemon(region){
         })
     );
 
-    console.log(data)
+    //console.log(data)
 
     return data.filter(Boolean)
 }
 
-async function fetchMoves (limit = 5){
-    const moveList = await axios.get(`https://pokeapi.co/api/v2/move?limit=${limit}`);
+async function fetchMoves (pokemonList){
+    //const moveList = await axios.get(`https://pokeapi.co/api/v2/move?limit=${limit}`);
+    pokemonList.length = 3;
+    //console.log(pokemonList)
+    const list = await Promise.all(
+        pokemonList.map(async(pokemon)=>{ //go through every pokemon
+            const p = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemon.name}/`)
+            
+            return p.data.moves.map((data)=>{ //creates an array of every move for every pokemon
+                //console.log(data.move)
+                return (data.move.name)
+            })
+            
+        })
+
+    )
+    
+    console.log(list.flat().length)
+
+    const set = new Set();
+    for (moves of list.flat() ){
+        set.add(moves);
+    }
+    const movesSet = Array.from(set)
+    //console.log(movesSet)
     
     const getMovesData = async(name) =>{
         const response = await axios.get(`https://pokeapi.co/api/v2/move/${name}`)
-        //console.log(response.data.type.name)
+        //console.log(response.data)
         return response.data;
 
-    }
+    } // make const list be an object with url and use that url instead of getMovesData
      const data = await Promise.all(
-        moveList.data.results.map(async(move) => {
-            const moveData = await getMovesData(move.name);
+        movesSet.map(async(move) => {
+            //console.log(move)
+            const moveData = await getMovesData(move);
             return({
                     name: moveData.name, 
                     type: moveData.type.name,
@@ -76,17 +95,19 @@ async function fetchMoves (limit = 5){
                 })
         }
 
-     ));
-     console.log(data)
-     return data;
+      ));
+      console.log(data)
+      return data;
 }
 
-async function fetchPokemonMoveSet(){
+async function main(){
     //moveList = fetchMoves();
-    pokemonList = fetchPokemon('original-sinnoh');
-    //fetchPokedex();
+    pokemonList = await fetchPokemon('original-sinnoh');
+    fetchMoves(pokemonList)
+
+    //console.log(pokemonList)
 }
 
 
 
-fetchPokemonMoveSet();
+main();
