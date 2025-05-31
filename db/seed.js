@@ -2,19 +2,29 @@ const axios = require("axios");
 
 
 async function fetchPokemon(limit=50){
-    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=${limit}`);
+    const pokemonList = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=${limit}`);
 
-    const getPokemonApiID = async (name) => {
+    const getPokemonData= async (name) => {
         const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${name}/`)
-        return response.data.id;
+        return response.data;
     }
     
-     const data = await Promise.all( response.data.results.map(async(pokemon) =>(
-        {name: pokemon.name, api_id: await getPokemonApiID(pokemon.name) }
-    )));
+     const data = await Promise.all(
+        pokemonList.data.results.map(async(pokemon)=>{
+            const pokemonData = await getPokemonData(pokemon.name)
+
+            return ({
+                api_id: pokemonData.id,
+                name: pokemonData.name,
+                type: pokemonData.types[0].type.name,
+                sprite: pokemonData.sprites.front_default
+            })
+        })
+    );
+
     console.log(data)
 
-    return response.data.results
+    return data
 }
 
 async function fetchMoves (limit = 5){
@@ -40,15 +50,11 @@ async function fetchMoves (limit = 5){
      ));
      console.log(data)
      return data;
-
-    
-
- 
 }
 
 async function fetchPokemonMoveSet(){
-    moveList = fetchMoves();
-    //pokemonList = fetchPokemon();
+    //moveList = fetchMoves();
+    pokemonList = fetchPokemon();
 
 }
 
