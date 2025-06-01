@@ -101,4 +101,4 @@ async function main(){
  }
 
 main();
-module.exports = fetchPokemon;
+module.exports = fetchPokemon, fetchMoves;

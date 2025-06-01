@@ -2,28 +2,37 @@ const {Client} = require("pg");
 const fetchPokemon = require("./seed");
 require('dotenv').config();
 
-async function insertPokemon(client,pokemonList){
-
+async function buildInsertQuery(dataList){
+    dataList.length=1;
     const placeholder=[]
     const values =[]
-    pokemonList.forEach((pokemon,index) => {
-        const baseIndex = index * 4;
+    console.log(Object.keys(dataList[0]).length)
+    dataList.forEach((column,index) => {
+        const baseIndex = index * Object.keys(dataList[0]).length;
+        const tmp = []
+        for(const i = 1;i<=Object.keys(dataList[0]).length;i++)
+        {
+            tmp.push(`$${baseIndex+i}`)
+        }
 
-        placeholder.push(`($${baseIndex+1},$${baseIndex+2},$${baseIndex+3},$${baseIndex+4})`)
-        values.push(pokemon.api_id,pokemon.name,pokemon.type,pokemon.sprite)
+        placeholder.push(`(${tmp.join(',')})`)
+        
 
+
+        values.push(Object.values(column));
+        
+        
 
     });
 
+    return {placeholder,values : values.flat()}
 
-    await client.query(`
-        INSERT INTO pokemon (api_id,name,type,sprite) 
-        VALUES ${placeholder.join(', ')}
-        ON CONFLICT (api_id) DO NOTHING
-    `, values)
+    // await client.query(`
+    //     INSERT INTO pokemon (api_id,name,type,sprite) 
+    //     VALUES ${placeholder.join(', ')}
+    //     ON CONFLICT (api_id) DO NOTHING
+    // `, values)
     
-
-
 }
 
 
@@ -36,9 +45,7 @@ async function main(){
     });
     await client.connect();
     const pokemonList = await fetchPokemon('original-sinnoh');
-    await insertPokemon(client, pokemonList)
-
-
+    await buildInsertQuery(pokemonList)
     
 
     await client.end()
