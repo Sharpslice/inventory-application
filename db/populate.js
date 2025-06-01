@@ -13,8 +13,10 @@ const SQL = `
     );
     CREATE TABLE IF NOT EXISTS pokemon(
         id SERIAL PRIMARY KEY,
+        api_id INTEGER NOT NULL,
         name varchar(100) NOT NULL,
-        region_id INTEGER REFERENCES region(id)
+        type varchar(100) NOT NULL,
+        sprite varchar(100) NOT NULL
     );
 
     CREATE TABLE IF NOT EXISTS trainer_pokemon(

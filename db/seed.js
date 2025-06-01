@@ -45,7 +45,7 @@ async function fetchPokemon(region){
     );
     
    
-    console.log(data)
+   
     return data.filter(Boolean)
 }
 
@@ -94,14 +94,11 @@ async function fetchMoves (pokemonList){
 }
 
 async function main(){
-    //moveList = fetchMoves();
-    //fetchPokedex('original-sinnoh');
      pokemonList = await fetchPokemon('original-sinnoh');
-     movesList = await fetchMoves(pokemonList)
-
-    console.log(movesList.length)
+     //movesList = await fetchMoves(pokemonList)
+    console.log(pokemonList.length)
+    
  }
 
-
-
 main();
+module.exports = fetchPokemon;
