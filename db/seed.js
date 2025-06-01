@@ -95,10 +95,11 @@ async function fetchMoves (pokemonList){
 
 async function main(){
      pokemonList = await fetchPokemon('original-sinnoh');
-     //movesList = await fetchMoves(pokemonList)
-    console.log(pokemonList.length)
+     movesList = await fetchMoves(pokemonList)
+     console.log(pokemonList)
+    console.log(movesList)
     
  }
 
 main();
-module.exports = fetchPokemon, fetchMoves;
+module.exports = {fetchPokemon, fetchMoves};

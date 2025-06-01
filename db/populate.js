@@ -13,8 +13,8 @@ const SQL = `
     );
     CREATE TABLE IF NOT EXISTS pokemon(
         id SERIAL PRIMARY KEY,
-        api_id INTEGER NOT NULL,
-        name varchar(100) NOT NULL,
+        api_id INTEGER UNIQUE NOT NULL,
+        name varchar(100) UNIQUE NOT NULL,
         type varchar(100) NOT NULL,
         sprite varchar(100) NOT NULL
     );
@@ -29,7 +29,11 @@ const SQL = `
     );
     CREATE TABLE IF NOT EXISTS moves(
         id SERIAL PRIMARY KEY,
-        name varchar(100)
+        name varchar(100) UNIQUE,
+        type varchar(100),
+        power INTEGER,
+        damage_class varchar(100)
+
     );
 
 
