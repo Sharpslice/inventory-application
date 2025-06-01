@@ -2,7 +2,7 @@ const {Client} = require("pg");
 const fetchPokemon = require("./seed");
 require('dotenv').config();
 
-async function buildInsertQuery(dataList){
+function buildInsertQuery(dataList){
     dataList.length=1;
     const placeholder=[]
     const values =[]
@@ -38,6 +38,8 @@ async function buildInsertQuery(dataList){
 
 
 
+
+
 async function main(){
     console.log("seeding...");
     const client = new Client({
@@ -47,6 +49,8 @@ async function main(){
     const pokemonList = await fetchPokemon('original-sinnoh');
     await buildInsertQuery(pokemonList)
     
+
+
 
     await client.end()
     console.log("done")
