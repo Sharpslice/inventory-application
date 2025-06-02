@@ -102,15 +102,15 @@ async function insertPokemon_moveset(client,pokemonMap){
     })
 
 
-    const pokeMoveSet = new Map();
+    const pokeMoveSet = [];
     pokemonMap.forEach((moves,name)=>{
         //console.log(pokemonIdMap.get(name))
         moves.forEach(move=>{
             //console.log(move)
-            pokeMoveSet.set(pokemonIdMap.get(name), movesIdMap.get(move))
+            pokeMoveSet.push({pokemon_id: pokemonIdMap.get(name), move_id: movesIdMap.get(move)})
         })
     })
-    console.log(pokeMoveSet);
+    console.log(pokeMoveSet)
 
 
 
