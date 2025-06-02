@@ -3,7 +3,7 @@ const axios = require("axios");
 async function fetchPokedex(region){
     const pokedex = await axios.get( `https://pokeapi.co/api/v2/pokedex/${region}`)
     const pokemonList = pokedex.data.pokemon_entries
-    
+       
 
     const pokemonSet = new Set();
      for (const pokemon of pokemonList){
@@ -15,39 +15,84 @@ async function fetchPokedex(region){
 }
 
 async function fetchPokemon(region){
-    const pokemonList = await fetchPokedex(region);
-    
+    const pokemonList = await fetchPokedex(region); // list of names
+    //pokemonList.length = 3
+
+
     const getPokemonData= async (name) => {
         try{
             const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${name}/`)
-            return response.data;
+            return response;
         }
         catch{
             
             return null;
         }
     }
-   
+
+    const pokemonMap = new Map();
     const data = await Promise.all(
-        pokemonList.map(async(pokemon)=>{
+        pokemonList.map(async(pokemon) =>{
             const pokemonData = await getPokemonData(pokemon)
             if(!pokemonData) return null;
-            return ({
-                api_id: pokemonData.id,
-                name: pokemonData.name,
-                type: pokemonData.types[0].type.name,
-                sprite: pokemonData.sprites.front_default
+            const moves = []
+            pokemonData.data.moves.forEach((obj)=>{
+                    moves.push(obj.move.name)
             })
+            pokemonMap.set(pokemon,moves)
+
+            return({
+               api_id: pokemonData.data.id,
+                name: pokemonData.data.name,
+                type: pokemonData.data.types[0].type.name,
+                sprite: pokemonData.data.sprites.front_default
+
+
+            })
+
         })
+
+
+    )
+   
+    
+    return {data, pokemonMap }
+}
+
+// async function fetchPokemon(region){
+//     const pokemonList = await fetchPokedex(region);
+    
+//     const getPokemonData= async (name) => {
+//         try{
+//             const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${name}/`)
+//             return response.data;
+//         }
+//         catch{
+            
+//             return null;
+//         }
+//     }
+   
+//     const data = await Promise.all(
+//         pokemonList.map(async(pokemon)=>{
+//             const pokemonData = await getPokemonData(pokemon)
+//             if(!pokemonData) return null;
+//             return ({
+//                 api_id: pokemonData.id,
+//                 name: pokemonData.name,
+//                 type: pokemonData.types[0].type.name,
+//                 sprite: pokemonData.sprites.front_default
+//             })
+//         })
         
 
 
-    );
+//     );
     
    
    
-    return data.filter(Boolean)
-}
+//     return data.filter(Boolean)
+// }
 
 async function fetchMoves (pokemonList){
     
@@ -94,11 +139,11 @@ async function fetchMoves (pokemonList){
 }
 
 async function main(){
-     pokemonList = await fetchPokemon('original-sinnoh');
-     movesList = await fetchMoves(pokemonList)
-     console.log(pokemonList)
-    console.log(movesList)
-    
+     //pokemonList = await fetchPokemon('original-sinnoh');
+     //movesList = await fetchMoves(pokemonList)
+     //console.log(pokemonList)
+     //console.log(movesList)
+    //await test('original-sinnoh')
  }
 
 main();
