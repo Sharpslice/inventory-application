@@ -110,7 +110,11 @@ async function insertPokemon_moveset(client,pokemonMap){
             pokeMoveSet.push({pokemon_id: pokemonIdMap.get(name), move_id: movesIdMap.get(move)})
         })
     })
-    console.log(pokeMoveSet)
+    const {placeholder,values} = buildInsertQuery(pokeMoveSet);
+    await client.query(`
+        INSERT INTO pokemon_moveset(pokemon_id,moves_id)
+        VALUES ${placeholder.join(',')}
+    `,values)
 
 
 
