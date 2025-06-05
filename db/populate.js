@@ -21,7 +21,7 @@ const SQL = `
 
     CREATE TABLE IF NOT EXISTS trainer_pokemon(
         id SERIAL PRIMARY KEY,
-        trainer_id INTEGER REFERENCES trainer(id),
+        trainer_id INTEGER REFERENCES trainer(id) ON DELETE CASCADE,
         pokemon_id INTEGER REFERENCES pokemon(id),
         nickname varchar(100) NOT NULL,
         level INTEGER NOT NULL

@@ -9,7 +9,11 @@ async function addTrainer(name){
         
         `,[name])
 }
-
+async function deleteTrainer(id){
+    await pool.query(`
+        DELETE FROM trainer WHERE id= ($1)
+    `,[id])
+}
 
 
 
