@@ -1,5 +1,5 @@
 const {Client} = require("pg");
-const {fetchPokemon,fetchMoves} = require("./seed");
+const {fetchPokemon,fetchMoves,fetchRegion} = require("./seed");
 const { loadPartialConfigAsync } = require("@babel/core");
 
 require('dotenv').config();
@@ -44,6 +44,20 @@ async function insertMoves(client, list)
     `, values)
     
 }
+async function insertRegion(client,regionList){
+
+    const placeholder = []
+    regionList.forEach((_,index)=>{
+        placeholder.push(`($${index+1})`)
+    })
+    
+   
+    await client.query(`
+        INSERT INTO region (region)
+        VALUES ${placeholder.join(', ')}    
+    `,regionList)
+}
+
 async function insertPokemon_moveset(client,pokemonMap){
 
     const pokemonPlaceholder = []
@@ -128,16 +142,16 @@ async function main(){
     });
     await client.connect();
 
-     const {data, pokemonMap} = await fetchPokemon('kanto')
-    // //pokemonList = await fetchPokemon('original-sinnoh');
+    // const {data, pokemonMap} = await fetchPokemon('kanto')
+    // pokemonList = await fetchPokemon('original-sinnoh');
     // const movesList = await fetchMoves(data);
-    // //console.log(pokemonList)
+    // // //console.log(pokemonList)
     // await insertPokemon(client,data)
     // await insertMoves(client,movesList);
-    //console.log(pokemonMap)
-    await insertPokemon_moveset(client,pokemonMap);
-
-
+    // //console.log(pokemonMap)
+    // await insertPokemon_moveset(client,pokemonMap);
+    const region  = await fetchRegion()
+    await insertRegion(client,region )
     await client.end()
     console.log("done")
 }
