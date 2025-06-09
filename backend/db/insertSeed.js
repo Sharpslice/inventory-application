@@ -55,6 +55,7 @@ async function insertRegion(client,regionList){
     await client.query(`
         INSERT INTO region (region)
         VALUES ${placeholder.join(', ')}    
+        ON CONFLICT (region) DO NOTHING
     `,regionList)
 }
 
@@ -80,11 +81,6 @@ async function insertPokemon_moveset(client,pokemonMap){
         pokemonIdMap.set(pokemon.name,pokemon.id)
     })
 
-
-
-
-
-
     const listOfMoves = Array.from(pokemonMap.values()).flat();
     
     const listOfMovesSet = new Set();
@@ -93,12 +89,8 @@ async function insertPokemon_moveset(client,pokemonMap){
         
         listOfMovesSet.add(move)
     });
-
-    //console.log([...listOfMovesSet])
     const movesPlaceholder =[];
-    
-    //  const list = [...listOfMovesSet]
-    //  console.log(list)
+  
     [...listOfMovesSet].forEach((move,index)=>{
         index = index+1;
         movesPlaceholder.push(`($${index})`)
@@ -151,7 +143,7 @@ async function main(){
     // //console.log(pokemonMap)
     // await insertPokemon_moveset(client,pokemonMap);
     const region  = await fetchRegion()
-    await insertRegion(client,region )
+    await insertRegion(client,region)
     await client.end()
     console.log("done")
 }

@@ -19,6 +19,13 @@ const SQL = `
         sprite varchar(100) NOT NULL
     );
 
+    CREATE TABLE IF NOT EXISTS region_pokemon(
+        pokemon_id INTEGER REFERENCES pokemon(id),
+        region_id INTEGER REFERENCES region(id),
+        PRIMARY KEY (pokemon_id,moves_id)
+    
+    );
+
     CREATE TABLE IF NOT EXISTS trainer_pokemon(
         id SERIAL PRIMARY KEY,
         trainer_id INTEGER REFERENCES trainer(id) ON DELETE CASCADE,
