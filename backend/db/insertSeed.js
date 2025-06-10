@@ -93,20 +93,9 @@ async function insertRegion_pokemon(client,regionPokemonMap){
             regionIdPokemonId.push({regionId :regionMap.get(region), pokemonId: pokemonMap.get(pokemon) })
         })
     })
-    console.log(regionIdPokemonId);
+ 
 
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 

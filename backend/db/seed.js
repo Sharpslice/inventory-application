@@ -111,11 +111,15 @@ async function fetchMoves (pokemonToMovesMap){
       //console.log(data)
       return movesDetailsList;
 }
-
+async function fetchTypes(){
+     const response = await axios.get("https://pokeapi.co/api/v2/type");
+     const typesList = response.data.results.map(types=>types.name)
+     console.log(typesList)
+}
 
 
 async function main(){ 
-    
+   await fetchTypes();
  }
 
 main();
