@@ -178,7 +178,7 @@ async function main(){
     
     
 
-    const {pokemonDetailsList,pokemonToMovesMap,regionToPokemonMap} = await fetchPokemon();
+    const {pokemonDetailsList,pokemonToMovesMap,regionToPokemonMap,pokemonToTypesMap} = await fetchPokemon();
 
     const movesData = await fetchMoves(pokemonToMovesMap);
     
