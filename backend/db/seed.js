@@ -1,27 +1,26 @@
 const axios = require("axios");
 
+function getRegion(){
+    return ['kanto']
+}
 async function fetchPokedex(){
-    const regions = ['kanto','original-johto','hoenn']
-    const pokemonMap = new Map();
+    const regions = getRegion();
+    const regionToPokemonMap = new Map();
 
-    const pokemonList = await Promise.all(
-        regions.map(async(region,index)=>{
-       
+    await Promise.all(
+        regions.map(async(region)=>{
             const pokedex = await axios.get( `https://pokeapi.co/api/v2/pokedex/${region}`)
-            pokemonMap.set(region, pokedex.data.pokemon_entries.map((pokemon)=> pokemon.pokemon_species.name))
+            regionToPokemonMap.set(region, pokedex.data.pokemon_entries.map((pokemon)=> pokemon.pokemon_species.name))
         })
         
     )
-    
-
    
-     
-    return pokemonMap
+    return regionToPokemonMap
    
 }
 
-async function fetchPokemon(regionPokemonMap){
-    
+async function fetchPokemon(){
+    const regionToPokemonMap = await fetchPokedex();
     
     const getPokemonData= async (name) => {
         try{
@@ -34,10 +33,10 @@ async function fetchPokemon(regionPokemonMap){
         }
     }
     
-    console.log(regionPokemonMap.values())
-    const pokemonMap = new Map();
-    const data = await Promise.all(
-        Array.from(regionPokemonMap.values()).flat().map(async(pokemon) =>{
+    
+    const pokemonToMovesMap = new Map();
+    const pokemonDetailsList = await Promise.all(
+        Array.from(regionToPokemonMap.values()).flat().map(async(pokemon) =>{
             
             const pokemonData = await getPokemonData(pokemon)
             if(!pokemonData) return null;
@@ -45,7 +44,7 @@ async function fetchPokemon(regionPokemonMap){
             pokemonData.data.moves.forEach((obj)=>{
                     moves.push(obj.move.name)
             })
-            pokemonMap.set(pokemon,moves)
+            pokemonToMovesMap.set(pokemon,moves)
 
             return({
                api_id: pokemonData.data.id,
@@ -62,14 +61,17 @@ async function fetchPokemon(regionPokemonMap){
     )
    
     
-   return {data, pokemonMap }
+   return {pokemonDetailsList, pokemonToMovesMap,regionToPokemonMap }
 }
 
-async function fetchMoves (pokemonList){
+async function fetchMoves (pokemonToMovesMap){
+    const pokemonList = Array.from(pokemonToMovesMap.keys())
     
     const list = await Promise.all(
         pokemonList.map(async(pokemon)=>{ 
-            const p = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemon.name}/`)
+            //console.log(pokemon)
+            const p = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemon}/`)
+           
             return p.data.moves.map((data)=>{ 
                
                 return (data.move.name)
@@ -78,6 +80,7 @@ async function fetchMoves (pokemonList){
         })
 
     )
+   
 
     const set = new Set();
     for (moves of list.flat() ){
@@ -92,7 +95,7 @@ async function fetchMoves (pokemonList){
         return response.data;
 
     } // make const list be an object with url and use that url instead of getMovesData
-     const data = await Promise.all(
+     const movesDetailsList = await Promise.all(
         movesSet.map(async(move) => {
             //console.log(move)
             const moveData = await getMovesData(move);
@@ -106,24 +109,14 @@ async function fetchMoves (pokemonList){
 
       ));
       //console.log(data)
-      return data;
+      return movesDetailsList;
 }
 
 
 
-async function main(){
-    //await getRegion();
-     //pokemonList = await fetchPokemon('original-sinnoh');
-     //console.log(pokemonList)
-     //movesList = await fetchMoves(pokemonList)
-     //console.log(pokemonList)
-     //console.log(movesList)
-    //await test('original-sinnoh')
+async function main(){ 
     
-    const test = await fetchPokedex()
-    const x = await fetchPokemon(test)
-    console.log(x.data)
  }
 
 main();
-module.exports = {fetchPokemon, fetchMoves,fetchPokedex};
+module.exports = {fetchPokemon, fetchMoves,fetchPokedex,getRegion};
