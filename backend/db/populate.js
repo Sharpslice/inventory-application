@@ -4,7 +4,9 @@ const SQL = `
 
     CREATE TABLE IF NOT EXISTS region(
         id SERIAL PRIMARY KEY,
-        region varchar(100) NOT NULL
+
+        region varchar(100) UNIQUE NOT NULL
+
     );
 
     CREATE TABLE IF NOT EXISTS trainer (
@@ -17,6 +19,14 @@ const SQL = `
         name varchar(100) UNIQUE NOT NULL,
         type varchar(100) NOT NULL,
         sprite varchar(100) NOT NULL
+    );
+
+
+    CREATE TABLE IF NOT EXISTS region_pokemon(
+        pokemon_id INTEGER REFERENCES pokemon(id),
+        region_id INTEGER REFERENCES region(id),
+        PRIMARY KEY (pokemon_id,region_id)
+    
     );
 
     CREATE TABLE IF NOT EXISTS trainer_pokemon(

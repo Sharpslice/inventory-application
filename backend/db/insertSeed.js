@@ -1,5 +1,7 @@
 const {Client} = require("pg");
-const {fetchPokemon,fetchMoves} = require("./seed");
+
+const {fetchPokemon,fetchMoves,fetchPokedex,getRegion} = require("./seed");
+
 const { loadPartialConfigAsync } = require("@babel/core");
 
 require('dotenv').config();
@@ -44,14 +46,71 @@ async function insertMoves(client, list)
     `, values)
     
 }
+
+async function insertRegion(client,regionList){
+
+    const placeholder = []
+    regionList.forEach((_,index)=>{
+        placeholder.push(`($${index+1})`)
+    })
+    
+    await client.query(`
+        INSERT INTO region (region)
+        VALUES ${placeholder.join(', ')}    
+        ON CONFLICT (region) DO NOTHING
+    `,regionList)
+}
+
+async function insertRegion_pokemon(client,regionPokemonMap){
+    
+    const placeholder=[];
+
+    const listOfRegions = Array.from(regionPokemonMap.keys())
+    listOfRegions.forEach((_,index)=>{
+        index =index+1
+        placeholder.push(`$${index}`)
+    })
+    
+    const regionIds= await client.query(`
+        SELECT id,region FROM region WHERE region IN (${placeholder.join(',')})
+    `,listOfRegions)
+
+    const regionMap = new Map();
+    regionIds.rows.forEach((region)=>{
+        regionMap.set(region.region,region.id)
+    })
+
+    const pokemonIds = await client.query(`
+        SELECT id,name FROM pokemon 
+    `)
+    const pokemonMap = new Map();
+    pokemonIds.rows.forEach((pokemon)=>{
+        pokemonMap.set(pokemon.name,pokemon.id)
+    })
+
+
+
+    const regionIdPokemonId = []
+    Array.from(regionPokemonMap.keys()).forEach((region)=>{
+        Array.from(regionPokemonMap.get(region)).forEach((pokemon)=>{
+            regionIdPokemonId.push({regionId :regionMap.get(region), pokemonId: pokemonMap.get(pokemon) })
+        })
+    })
+    console.log(regionIdPokemonId);
+
+}
+
+
+
 async function insertPokemon_moveset(client,pokemonMap){
 
     const pokemonPlaceholder = []
     
     const listOfPokemons = Array.from(pokemonMap.keys());
    
-    
-    listOfPokemons.forEach((name,index)=>{
+
+    listOfPokemons.forEach((_,index)=>{
+
         index = index+1
         pokemonPlaceholder.push(`($${index})`)
     })
@@ -67,25 +126,19 @@ async function insertPokemon_moveset(client,pokemonMap){
     })
 
 
-
-
-
-
     const listOfMoves = Array.from(pokemonMap.values()).flat();
     
     const listOfMovesSet = new Set();
     
-    listOfMoves.forEach((move,index)=>{
+
+    listOfMoves.forEach((move)=>{
         
         listOfMovesSet.add(move)
     });
-
-    //console.log([...listOfMovesSet])
     const movesPlaceholder =[];
-    
-    //  const list = [...listOfMovesSet]
-    //  console.log(list)
-    [...listOfMovesSet].forEach((move,index)=>{
+  
+    [...listOfMovesSet].forEach((_,index)=>{
+
         index = index+1;
         movesPlaceholder.push(`($${index})`)
     })
@@ -128,15 +181,23 @@ async function main(){
     });
     await client.connect();
 
-     const {data, pokemonMap} = await fetchPokemon('kanto')
-    // //pokemonList = await fetchPokemon('original-sinnoh');
-    // const movesList = await fetchMoves(data);
-    // //console.log(pokemonList)
-    // await insertPokemon(client,data)
-    // await insertMoves(client,movesList);
-    //console.log(pokemonMap)
-    await insertPokemon_moveset(client,pokemonMap);
 
+ 
+    
+    
+
+    const {pokemonDetailsList,pokemonToMovesMap,regionToPokemonMap} = await fetchPokemon();
+
+    const movesData = await fetchMoves(pokemonToMovesMap);
+    
+     await insertPokemon(client,pokemonDetailsList);
+  
+     await insertMoves(client,movesData);
+     await insertRegion(client,getRegion())
+
+    await insertPokemon_moveset(client,pokemonToMovesMap)
+
+     await insertRegion_pokemon(client, regionToPokemonMap)
 
     await client.end()
     console.log("done")
