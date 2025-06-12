@@ -93,9 +93,10 @@ async function insertRegion_pokemon(client,regionPokemonMap){
             regionIdPokemonId.push({regionId :regionMap.get(region), pokemonId: pokemonMap.get(pokemon) })
         })
     })
+    //console.log(regionIdPokemonId)
     const {placeholder,values} = buildInsertQuery(regionIdPokemonId);
     await client.query(`
-        INSERT INTO region_pokemon (pokemon_id,region_id)
+        INSERT INTO region_pokemon (region_id,pokemon_id)
         VALUES ${placeholder.join(',')}
         ON CONFLICT (pokemon_id,region_id) DO NOTHING
     `,values)
@@ -245,7 +246,7 @@ async function main(){
 
     await insertPokemon_moveset(client,pokemonToMovesMap)
 
-     //await insertRegion_pokemon(client, regionToPokemonMap)
+     await insertRegion_pokemon(client, regionToPokemonMap)
     await insertPokemonTypes(client,pokemonToTypesMap)
 
     await client.end()
