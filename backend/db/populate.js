@@ -26,11 +26,12 @@ const SQL = `
     );
 
     CREATE TABLE IF NOT EXISTS trainer_pokemon(
-        id SERIAL PRIMARY KEY,
         trainer_id INTEGER REFERENCES trainer(id) ON DELETE CASCADE,
         pokemon_id INTEGER REFERENCES pokemon(id) ON DELETE CASCADE,
         nickname varchar(100) NOT NULL,
-        level INTEGER NOT NULL
+        level INTEGER NOT NULL,
+        PRIMARY KEY (trainer_id,pokemon_id)
+
     
     );
     CREATE TABLE IF NOT EXISTS moves(
@@ -50,9 +51,11 @@ const SQL = `
     );
 
     CREATE TABLE IF NOT EXISTS learned_moves(
-        trainer_pokemon_id INTEGER REFERENCES trainer_pokemon(id) ON DELETE CASCADE,
+        trainer_id INTEGER,
+        pokemon_id INTEGER,
         moves_id INTEGER REFERENCES moves(id) ON DELETE CASCADE,
-        PRIMARY KEY (trainer_pokemon_id, moves_id)
+        PRIMARY KEY (trainer_id,pokemon_id, moves_id),
+        FOREIGN KEY (trainer_id, pokemon_id) REFERENCES trainer_pokemon(trainer_id, pokemon_id) ON DELETE CASCADE
     );
 
     CREATE TABLE IF NOT EXISTS types(
@@ -60,8 +63,9 @@ const SQL = `
         type varchar(100) UNIQUE
     );
     CREATE TABLE IF NOT EXISTS types_pokemon(
-        types_id INTEGER REFERENCES types(id) ON DELETE CASCADE,
-        pokemon_id INTEGER REFERENCES pokemon(id) ON DELETE CASCADE
+        type_id INTEGER REFERENCES types(id) ON DELETE CASCADE,
+        pokemon_id INTEGER REFERENCES pokemon(id) ON DELETE CASCADE,
+        PRIMARY KEY(type_id,pokemon_id)
     )
 
 `;
