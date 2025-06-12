@@ -15,7 +15,6 @@ const SQL = `
         id SERIAL PRIMARY KEY,
         api_id INTEGER UNIQUE NOT NULL,
         name varchar(100) UNIQUE NOT NULL,
-        type varchar(100) NOT NULL,
         sprite varchar(100) NOT NULL
     );
 
@@ -58,7 +57,7 @@ const SQL = `
 
     CREATE TABLE IF NOT EXISTS types(
         id SERIAL PRIMARY KEY,
-        name varchar(100) UNIQUE
+        type varchar(100) UNIQUE
     );
     CREATE TABLE IF NOT EXISTS types_pokemon(
         types_id INTEGER REFERENCES types(id) ON DELETE CASCADE,

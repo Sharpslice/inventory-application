@@ -125,7 +125,7 @@ async function fetchMoves (pokemonToMovesMap){
 async function fetchTypes(){
      const response = await axios.get("https://pokeapi.co/api/v2/type");
      const typesList = response.data.results.map(types=>types.name)
-     console.log(typesList)
+     return typesList
 }
 
 
@@ -134,4 +134,4 @@ async function main(){
  }
 
 main();
-module.exports = {fetchPokemon, fetchMoves,fetchPokedex,getRegion};
+module.exports = {fetchPokemon, fetchMoves,fetchPokedex,getRegion,fetchTypes};

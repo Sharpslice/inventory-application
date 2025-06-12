@@ -1,5 +1,5 @@
 const {Client} = require("pg");
-const {fetchPokemon,fetchMoves,fetchPokedex,getRegion} = require("./seed");
+const {fetchPokemon,fetchMoves,fetchPokedex,getRegion, fetchTypes} = require("./seed");
 const { loadPartialConfigAsync } = require("@babel/core");
 
 require('dotenv').config();
@@ -29,7 +29,7 @@ async function insertPokemon(client, list)
 {
     const {placeholder, values} = buildInsertQuery(list);
         await client.query(`
-        INSERT INTO pokemon (api_id,name,type,sprite) 
+        INSERT INTO pokemon (api_id,name,sprite) 
         VALUES ${placeholder.join(', ')}
         ON CONFLICT (api_id) DO NOTHING
     `, values)
@@ -165,6 +165,19 @@ async function insertPokemon_moveset(client,pokemonMap){
 
 
 }
+async function insertTypes(client,typeList){
+    const placeholder = []
+    typeList.forEach((_,index)=>{
+        index = index+1
+        placeholder.push(`($${index})`)
+    })
+    console.log(placeholder)
+    client.query(`
+        INSERT INTO types (type)
+        VALUES ${placeholder.join(',')}
+        
+    `,typeList)
+}
 
 
 async function main(){
@@ -176,8 +189,6 @@ async function main(){
 
  
     
-    
-
     const {pokemonDetailsList,pokemonToMovesMap,regionToPokemonMap,pokemonToTypesMap} = await fetchPokemon();
 
     const movesData = await fetchMoves(pokemonToMovesMap);
@@ -186,10 +197,14 @@ async function main(){
   
      await insertMoves(client,movesData);
      await insertRegion(client,getRegion())
+    await insertTypes(client,await fetchTypes())
+    
 
     await insertPokemon_moveset(client,pokemonToMovesMap)
 
      await insertRegion_pokemon(client, regionToPokemonMap)
+
+
     await client.end()
     console.log("done")
 }
