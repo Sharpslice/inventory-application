@@ -17,24 +17,24 @@ const SQL = `
         id SERIAL PRIMARY KEY,
         api_id INTEGER UNIQUE NOT NULL,
         name varchar(100) UNIQUE NOT NULL,
-        type varchar(100) NOT NULL,
         sprite varchar(100) NOT NULL
     );
 
 
     CREATE TABLE IF NOT EXISTS region_pokemon(
-        pokemon_id INTEGER REFERENCES pokemon(id),
-        region_id INTEGER REFERENCES region(id),
+        pokemon_id INTEGER REFERENCES pokemon(id) ON DELETE CASCADE,
+        region_id INTEGER REFERENCES region(id) ON DELETE CASCADE,
         PRIMARY KEY (pokemon_id,region_id)
     
     );
 
     CREATE TABLE IF NOT EXISTS trainer_pokemon(
-        id SERIAL PRIMARY KEY,
         trainer_id INTEGER REFERENCES trainer(id) ON DELETE CASCADE,
-        pokemon_id INTEGER REFERENCES pokemon(id),
+        pokemon_id INTEGER REFERENCES pokemon(id) ON DELETE CASCADE,
         nickname varchar(100) NOT NULL,
-        level INTEGER NOT NULL
+        level INTEGER NOT NULL,
+        PRIMARY KEY (trainer_id,pokemon_id)
+
     
     );
     CREATE TABLE IF NOT EXISTS moves(
@@ -48,16 +48,28 @@ const SQL = `
 
 
     CREATE TABLE IF NOT EXISTS pokemon_moveset(
-        pokemon_id INTEGER REFERENCES pokemon(id),
-        moves_id INTEGER REFERENCES moves(id),
+        pokemon_id INTEGER REFERENCES pokemon(id) ON DELETE CASCADE, 
+        moves_id INTEGER REFERENCES moves(id) ON DELETE CASCADE,
         PRIMARY KEY (pokemon_id,moves_id)
     );
 
     CREATE TABLE IF NOT EXISTS learned_moves(
-        trainer_pokemon_id INTEGER REFERENCES trainer_pokemon(id),
-        moves_id INTEGER REFERENCES moves(id),
-        PRIMARY KEY (trainer_pokemon_id, moves_id)
+        trainer_id INTEGER,
+        pokemon_id INTEGER,
+        moves_id INTEGER REFERENCES moves(id) ON DELETE CASCADE,
+        PRIMARY KEY (trainer_id,pokemon_id, moves_id),
+        FOREIGN KEY (trainer_id, pokemon_id) REFERENCES trainer_pokemon(trainer_id, pokemon_id) ON DELETE CASCADE
     );
+
+    CREATE TABLE IF NOT EXISTS types(
+        id SERIAL PRIMARY KEY,
+        type varchar(100) UNIQUE
+    );
+    CREATE TABLE IF NOT EXISTS types_pokemon(
+        type_id INTEGER REFERENCES types(id) ON DELETE CASCADE,
+        pokemon_id INTEGER REFERENCES pokemon(id) ON DELETE CASCADE,
+        PRIMARY KEY(type_id,pokemon_id)
+    )
 
 `;
 

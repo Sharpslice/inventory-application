@@ -15,7 +15,7 @@ async function fetchPokedex(){
         })
         
     )
-   
+   console.log(regionToPokemonMap)
     return regionToPokemonMap
    
 }
@@ -38,6 +38,7 @@ async function fetchPokemon(){
     
     
     const pokemonToMovesMap = new Map();
+    const pokemonToTypesMap = new Map();
     const pokemonDetailsList = await Promise.all(
         Array.from(regionToPokemonMap.values()).flat().map(async(pokemon) =>{
             
@@ -49,13 +50,22 @@ async function fetchPokemon(){
                     moves.push(obj.move.name)
             })
 
+            //////
+                const types = []
+                pokemonData.data.types.forEach((obj)=>{
+                    
+                    types.push(obj.type.name)
+                })
+                pokemonToTypesMap.set(pokemon,types);
+                
+            ///////
             pokemonToMovesMap.set(pokemon,moves)
-
+            //pokemonToTypesMap.set(pokemon,)
 
             return({
                api_id: pokemonData.data.id,
                 name: pokemonData.data.name,
-                type: pokemonData.data.types[0].type.name,
+                //type: pokemonData.data.types[0].type.name,
                 sprite: pokemonData.data.sprites.front_default
 
 
@@ -68,7 +78,9 @@ async function fetchPokemon(){
    
     
 
-   return {pokemonDetailsList, pokemonToMovesMap,regionToPokemonMap }
+    
+   return {pokemonDetailsList, pokemonToMovesMap,regionToPokemonMap,pokemonToTypesMap}
+
 }
 
 async function fetchMoves (pokemonToMovesMap){
@@ -122,13 +134,18 @@ async function fetchMoves (pokemonToMovesMap){
 
       return movesDetailsList;
 }
-
+async function fetchTypes(){
+     const response = await axios.get("https://pokeapi.co/api/v2/type");
+     const typesList = response.data.results.map(types=>types.name)
+     return typesList
+}
 
 
 async function main(){ 
-    
+   await fetchPokemon()
  }
 
 main();
-module.exports = {fetchPokemon, fetchMoves,fetchPokedex,getRegion};
+
+module.exports = {fetchPokemon, fetchMoves,fetchPokedex,getRegion,fetchTypes};
 
