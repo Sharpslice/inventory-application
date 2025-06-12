@@ -1,5 +1,7 @@
 const {Client} = require("pg");
+
 const {fetchPokemon,fetchMoves,fetchPokedex,getRegion, fetchTypes} = require("./seed");
+
 const { loadPartialConfigAsync } = require("@babel/core");
 
 require('dotenv').config();
@@ -44,6 +46,7 @@ async function insertMoves(client, list)
     `, values)
     
 }
+
 async function insertRegion(client,regionList){
 
     const placeholder = []
@@ -111,8 +114,9 @@ async function insertPokemon_moveset(client,pokemonMap){
     
     const listOfPokemons = Array.from(pokemonMap.keys());
    
-    
+
     listOfPokemons.forEach((_,index)=>{
+
         index = index+1
         pokemonPlaceholder.push(`($${index})`)
     })
@@ -127,10 +131,12 @@ async function insertPokemon_moveset(client,pokemonMap){
         pokemonIdMap.set(pokemon.name,pokemon.id)
     })
 
+
     const listOfMoves = Array.from(pokemonMap.values()).flat();
     
     const listOfMovesSet = new Set();
     
+
     listOfMoves.forEach((move)=>{
         
         listOfMovesSet.add(move)
@@ -138,6 +144,7 @@ async function insertPokemon_moveset(client,pokemonMap){
     const movesPlaceholder =[];
   
     [...listOfMovesSet].forEach((_,index)=>{
+
         index = index+1;
         movesPlaceholder.push(`($${index})`)
     })
@@ -231,6 +238,7 @@ async function main(){
     });
     await client.connect();
 
+
  
     
     const {pokemonDetailsList,pokemonToMovesMap,regionToPokemonMap,pokemonToTypesMap} = await fetchPokemon();
@@ -247,7 +255,9 @@ async function main(){
     await insertPokemon_moveset(client,pokemonToMovesMap)
 
      await insertRegion_pokemon(client, regionToPokemonMap)
+
     await insertPokemonTypes(client,pokemonToTypesMap)
+
 
     await client.end()
     console.log("done")
