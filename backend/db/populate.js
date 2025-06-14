@@ -34,10 +34,15 @@ const SQL = `
 
     
     );
+
+     CREATE TABLE IF NOT EXISTS types(
+        id SERIAL PRIMARY KEY,
+        type varchar(100) UNIQUE
+    );
     CREATE TABLE IF NOT EXISTS moves(
         id SERIAL PRIMARY KEY,
         name varchar(100) UNIQUE,
-        type_id INTEGER REFERENCES types(id) ON DELETE CASCADE,
+        type varchar(100),
         power INTEGER,
         damage_class varchar(100)
 
@@ -58,10 +63,7 @@ const SQL = `
         FOREIGN KEY (trainer_id, pokemon_id) REFERENCES trainer_pokemon(trainer_id, pokemon_id) ON DELETE CASCADE
     );
 
-    CREATE TABLE IF NOT EXISTS types(
-        id SERIAL PRIMARY KEY,
-        type varchar(100) UNIQUE
-    );
+   
     CREATE TABLE IF NOT EXISTS types_pokemon(
         type_id INTEGER REFERENCES types(id) ON DELETE CASCADE,
         pokemon_id INTEGER REFERENCES pokemon(id) ON DELETE CASCADE,

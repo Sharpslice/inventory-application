@@ -1,6 +1,6 @@
 const {Client} = require("pg");
 const {fetchPokemon,fetchMoves,fetchPokedex,getRegion, fetchTypes} = require("./seed");
-const { loadPartialConfigAsync } = require("@babel/core");
+
 
 require('dotenv').config();
 
@@ -34,11 +34,9 @@ async function insertPokemon(client, list)
         ON CONFLICT (api_id) DO NOTHING
     `, values)
 }
-async function insertMoves(client, moveslist,typeList)
+async function insertMoves(client, list)
 {
-    await client.query(``)
-
-    const {placeholder, values} = buildInsertQuery(moveslist);
+    const {placeholder, values} = buildInsertQuery(list);
         await client.query(`
         INSERT INTO moves (name,type,power,damage_class) 
         VALUES ${placeholder.join(', ')}
@@ -95,10 +93,9 @@ async function insertRegion_pokemon(client,regionPokemonMap){
             regionIdPokemonId.push({regionId :regionMap.get(region), pokemonId: pokemonMap.get(pokemon) })
         })
     })
-    //console.log(regionIdPokemonId)
     const {placeholder,values} = buildInsertQuery(regionIdPokemonId);
     await client.query(`
-        INSERT INTO region_pokemon (region_id,pokemon_id)
+        INSERT INTO region_pokemon(pokemon_id,region_id)
         VALUES ${placeholder.join(',')}
         ON CONFLICT (pokemon_id,region_id) DO NOTHING
     `,values)
@@ -180,7 +177,7 @@ async function insertTypes(client,typeList){
         index = index+1
         placeholder.push(`($${index})`)
     })
-    console.log(placeholder)
+    
     await client.query(`
         INSERT INTO types (type)
         VALUES ${placeholder.join(',')}
@@ -188,7 +185,7 @@ async function insertTypes(client,typeList){
     `,typeList)
 }
 async function insertPokemonTypes(client,pokemonToTypesMap){
-    console.log(pokemonToTypesMap)
+    
 
     const reversePokemonMap = new Map();
     const pokemonIds = await client.query(`
@@ -236,19 +233,19 @@ async function main(){
  
     
     const {pokemonDetailsList,pokemonToMovesMap,regionToPokemonMap,pokemonToTypesMap} = await fetchPokemon();
-    const typeList = await fetchTypes()
+
     const movesData = await fetchMoves(pokemonToMovesMap);
     
      await insertPokemon(client,pokemonDetailsList);
   
-     await insertMoves(client,movesData,typeList);
+     await insertMoves(client,movesData);
      await insertRegion(client,getRegion())
-    await insertTypes(client,typeList)
+    await insertTypes(client,await fetchTypes())
     
 
     await insertPokemon_moveset(client,pokemonToMovesMap)
 
-     await insertRegion_pokemon(client, regionToPokemonMap)
+     //await insertRegion_pokemon(client, regionToPokemonMap)
     await insertPokemonTypes(client,pokemonToTypesMap)
 
     await client.end()

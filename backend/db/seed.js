@@ -14,7 +14,7 @@ async function fetchPokedex(){
         })
         
     )
-   console.log(regionToPokemonMap)
+ 
     return regionToPokemonMap
    
 }
