@@ -34,9 +34,11 @@ async function insertPokemon(client, list)
         ON CONFLICT (api_id) DO NOTHING
     `, values)
 }
-async function insertMoves(client, list)
+async function insertMoves(client, moveslist,typeList)
 {
-    const {placeholder, values} = buildInsertQuery(list);
+    await client.query(``)
+
+    const {placeholder, values} = buildInsertQuery(moveslist);
         await client.query(`
         INSERT INTO moves (name,type,power,damage_class) 
         VALUES ${placeholder.join(', ')}
@@ -234,14 +236,14 @@ async function main(){
  
     
     const {pokemonDetailsList,pokemonToMovesMap,regionToPokemonMap,pokemonToTypesMap} = await fetchPokemon();
-
+    const typeList = await fetchTypes()
     const movesData = await fetchMoves(pokemonToMovesMap);
     
      await insertPokemon(client,pokemonDetailsList);
   
-     await insertMoves(client,movesData);
+     await insertMoves(client,movesData,typeList);
      await insertRegion(client,getRegion())
-    await insertTypes(client,await fetchTypes())
+    await insertTypes(client,typeList)
     
 
     await insertPokemon_moveset(client,pokemonToMovesMap)

@@ -37,7 +37,7 @@ const SQL = `
     CREATE TABLE IF NOT EXISTS moves(
         id SERIAL PRIMARY KEY,
         name varchar(100) UNIQUE,
-        type varchar(100),
+        type_id INTEGER REFERENCES types(id) ON DELETE CASCADE,
         power INTEGER,
         damage_class varchar(100)
 
