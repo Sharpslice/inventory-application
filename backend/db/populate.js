@@ -31,8 +31,6 @@ const SQL = `
         nickname varchar(100) NOT NULL,
         level INTEGER NOT NULL,
         PRIMARY KEY (trainer_id,pokemon_id)
-
-    
     );
 
      CREATE TABLE IF NOT EXISTS types(

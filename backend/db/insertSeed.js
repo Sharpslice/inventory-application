@@ -8,7 +8,6 @@ function buildInsertQuery(dataList){
    
     const placeholder=[]
     const values =[]
-    
     dataList.forEach((column,index) => {
         const baseIndex = index * Object.keys(dataList[0]).length;
         const tmp = []
@@ -16,32 +15,32 @@ function buildInsertQuery(dataList){
         {
             tmp.push(`$${baseIndex+i}`)
         }
-
+        
         placeholder.push(`(${tmp.join(',')})`)
         values.push(Object.values(column));
         
     
     });
+   
     return {placeholder,values : values.flat()}
+}
+async function insertBatch(client,tableName,columns,placeholders,values,conflictCol = NULL){
+    await client.query( `
+        INSERT INTO ${tableName} (${columns.join(',')})
+        VALUES ${placeholders.join(',')}
+        ON CONFLICT (${conflictCol}) DO NOTHING`,values)
+
 }
 
 async function insertPokemon(client, list)
 {
     const {placeholder, values} = buildInsertQuery(list);
-        await client.query(`
-        INSERT INTO pokemon (api_id,name,sprite) 
-        VALUES ${placeholder.join(', ')}
-        ON CONFLICT (api_id) DO NOTHING
-    `, values)
+    await insertBatch(client,'pokemon',['api_id','name','sprite'],placeholder,values,['api_id'])
 }
 async function insertMoves(client, list)
 {
     const {placeholder, values} = buildInsertQuery(list);
-        await client.query(`
-        INSERT INTO moves (name,type,power,damage_class) 
-        VALUES ${placeholder.join(', ')}
-        ON CONFLICT (name) DO NOTHING
-    `, values)
+    await insertBatch(client,'moves',['name','type','power','damage_class'],placeholder,values,['name'])
     
 }
 async function insertRegion(client,regionList){
@@ -90,7 +89,12 @@ async function insertRegion_pokemon(client,regionPokemonMap){
     const regionIdPokemonId = []
     Array.from(regionPokemonMap.keys()).forEach((region)=>{
         Array.from(regionPokemonMap.get(region)).forEach((pokemon)=>{
-            regionIdPokemonId.push({regionId :regionMap.get(region), pokemonId: pokemonMap.get(pokemon) })
+            if (regionMap.get(region) == null || pokemonMap.get(pokemon) == null) {
+            console.error(`Skipping entry: region='${region}', pokemon='${pokemon}', regionId=${regionMap.get(region)}, pokemonId=${pokemonMap.get(pokemon)}`);
+            } else {
+            
+            regionIdPokemonId.push({pokemonId: pokemonMap.get(pokemon),regionId :regionMap.get(region) })
+            }
         })
     })
     const {placeholder,values} = buildInsertQuery(regionIdPokemonId);
@@ -155,18 +159,34 @@ async function insertPokemon_moveset(client,pokemonMap){
 
     const pokeMoveSet = [];
     pokemonMap.forEach((moves,name)=>{
-        //console.log(pokemonIdMap.get(name))
+        
         moves.forEach(move=>{
             //console.log(move)
             pokeMoveSet.push({pokemon_id: pokemonIdMap.get(name), move_id: movesIdMap.get(move)})
         })
     })
-    const {placeholder,values} = buildInsertQuery(pokeMoveSet);
-    await client.query(`
-        INSERT INTO pokemon_moveset(pokemon_id,moves_id)
-        VALUES ${placeholder.join(',')}
-        ON CONFLICT (pokemon_id,moves_id) DO NOTHING
-    `,values)
+   
+   // const {placeholder,values} = buildInsertQuery(pokeMoveSet);
+   const batchSize = 500;
+
+for (let i = 0; i < pokeMoveSet.length; i += batchSize) {
+  const batch = pokeMoveSet.slice(i, i + batchSize); // ✅ use pokeMoveSet
+
+  const values = []; // ✅ local to this batch
+  const placeholders = batch.map((row, j) => {
+    values.push(row.pokemon_id, row.move_id);
+    const idx = j * 2;
+    return `($${idx + 1}, $${idx + 2})`;
+  });
+
+  const text = `
+    INSERT INTO pokemon_moveset(pokemon_id, moves_id)
+    VALUES ${placeholders.join(',')}
+    ON CONFLICT (pokemon_id, moves_id) DO NOTHING
+  `;
+
+  await client.query({ text, values });
+}
 
 
 
@@ -218,7 +238,7 @@ async function insertPokemonTypes(client,pokemonToTypesMap){
         VALUES ${placeholder.join(',')}
         ON CONFLICT (pokemon_id,type_id) DO NOTHING
     `,values)
-
+ 
 
 }
 
@@ -235,17 +255,17 @@ async function main(){
     const {pokemonDetailsList,pokemonToMovesMap,regionToPokemonMap,pokemonToTypesMap} = await fetchPokemon();
 
     const movesData = await fetchMoves(pokemonToMovesMap);
-    
+
      await insertPokemon(client,pokemonDetailsList);
-  
+
      await insertMoves(client,movesData);
      await insertRegion(client,getRegion())
     await insertTypes(client,await fetchTypes())
-    
+
 
     await insertPokemon_moveset(client,pokemonToMovesMap)
 
-     //await insertRegion_pokemon(client, regionToPokemonMap)
+    await insertRegion_pokemon(client, regionToPokemonMap)
     await insertPokemonTypes(client,pokemonToTypesMap)
 
     await client.end()

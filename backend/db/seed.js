@@ -1,7 +1,8 @@
 const axios = require("axios");
 
 function getRegion(){
-    return ['kanto']
+    // ['kanto','original-sinnoh','hoenn','original-johto','original-unova'];
+    return ['hoenn','kanto','original-johto']
 }
 async function fetchPokedex(){
     const regions = getRegion();
@@ -9,12 +10,16 @@ async function fetchPokedex(){
 
     await Promise.all(
         regions.map(async(region)=>{
-            const pokedex = await axios.get( `https://pokeapi.co/api/v2/pokedex/${region}`)
-            regionToPokemonMap.set(region, pokedex.data.pokemon_entries.map((pokemon)=> pokemon.pokemon_species.name))
+            try {
+                const res = await axios.get(`https://pokeapi.co/api/v2/pokedex/${region}`);
+                regionToPokemonMap.set(region, res.data.pokemon_entries.map(p => p.pokemon_species.name));
+            } catch (error) {
+                console.error(`Error fetching region "${region}":`, error.response?.status || error.message);
+            }
         })
         
     )
- 
+    
     return regionToPokemonMap
    
 }
@@ -24,6 +29,7 @@ async function fetchPokemon(){
     
     const getPokemonData= async (name) => {
         try{
+           
             const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${name}/`)
             return response;
         }
@@ -36,7 +42,7 @@ async function fetchPokemon(){
     
     const pokemonToMovesMap = new Map();
     const pokemonToTypesMap = new Map();
-    const pokemonDetailsList = await Promise.all(
+    const detailsList = await Promise.all(
         Array.from(regionToPokemonMap.values()).flat().map(async(pokemon) =>{
             
             const pokemonData = await getPokemonData(pokemon)
@@ -69,7 +75,8 @@ async function fetchPokemon(){
 
 
     )
-   
+    console.log(regionToPokemonMap.get('hoenn').includes('deoxys'))
+  const pokemonDetailsList = detailsList.filter(item => item !== null);
     
     
    return {pokemonDetailsList, pokemonToMovesMap,regionToPokemonMap,pokemonToTypesMap}
@@ -130,7 +137,10 @@ async function fetchTypes(){
 
 
 async function main(){ 
-   await fetchPokemon()
+    // const {regionToPokemonMap} = await fetchPokemon();
+    // console.log("Does Deoxys exist? :" + regionToPokemonMap.get('hoenn').includes("deoxys"))
+    // const test = await axios.get(`https://pokeapi.co/api/v2/pokemon/386/`)
+    // console.log(test)
  }
 
 main();
