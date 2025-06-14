@@ -16,7 +16,6 @@ async function deleteTrainer(id){
 }
 
 
-
 async function main(){
     await addTrainer("david")
     await pool.end()
