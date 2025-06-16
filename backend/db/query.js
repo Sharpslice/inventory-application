@@ -14,11 +14,22 @@ async function deleteTrainer(id){
         DELETE FROM trainer WHERE id= ($1)
     `,[id])
 }
+async function getRegion(){
+    try{
+        const result = pool.query(`SELECT id,region FROM region`)
+        return result;
+    }catch(error){
+        console.log("error fetching region",error)
+    }
+
+}
 
 
 
 async function main(){
-    await addTrainer("david")
-    await pool.end()
+
+    
 }
 main();
+
+module.exports = {getRegion}

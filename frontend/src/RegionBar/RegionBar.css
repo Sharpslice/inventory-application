@@ -1,0 +1,29 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+#regionBar{
+    display: flex;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+.regionText{
+    padding: 5px;
+    min-width: 150px;
+}
+button{
+    all: unset;
+    outline: none;
+    text-align: center;
+
+    display: flex;
+    align-items: center;
+}
+button:focus{
+    outline: none;
+}
+img{
+    width: 25px;
+    height: 25px;
+}
