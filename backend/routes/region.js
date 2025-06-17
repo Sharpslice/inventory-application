@@ -1,7 +1,24 @@
 const axios = require("axios");
 const express = require('express');
 const router = express.Router();
-const {getRegion} =require("../db/query.js")
+const {getRegion,getPokemonFromRegion} =require("../db/query.js")
+
+
+router.get("/:regionId/pokemon",async (req,res)=>{
+   
+    try{
+
+        const regionId = req.params.regionId;
+        const result = await getPokemonFromRegion(regionId)
+        res.send(result.rows);
+    }catch(error){
+        console.error("failed to send regionId",error)
+        res.status(500).send("server error")
+    }
+    
+    
+})
+
 
 router.get("/", async (req,res)=>{
     try{
@@ -12,4 +29,8 @@ router.get("/", async (req,res)=>{
         res.status(500).send("server error")
     }
 })
+
+
+
+
 module.exports=router
