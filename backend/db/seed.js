@@ -2,7 +2,7 @@ const axios = require("axios");
 
 function getRegion(){
     // ['kanto','original-sinnoh','hoenn','original-johto','original-unova'];
-    return ['hoenn','kanto','original-johto']
+    return ['hoenn','kanto','original-johto','original-sinnoh','original-unova']
 }
 async function fetchPokedex(){
     const regions = getRegion();
