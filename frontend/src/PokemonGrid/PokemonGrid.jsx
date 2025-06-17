@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { RegionContext } from "../context";
 import axios from "axios";
-
+import './PokemonGrid.css'
 
 function PokemonGrid(){
     const {currentRegion} = useContext(RegionContext)
@@ -12,10 +12,12 @@ function PokemonGrid(){
         const fetchData = async()=>{
             try{
                 const regionId = currentRegion.id;
-                console.log("this is current region", regionId)
+                console.log("this is current region", currentRegion.region)
                 const result = await axios.get(`http://localhost:3000/api/region/${regionId}/pokemon`)
-                console.log(result)
-                //setPokemonList(result.data);
+                const list = result.data;
+                list.length = 50;
+                setPokemonList(list)
+                
             }catch(error){
                 console.log("error recieving pokemon from region",error)
             }
@@ -23,13 +25,18 @@ function PokemonGrid(){
         }
         fetchData()
     },[currentRegion])
-
-
-
-   
+    if(!pokemonList) return;
     return(
         <>
-        
+            <div id ="pokemonGrid">
+                {pokemonList.map((pokemon)=>{
+                    return (
+                    <div className="pokemonDiv" key = {pokemon.id}>
+                        <img className="sprite" src={pokemon.sprite} alt="" />
+                    </div>
+                    )
+                })}
+            </div>
         </>
     )
 }

@@ -4,19 +4,23 @@
     box-sizing: border-box;
 }
 #regionBar{
+    
     display: flex;
+    justify-content: center;
     border: 1px solid black;
-    border-radius: 10px;
+    border-radius: 20px;
+    margin: 20px;
+    grid-column: 2/3;
 }
 .regionText{
     padding: 5px;
     min-width: 150px;
+    text-align: center;
 }
 button{
     all: unset;
     outline: none;
     text-align: center;
-
     display: flex;
     align-items: center;
 }

@@ -10,8 +10,11 @@ function App() {
   return (
     <>
       <RegionProvider>
-        <RegionBar/>
-        <PokemonGrid/>
+        <div id="mainContainer">
+          <RegionBar/>
+          <PokemonGrid/>
+        </div>
+        
       </RegionProvider>
 
     </>
