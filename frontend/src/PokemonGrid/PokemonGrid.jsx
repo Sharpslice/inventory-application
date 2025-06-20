@@ -31,6 +31,9 @@ function PokemonGrid(){
         }
         fetchData()
     },[currentRegion,offset]) 
+    useEffect(()=>{
+        setOffset(0)
+    },[currentRegion])
 
     const onPrevClick = () =>{
         if(offset-LIMIT < 0 ) return;
