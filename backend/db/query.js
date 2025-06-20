@@ -14,13 +14,15 @@ async function deleteTrainer(id){
         DELETE FROM trainer WHERE id= ($1)
     `,[id])
 }
-async function getPokemonFromRegion(id){
+async function getPokemonFromRegion(id,offset , limit ){
+    console.log(offset,limit)
     const result = await pool.query(`
         SELECT pokemon.id, pokemon.api_id, pokemon.name, pokemon.sprite
         FROM pokemon
         INNER JOIN region_pokemon ON pokemon.id = region_pokemon.pokemon_id
         INNER JOIN region ON region.id = region_pokemon.region_id
         WHERE region.id = '${id}'
+        LIMIT ${limit} OFFSET ${offset}
         
     `)
     return result;

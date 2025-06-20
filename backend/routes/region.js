@@ -9,7 +9,10 @@ router.get("/:regionId/pokemon",async (req,res)=>{
     try{
 
         const regionId = req.params.regionId;
-        const result = await getPokemonFromRegion(regionId)
+        const limit = req.query.limit;
+        const offset = req.query.offset;
+        console.log("query",req.query)
+        const result = await getPokemonFromRegion(regionId,offset,limit)
         res.send(result.rows);
     }catch(error){
         console.error("failed to send regionId",error)
