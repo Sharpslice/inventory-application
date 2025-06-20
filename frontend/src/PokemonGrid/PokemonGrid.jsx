@@ -4,6 +4,7 @@ import axios from "axios";
 import './PokemonGrid.css'
 import triangleLeft from '../assets/triangle-left.svg';
 import triangleRight from '../assets/triangle-right.svg';
+import PokemonTiles from "./PokemonTiles";
 function PokemonGrid(){
 
     const LIMIT = 30;
@@ -53,9 +54,10 @@ function PokemonGrid(){
             <div id ="pokemonGrid">
                 {pokemonList.map((pokemon)=>
                 (
-                <div className="pokemonDiv" key = {pokemon.id}>
-                    <img className="sprite" src={pokemon.sprite} alt="" />
-                </div>
+                    <PokemonTiles
+                       key={pokemon.key}
+                       pokemon={pokemon} 
+                    />
                 )
                 )}
             </div>
