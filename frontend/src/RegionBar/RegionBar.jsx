@@ -31,7 +31,7 @@ function RegionBar(){
             region: regions[currentIndex].region
             }
         )
-    },[currentIndex])
+    },[currentIndex,regions])
 
     const incrementClick = ()=>{
         

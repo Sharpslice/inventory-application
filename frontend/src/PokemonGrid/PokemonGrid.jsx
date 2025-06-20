@@ -2,21 +2,27 @@ import { useContext, useEffect, useState } from "react";
 import { RegionContext } from "../context";
 import axios from "axios";
 import './PokemonGrid.css'
-
+import triangleLeft from '../assets/triangle-left.svg';
+import triangleRight from '../assets/triangle-right.svg';
 function PokemonGrid(){
+
+    const LIMIT = 30;
+
     const {currentRegion} = useContext(RegionContext)
   
     const [pokemonList,setPokemonList] = useState(null)
-
+    const [offset,setOffset] = useState(null)
+    
     useEffect(()=>{
         const fetchData = async()=>{
             try{
+               
                 const regionId = currentRegion.id;
+                
                 console.log("this is current region", currentRegion.region)
-                const result = await axios.get(`http://localhost:3000/api/region/${regionId}/pokemon`)
-                const list = result.data;
-                list.length = 50;
-                setPokemonList(list)
+                const result = await axios.get(`http://localhost:3000/api/region/${regionId}/pokemon?offset=${offset}&limit=${LIMIT}`)
+                
+                setPokemonList(result.data)
                 
             }catch(error){
                 console.log("error recieving pokemon from region",error)
@@ -24,18 +30,39 @@ function PokemonGrid(){
             
         }
         fetchData()
-    },[currentRegion])
+    },[currentRegion,offset]) 
+
+    const onPrevClick = () =>{
+        if(offset-LIMIT < 0 ) return;
+        
+        setOffset(prev => prev-LIMIT)
+    }
+    const onNextClick = () =>{
+        if(pokemonList.length < LIMIT) return;
+        
+        setOffset(prev => prev+LIMIT)
+    }
+
+
     if(!pokemonList) return;
     return(
         <>
             <div id ="pokemonGrid">
-                {pokemonList.map((pokemon)=>{
-                    return (
-                    <div className="pokemonDiv" key = {pokemon.id}>
-                        <img className="sprite" src={pokemon.sprite} alt="" />
-                    </div>
-                    )
-                })}
+                {pokemonList.map((pokemon)=>
+                (
+                <div className="pokemonDiv" key = {pokemon.id}>
+                    <img className="sprite" src={pokemon.sprite} alt="" />
+                </div>
+                )
+                )}
+            </div>
+            <div id="pageNav">
+                <button onClick={onPrevClick}>
+                     <img src={triangleLeft} alt="prev button" />
+                </button>
+                <button onClick={onNextClick}>
+                    <img src={triangleRight} alt="next button" />
+                </button>
             </div>
         </>
     )
