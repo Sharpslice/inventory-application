@@ -1,7 +1,12 @@
+import { useContext } from 'react'
 import './PokemonGrid.css'
+import { RegionContext } from '../context'
 function PokemonTiles({key, pokemon}){
-    const onInfoClick = () =>{
-        console.log(pokemon)
+
+    const {setSelectedPokemon} =useContext(RegionContext)
+
+    const onInfoClick = (pokemon) =>{
+        setSelectedPokemon(pokemon)
     }
     return (
         <>
@@ -9,7 +14,7 @@ function PokemonTiles({key, pokemon}){
                 <img className="sprite" 
                     src={pokemon.sprite} 
                     alt="pokemon sprite" 
-                    onClick={onInfoClick}
+                    onClick={()=>onInfoClick(pokemon)}
                 />
             </div>
         

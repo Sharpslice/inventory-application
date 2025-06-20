@@ -16,6 +16,12 @@ const SQL = `
         api_id INTEGER UNIQUE NOT NULL,
         name varchar(100) UNIQUE NOT NULL,
         sprite varchar(100) NOT NULL
+        hp INTEGER NOT NULL,
+        attack INTEGER NOT NULL,
+        defense INTEGER NOT NULL,
+        special_attack INTEGER NOT NULL,
+        special_defense INTEGER NOT NULL,
+        speed INTEGER NOT NULL
     );
 
     CREATE TABLE IF NOT EXISTS region_pokemon(

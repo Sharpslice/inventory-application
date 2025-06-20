@@ -65,9 +65,13 @@ async function fetchPokemon(){
             return({
                api_id: pokemonData.data.id,
                 name: pokemonData.data.name,
-                //type: pokemonData.data.types[0].type.name,
-                sprite: pokemonData.data.sprites.front_default
-
+                sprite: pokemonData.data.sprites.front_default,
+                hp: pokemonData.data.stats[0].base_stat,
+                attack: pokemonData.data.stats[1].base_stat,
+                defense: pokemonData.data.stats[2].base_stat,
+                special_attack: pokemonData.data.stats[3].base_stat,
+                special_defense: pokemonData.data.stats[4].base_stat,
+                speed: pokemonData.data.stats[5].base_stat
 
             })
 
@@ -75,7 +79,7 @@ async function fetchPokemon(){
 
 
     )
-    console.log(regionToPokemonMap.get('hoenn').includes('deoxys'))
+   
   const pokemonDetailsList = detailsList.filter(item => item !== null);
     
     
@@ -137,10 +141,8 @@ async function fetchTypes(){
 
 
 async function main(){ 
-    // const {regionToPokemonMap} = await fetchPokemon();
-    // console.log("Does Deoxys exist? :" + regionToPokemonMap.get('hoenn').includes("deoxys"))
-    // const test = await axios.get(`https://pokeapi.co/api/v2/pokemon/386/`)
-    // console.log(test)
+    // const {pokemonDetailsList} = await fetchPokemon();
+    // console.log(pokemonDetailsList)
  }
 
 main();
