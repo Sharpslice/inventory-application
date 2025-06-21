@@ -71,7 +71,8 @@ async function fetchPokemon(){
                 defense: pokemonData.data.stats[2].base_stat,
                 special_attack: pokemonData.data.stats[3].base_stat,
                 special_defense: pokemonData.data.stats[4].base_stat,
-                speed: pokemonData.data.stats[5].base_stat
+                speed: pokemonData.data.stats[5].base_stat,
+                //ability: pokemonData.data.abilities[0]
 
             })
 
@@ -138,11 +139,20 @@ async function fetchTypes(){
      const typesList = response.data.results.map(types=>types.name)
      return typesList
 }
-
-
+async function test(){
+    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/pikachu`)
+    return response.data.abilities[0].ability.name
+}
+async function test2(){
+    const response = await axios.get(`https://pokeapi.co/api/v2/ability/intimidate`)
+    return response.data.effect_entries[1].short_effect;
+}
 async function main(){ 
     // const {pokemonDetailsList} = await fetchPokemon();
     // console.log(pokemonDetailsList)
+
+    console.log(await test())
+    console.log(await test2())
  }
 
 main();

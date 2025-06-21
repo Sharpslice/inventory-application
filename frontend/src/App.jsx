@@ -2,6 +2,7 @@
 import './App.css'
 import PokemonGrid from './PokemonGrid/PokemonGrid'
 import RegionBar from './RegionBar/RegionBar'
+import Trainers from './Trainers/Trainers'
 import { RegionContext } from './context'
 import { RegionProvider } from './context'
 function App() {
@@ -9,6 +10,9 @@ function App() {
 
   return (
     <>
+      <div id="trainerContainer">
+        <Trainers/>
+      </div>
       <RegionProvider>
         <div id="mainContainer">
           <RegionBar/>

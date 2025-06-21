@@ -2,6 +2,17 @@ const pool = require('./pool');
 
 require('dotenv').config();
 
+async function getAllTrainers(){
+    try{
+        const response = await pool.query(`
+        SELECT id,name FROM trainer
+        `)
+        return response;
+    }catch(error){
+        console.log("unable to query trainer",error)
+    }
+    
+}
 async function addTrainer(name){
     await pool.query(`
             INSERT INTO trainer (name)
@@ -14,6 +25,7 @@ async function deleteTrainer(id){
         DELETE FROM trainer WHERE id= ($1)
     `,[id])
 }
+
 async function getPokemonFromRegion(id,offset , limit ){
     console.log(offset,limit)
     const result = await pool.query(`
@@ -45,4 +57,4 @@ async function main(){
 }
 main();
 
-module.exports = {getRegion,getPokemonFromRegion}
+module.exports = {getRegion,getPokemonFromRegion,getAllTrainers}
