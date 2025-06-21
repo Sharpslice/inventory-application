@@ -10,7 +10,7 @@ function PokemonGrid(){
     const LIMIT = 30;
 
     const {currentRegion} = useContext(RegionContext)
-  
+    const {setSelectedPokemon} = useContext(RegionContext);
     const [pokemonList,setPokemonList] = useState(null)
     const [offset,setOffset] = useState(null)
     
@@ -38,15 +38,16 @@ function PokemonGrid(){
 
     const onPrevClick = () =>{
         if(offset-LIMIT < 0 ) return;
-        
         setOffset(prev => prev-LIMIT)
     }
     const onNextClick = () =>{
         if(pokemonList.length < LIMIT) return;
-        
         setOffset(prev => prev+LIMIT)
     }
-
+   
+    const onSelectClick = (pokemon) =>{
+        setSelectedPokemon(pokemon)
+    }
 
     if(!pokemonList) return;
     return(
@@ -55,8 +56,9 @@ function PokemonGrid(){
                 {pokemonList.map((pokemon)=>
                 (
                     <PokemonTiles
-                       key={pokemon.key}
+                       key={pokemon.id}
                        pokemon={pokemon} 
+                       onSelectClick={onSelectClick}
                     />
                 )
                 )}
