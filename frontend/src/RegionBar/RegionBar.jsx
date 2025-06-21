@@ -9,7 +9,8 @@ function RegionBar(){
     const [regions,setRegions] = useState(null)
     const [currentIndex,setCurrentIndex] = useState(0);
     
-    const {setCurrentRegion} = useContext(RegionContext)
+    const {setCurrentRegion} = useContext(RegionContext);
+    
     useEffect(()=>{
         const getRegionData = async()=>{
             try{

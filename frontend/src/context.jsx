@@ -6,9 +6,9 @@ const RegionContext = createContext({id:1,region:'hoenn'});
 export function RegionProvider({children}){
 
     const [currentRegion, setCurrentRegion] = useState({id:1,region:'hoenn'})
-    const [selectedPokeon, setSelectedPokemon] = useState(null)
+    const [selectedPokemon, setSelectedPokemon] = useState(null)
     return (
-    <RegionContext.Provider value ={{currentRegion,setCurrentRegion,selectedPokeon,setSelectedPokemon}}>
+    <RegionContext.Provider value ={{currentRegion,setCurrentRegion,selectedPokemon,setSelectedPokemon}}>
         {children}
     </RegionContext.Provider>
     )
