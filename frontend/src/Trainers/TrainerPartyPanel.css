@@ -1,0 +1,31 @@
+.header{
+    border: 1px solid black;
+}
+.tileList{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: absolute;
+    transform: translateX(0%);
+    transition: transform 0.8s ease;
+  
+}
+.tiles{
+    width: 100px;
+    border: 1px solid black;
+    background-color: white;
+   
+}
+
+.hiddenx{
+    transform: translateX(-100%);
+    transition: transform 0.8s ease;
+}
+.slideIn{
+    transform: translateX(0%);
+    transition: transform 0.8s ease;
+}
+.wrapper{
+    position: relative;
+    margin-left: 20px;
+}

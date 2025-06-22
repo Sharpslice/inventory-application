@@ -7,22 +7,24 @@ function DropdownBtn({title,data}){
         setVisibility(prev => !prev)
         console.log("click")
     }
-    if(!data) return;
-    return(
-        <>
-            <div id="dropDownBtn">
-                <button onClick={onHandleClick}>
-                    {title}
-                </button>
-                <ul>
-                    {data.map((trainer)=>
+
+    const trainerList = data?.map((trainer)=>
                     <li className={visibility?'trainerTiles' : 'trainerTiles hidden'} key = {trainer.id}>
                         {trainer.name}
                     </li>
-                )}
-                </ul>
+                    )
+    if(!data) return;
+    return(
+        <>
+            
+            <button id="dropDownBtn" onClick={onHandleClick}>
+                {title}
+            </button>
+            <ul>
+                {trainerList}
+            </ul>
                 
-            </div>
+            
         </>
     )
 }
