@@ -2,7 +2,8 @@ import axios from "axios"
 import { useEffect,useState } from "react"
 import PartyTiles from "./PartyTiles"
 import Party from "./Party"
-import DropdownBtn from "../../components/DropdownBtn"
+import DropdownBtn from "../components/DropdownBtn"
+
 
 function Trainers(){
 
