@@ -1,12 +1,17 @@
 import plus from '../assets/plus.svg'
 
 function TrainerEmptyTile(){
+
+    const onHandleClick=()=>{
+        console.log('click')
+    }
+
     return(
     <>
     <li>
-        <div className="emptyTile">
-        <img src={plus} alt="" />
-        </div>
+        <button className="emptyTile" onClick={onHandleClick}>
+            <img src={plus} alt="" />
+        </button>
     </li>
         
     
