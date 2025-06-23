@@ -25,7 +25,23 @@ async function deleteTrainer(id){
         DELETE FROM trainer WHERE id= ($1)
     `,[id])
 }
+async function getPokemonsType(id){
+    const response = await pool.query(`
+    
+        SELECT types.type FROM types
+        INNER JOIN types_pokemon ON types_pokemon.type_id = types.id 
+        INNER JOIN pokemon ON pokemon.id = types_pokemon.pokemon_id 
+        WHERE pokemon.id = ${id};
 
+    `)
+   
+    return response;
+}
+
+ // SELECT types.type FROM types
+        // INNER JOIN types_pokemon ON types.id = types_pokemon.type_id
+        // INNER JOIN pokemon ON pokemon.id = types_pokemon.pokemon_id
+        // WHERE pokemond.id = ${id}
 async function getPokemonFromRegion(id,offset , limit ){
     console.log(offset,limit)
     const result = await pool.query(`
@@ -52,9 +68,9 @@ async function getRegion(){
 
 
 async function main(){
-
+    
     
 }
 main();
 
-module.exports = {getRegion,getPokemonFromRegion,getAllTrainers}
+module.exports = {getRegion,getPokemonFromRegion,getAllTrainers,getPokemonsType}

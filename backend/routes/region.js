@@ -1,7 +1,7 @@
 const axios = require("axios");
 const express = require('express');
 const router = express.Router();
-const {getRegion,getPokemonFromRegion} =require("../db/query.js")
+const {getRegion,getPokemonFromRegion, getPokemonsType} =require("../db/query.js")
 
 
 router.get("/:regionId/pokemon",async (req,res)=>{
@@ -21,7 +21,16 @@ router.get("/:regionId/pokemon",async (req,res)=>{
     
     
 })
-
+router.get("/pokemon/:id",async(req,res)=>{
+    try{
+        const id = req.params.id;
+        const response = await getPokemonsType(id)
+        console.log(response)
+        res.send(response.rows)
+    }catch(error){
+        console.log("error querying pokemon type", error)
+    }
+})
 
 router.get("/", async (req,res)=>{
     try{
