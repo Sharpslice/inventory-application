@@ -15,5 +15,9 @@
 #mainContainer{
   display: grid;
   grid-template-columns: 0.5fr 1fr 0.5fr;
-  
+  padding: 30px;
+}
+
+#trainerContainer{
+  grid-row: 1/3;
 }

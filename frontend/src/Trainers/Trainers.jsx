@@ -3,7 +3,7 @@ import { useEffect,useState } from "react"
 import PartyTiles from "./TrainerPartyTiles"
 import TrainerPartyPanel from "./TrainerPartyPanel"
 import DropdownBtn from "../components/DropdownBtn"
-
+import '../App.css'
 
 function Trainers(){
 
@@ -24,11 +24,11 @@ function Trainers(){
     },[])
 
     const onHandleClick = () =>{
-        console.log('click')
+    console.log('click')
        setvisibility(prev=>!prev)
     }
     if(!trainer) return;
-    const testArray = [{name: 'pikachu'},{name: 'charizard'}, {name: 'squirtle'}]
+    const testArray = [{name: 'pikachu',id:1},{name: 'charizard',id:2}, {name: 'squirtle',id:3}]
     return(
         <>
             
