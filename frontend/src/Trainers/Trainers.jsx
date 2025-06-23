@@ -1,12 +1,15 @@
 import axios from "axios"
 import { useEffect,useState } from "react"
-import PartyTiles from "./PartyTiles"
-import Party from "./Party"
-import DropdownBtn from "../../components/DropdownBtn"
+import PartyTiles from "./TrainerPartyTiles"
+import TrainerPartyPanel from "./TrainerPartyPanel"
+import DropdownBtn from "../components/DropdownBtn"
+import '../App.css'
 
 function Trainers(){
 
     const [trainer,setTrainer] =useState(null)
+
+    const [visibility,setvisibility] = useState(false)
     useEffect(()=>{
         const fetchData =async() =>{
             try{
@@ -20,16 +23,20 @@ function Trainers(){
         fetchData();
     },[])
 
+    const onHandleClick = () =>{
+    console.log('click')
+       setvisibility(prev=>!prev)
+    }
+    if(!trainer) return;
+    const testArray = [{name: 'pikachu',id:1},{name: 'charizard',id:2}, {name: 'squirtle',id:3}]
     return(
         <>
-            <div>
-                <DropdownBtn title ={"Trainer"} data = {trainer}/>
-                {/* <Party
-                    trainer={trainer}
-                /> */}
+            
+            <button id="trainerBtn" onClick={onHandleClick}>{"trainer"} </button>
+            <TrainerPartyPanel visibility={visibility} trainerList={trainer} pokemonList={testArray}/>
                    
                
-            </div>
+            
         
         
         
