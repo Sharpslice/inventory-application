@@ -46,6 +46,7 @@ function PokemonGrid(){
     }
    
     const onSelectClick = (pokemon) =>{
+        console.log(pokemon)
         setSelectedPokemon(pokemon)
     }
 

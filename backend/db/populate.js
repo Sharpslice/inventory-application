@@ -1,5 +1,6 @@
 const {Client} = require("pg");
-require('dotenv').config();
+require('dotenv').config({ path: __dirname + '/../.env' });
+
 const SQL = `
 
     CREATE TABLE IF NOT EXISTS region(
@@ -15,7 +16,7 @@ const SQL = `
         id SERIAL PRIMARY KEY,
         api_id INTEGER UNIQUE NOT NULL,
         name varchar(100) UNIQUE NOT NULL,
-        sprite varchar(100) NOT NULL
+        sprite varchar(100) NOT NULL,
         hp INTEGER NOT NULL,
         attack INTEGER NOT NULL,
         defense INTEGER NOT NULL,

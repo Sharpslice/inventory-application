@@ -1,6 +1,7 @@
 const pool = require('./pool');
 
-require('dotenv').config();
+require('dotenv').config({ path: __dirname + '/../.env' });
+
 
 async function getAllTrainers(){
     try{
@@ -38,14 +39,11 @@ async function getPokemonsType(id){
     return response;
 }
 
- // SELECT types.type FROM types
-        // INNER JOIN types_pokemon ON types.id = types_pokemon.type_id
-        // INNER JOIN pokemon ON pokemon.id = types_pokemon.pokemon_id
-        // WHERE pokemond.id = ${id}
 async function getPokemonFromRegion(id,offset , limit ){
     console.log(offset,limit)
     const result = await pool.query(`
-        SELECT pokemon.id, pokemon.api_id, pokemon.name, pokemon.sprite
+        SELECT pokemon.id, pokemon.api_id, pokemon.name, pokemon.sprite,pokemon.hp,
+        pokemon.attack,pokemon.defense,pokemon.special_attack,pokemon.special_defense,pokemon.speed
         FROM pokemon
         INNER JOIN region_pokemon ON pokemon.id = region_pokemon.pokemon_id
         INNER JOIN region ON region.id = region_pokemon.region_id

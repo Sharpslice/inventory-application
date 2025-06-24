@@ -1,0 +1,16 @@
+
+#statsPanel{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.statsTile{
+    border: 1px solid black;
+    display: flex;
+    gap: 10px;
+}
+.statsTitle{
+    width: 85px;
+    background-color: lightgray;
+    text-align: center;
+}
