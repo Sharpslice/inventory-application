@@ -20,7 +20,7 @@ function PokemonGrid(){
                
                 const regionId = currentRegion.id;
                 
-                console.log("this is current region", currentRegion.region)
+              
                 const result = await axios.get(`http://localhost:3000/api/region/${regionId}/pokemon?offset=${offset}&limit=${LIMIT}`)
                 
                 setPokemonList(result.data)

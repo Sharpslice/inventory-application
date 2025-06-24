@@ -11,7 +11,7 @@ router.get("/:regionId/pokemon",async (req,res)=>{
         const regionId = req.params.regionId;
         const limit = req.query.limit;
         const offset = req.query.offset;
-        console.log("query",req.query)
+      
         const result = await getPokemonFromRegion(regionId,offset,limit)
         res.send(result.rows);
     }catch(error){
@@ -25,7 +25,7 @@ router.get("/pokemon/:id",async(req,res)=>{
     try{
         const id = req.params.id;
         const response = await getPokemonsType(id)
-        console.log(response)
+        
         res.send(response.rows)
     }catch(error){
         console.log("error querying pokemon type", error)

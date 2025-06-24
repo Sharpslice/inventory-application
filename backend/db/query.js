@@ -38,6 +38,17 @@ async function getPokemonsType(id){
    
     return response;
 }
+async function getPokemonFromTrainer(id){
+    const response = await pool.query(`
+            SELECT pokemon.name,pokemon.sprite,pokemon.id 
+            FROM pokemon
+            INNER JOIN trainer_pokemon ON trainer_pokemon.pokemon_id = pokemon.id
+            INNER JOIN trainer ON trainer.id = trainer_pokemon.trainer_id
+            WHERE trainer.id = ${id}
+        
+        `)
+        return response;
+}
 
 async function getPokemonFromRegion(id,offset , limit ){
     console.log(offset,limit)
@@ -71,4 +82,4 @@ async function main(){
 }
 main();
 
-module.exports = {getRegion,getPokemonFromRegion,getAllTrainers,getPokemonsType}
+module.exports = {getRegion,getPokemonFromRegion,getAllTrainers,getPokemonsType,getPokemonFromTrainer}

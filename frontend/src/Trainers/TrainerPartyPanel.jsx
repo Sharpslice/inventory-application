@@ -2,6 +2,7 @@ import TrainerPartyTiles from './TrainerPartyTiles';
 import './TrainerPartyPanel.css'
 import TrainerEmptyTile from './TrainerEmptyTile';
 import PokemonEmptyTile from './PokemonEmptyTile';
+import { useState } from 'react';
 function TrainerPartyPanel({visibility,trainerList, pokemonList}){
         
     const createTiles=(list)=>{
@@ -18,6 +19,10 @@ function TrainerPartyPanel({visibility,trainerList, pokemonList}){
         }
         return holder;
     }
+    const onHandleClick = () =>{
+        console.log('click')
+    }
+    
         
     return (
     <>
@@ -31,7 +36,7 @@ function TrainerPartyPanel({visibility,trainerList, pokemonList}){
                 
                 item
                 ?<TrainerPartyTiles key ={`trainer-${item.id}`}  item = {item}/>
-                :<TrainerEmptyTile key= {`trainer_empty-${index}`}/>
+                :<TrainerEmptyTile key= {`trainer_empty-${index}`} />
            )})}
             </ul>
             <ul className={visibility?'tileList hiddenx':'tileList slideIn'}>
@@ -39,7 +44,7 @@ function TrainerPartyPanel({visibility,trainerList, pokemonList}){
                     return (
                         item
                     ?<TrainerPartyTiles key={`pokemon-${item.id}`} item = {item}/>
-                    :<PokemonEmptyTile key={`pokemon_empty-${index}`}/>
+                    :<PokemonEmptyTile key={`pokemon_empty-${index}` } />
                 )
                 })}
             </ul>

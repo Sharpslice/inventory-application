@@ -12,11 +12,14 @@
     list-style: none;
   
 }
-.tiles{
+.tiles,.emptyTile{
     width: 100px;
     border: 1px solid black;
     background-color: white;
    
+}
+.selected{
+    border: 1px solid red;
 }
 
 .hiddenx{
