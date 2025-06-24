@@ -23,6 +23,11 @@ function TrainerPartyPanel({visibility,trainerList, pokemonList}){
     }
 
     const {selectedPokemon,setSelectedPokemon} = useContext(RegionContext)
+    const {selectedTrainer,setSelectedTrainer} = useContext(RegionContext)
+    const onSelectTrainerClick = (trainer) =>{
+        console.log(trainer)
+        setSelectedTrainer(trainer)
+    }
     const onSelectPokemonClick = (pokemon) =>{
         setSelectedPokemon(pokemon)
     }
@@ -39,7 +44,7 @@ function TrainerPartyPanel({visibility,trainerList, pokemonList}){
                 return (
                 
                 item
-                ?<TrainerPartyTiles key ={`trainer-${item.id}`}  item = {item}/>
+                ?<TrainerPartyTiles key ={`trainer-${item.id}`}  item = {item} onSelectTrainerClick={onSelectTrainerClick}/>
                 :<TrainerEmptyTile key= {`trainer_empty-${index}`} />
            )})}
             </ul>

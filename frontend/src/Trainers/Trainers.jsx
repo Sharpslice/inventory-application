@@ -8,7 +8,7 @@ import { RegionContext } from "../context"
 
 function Trainers(){
 
-    const [trainer,setTrainer] =useState(null)
+    const [trainerList,setTrainerList] =useState(null)
 
     const [visibility,setvisibility] = useState(false)
 
@@ -22,7 +22,7 @@ function Trainers(){
             try{
                 const response = await axios.get('http://localhost:3000/api/trainer')
                 console.log(response.data)
-                setTrainer(response.data)
+                setTrainerList(response.data)
             }catch(error){
                 console.log("Unable to fetch trainers",error)
             }
@@ -49,13 +49,13 @@ function Trainers(){
     console.log('click')
        setvisibility(prev=>!prev)
     }
-    if(!trainer) return;
+    if(!trainerList) return;
     //const testArray = [{name: 'pikachu',id:1},{name: 'charizard',id:2}, {name: 'squirtle',id:3}]
     return(
         <>
             
             <button id="trainerBtn" onClick={onHandleClick}>{"trainer"} </button>
-            <TrainerPartyPanel visibility={visibility} trainerList={trainer} pokemonList={party}/>
+            <TrainerPartyPanel visibility={visibility} trainerList={trainerList} pokemonList={party}/>
                    
                
             
