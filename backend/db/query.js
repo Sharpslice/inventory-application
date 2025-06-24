@@ -40,7 +40,8 @@ async function getPokemonsType(id){
 }
 async function getPokemonFromTrainer(id){
     const response = await pool.query(`
-            SELECT pokemon.name,pokemon.sprite,pokemon.id 
+            SELECT pokemon.id, pokemon.api_id, pokemon.name, pokemon.sprite,pokemon.hp,
+        pokemon.attack,pokemon.defense,pokemon.special_attack,pokemon.special_defense,pokemon.speed
             FROM pokemon
             INNER JOIN trainer_pokemon ON trainer_pokemon.pokemon_id = pokemon.id
             INNER JOIN trainer ON trainer.id = trainer_pokemon.trainer_id

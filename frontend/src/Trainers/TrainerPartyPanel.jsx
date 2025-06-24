@@ -2,7 +2,9 @@ import TrainerPartyTiles from './TrainerPartyTiles';
 import './TrainerPartyPanel.css'
 import TrainerEmptyTile from './TrainerEmptyTile';
 import PokemonEmptyTile from './PokemonEmptyTile';
-import { useState } from 'react';
+import PokemonPartyTiles from './PokemonPartyTiles';
+import { useState,useContext } from 'react';
+import { RegionContext } from '../context';
 function TrainerPartyPanel({visibility,trainerList, pokemonList}){
         
     const createTiles=(list)=>{
@@ -19,8 +21,10 @@ function TrainerPartyPanel({visibility,trainerList, pokemonList}){
         }
         return holder;
     }
-    const onHandleClick = () =>{
-        console.log('click')
+
+    const {selectedPokemon,setSelectedPokemon} = useContext(RegionContext)
+    const onSelectPokemonClick = (pokemon) =>{
+        setSelectedPokemon(pokemon)
     }
     
         
@@ -43,7 +47,7 @@ function TrainerPartyPanel({visibility,trainerList, pokemonList}){
                     {createTiles(pokemonList).map((item,index)=>{
                     return (
                         item
-                    ?<TrainerPartyTiles key={`pokemon-${item.id}`} item = {item}/>
+                    ?<PokemonPartyTiles key={`pokemon-${item.id}`} item = {item} onSelectPokemonClick ={onSelectPokemonClick}/>
                     :<PokemonEmptyTile key={`pokemon_empty-${index}` } />
                 )
                 })}
