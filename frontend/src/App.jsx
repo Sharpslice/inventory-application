@@ -7,9 +7,10 @@ import RegionBar from './RegionBar/RegionBar'
 import Trainers from './Trainers/Trainers'
 import { RegionContext } from './context'
 import { RegionProvider } from './context'
+import OwnedPokemonBar from './ownedPokemonBar/OwnedPokemonBar'
 function App() {
   const [refreshKey,setRefreshKey] = useState(0);
-
+  const [inventoryFlag,setInventoryFlag] = useState(false)
   return (
     <>
       
@@ -22,8 +23,11 @@ function App() {
           </div>
 
           <div id='middleContainer'>
-            <RegionBar/>
-            <PokemonGrid/>
+            <div id='navBar'>
+              <RegionBar/>
+              <OwnedPokemonBar setInventoryFlag={setInventoryFlag}/>
+            </div>
+            <PokemonGrid inventoryFlag={inventoryFlag} setInventoryFlag={setInventoryFlag} />
           </div>
           
 

@@ -5,12 +5,13 @@ import './PokemonGrid.css'
 import triangleLeft from '../assets/triangle-left.svg';
 import triangleRight from '../assets/triangle-right.svg';
 import PokemonTiles from "./PokemonTiles";
-function PokemonGrid(){
+function PokemonGrid({inventoryFlag}){
 
     const LIMIT = 30;
 
     const {currentRegion} = useContext(RegionContext)
     const {setSelectedPokemon} = useContext(RegionContext);
+    const {selectedTrainer} = useContext(RegionContext)
     const [pokemonList,setPokemonList] = useState(null)
     const [offset,setOffset] = useState(null)
     
@@ -20,7 +21,6 @@ function PokemonGrid(){
                
                 const regionId = currentRegion.id;
                 
-              
                 const result = await axios.get(`http://localhost:3000/api/region/${regionId}/pokemon?offset=${offset}&limit=${LIMIT}`)
                 
                 setPokemonList(result.data)
@@ -32,6 +32,16 @@ function PokemonGrid(){
         }
         fetchData()
     },[currentRegion,offset]) 
+
+    useEffect(()=>{
+        const fetchData = async() =>{
+            const result = await axios.get(`http://localhost:3000/api/trainer/${selectedTrainer.id}/pokemonCollection`);
+            setPokemonList(result.data)
+        }
+        fetchData();
+    },[inventoryFlag,selectedTrainer.id])
+
+
     useEffect(()=>{
         setOffset(0)
     },[currentRegion])

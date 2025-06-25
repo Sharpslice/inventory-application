@@ -38,7 +38,7 @@ async function getPokemonsType(id){
    
     return response;
 }
-async function getPokemonFromTrainer(id){
+async function getPartyFromTrainer(id){
     const response = await pool.query(`
             SELECT pokemon.id, pokemon.api_id, pokemon.name, pokemon.sprite,pokemon.hp,
             pokemon.attack,pokemon.defense,pokemon.special_attack,pokemon.special_defense,pokemon.speed
@@ -50,6 +50,19 @@ async function getPokemonFromTrainer(id){
         `)
         return response;
 }
+async function getPokemonCollectionFromTrainer(id){
+    const response = await pool.query(`
+            SELECT pokemon.id, pokemon.api_id, pokemon.name, pokemon.sprite,pokemon.hp,
+            pokemon.attack,pokemon.defense,pokemon.special_attack,pokemon.special_defense,pokemon.speed
+            FROM pokemon
+            INNER JOIN trainer_pokemon ON trainer_pokemon.pokemon_id = pokemon.id
+            INNER JOIN trainer ON trainer.id = trainer_pokemon.trainer_id
+            WHERE trainer.id = ${id} AND trainer_pokemon.inParty = false
+        
+        `)
+        return response;
+}
+
 async function insertPokemonIntoTrainer_pokemon(trainer_id, pokemon_id){
     const result = await pool.query(`
         INSERT INTO trainer_pokemon (trainer_id,pokemon_id,nickname,level,inParty)
@@ -96,4 +109,4 @@ async function main(){
 }
 main();
 
-module.exports = {getRegion,getPokemonFromRegion,getAllTrainers,getPokemonsType,getPokemonFromTrainer,insertPokemonIntoTrainer_pokemon,removePokemonFromParty}
+module.exports = {getPokemonCollectionFromTrainer,getRegion,getPokemonFromRegion,getAllTrainers,getPokemonsType,getPartyFromTrainer,insertPokemonIntoTrainer_pokemon,removePokemonFromParty}
