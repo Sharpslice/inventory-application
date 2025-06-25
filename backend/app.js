@@ -3,6 +3,7 @@ const cors = require('cors');
 
 const app = express();
 app.use(cors());
+app.use(express.json())
 const regionRoutes = require('./routes/region');
 const trainerRoutes = require('./routes/trainer')
 app.use("/api/region",regionRoutes);

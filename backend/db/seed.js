@@ -151,8 +151,6 @@ async function main(){
     // const {pokemonDetailsList} = await fetchPokemon();
     // console.log(pokemonDetailsList)
 
-    console.log(await test())
-    console.log(await test2())
  }
 
 main();

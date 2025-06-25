@@ -1,9 +1,9 @@
-function TrainerPartyTiles({item}){
+function TrainerPartyTiles({item,onSelectTrainerClick}){
 
     return(
         <>
             <li>
-                <div className="tiles">
+                <div className="tiles" onClick={()=>onSelectTrainerClick(item)}>
                     {item.name}
                    
                 </div>

@@ -2,7 +2,8 @@ const {Client} = require("pg");
 const {fetchPokemon,fetchMoves,fetchPokedex,getRegion, fetchTypes} = require("./seed");
 
 
-require('dotenv').config();
+require('dotenv').config({ path: __dirname + '/../.env' });
+
 
 function buildInsertQuery(dataList){
    
@@ -35,7 +36,9 @@ async function insertBatch(client,tableName,columns,placeholders,values,conflict
 async function insertPokemon(client, list)
 {
     const {placeholder, values} = buildInsertQuery(list);
-    await insertBatch(client,'pokemon',['api_id','name','sprite'],placeholder,values,['api_id'])
+    await insertBatch(client,'pokemon',
+        ['api_id','name','sprite','hp','attack','defense','special_attack','special_defense','speed'],
+        placeholder,values,['api_id'])
 }
 async function insertMoves(client, list)
 {

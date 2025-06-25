@@ -1,8 +1,11 @@
-import TrainerPartyTiles from './TrainerPartyTiles';
+import TrainerPartyTiles from './PartyTiles/TrainerPartyTiles';
 import './TrainerPartyPanel.css'
-import TrainerEmptyTile from './TrainerEmptyTile';
-import PokemonEmptyTile from './PokemonEmptyTile';
-function TrainerPartyPanel({visibility,trainerList, pokemonList}){
+import TrainerEmptyTile from './EmptyTiles/TrainerEmptyTile';
+import PokemonEmptyTile from './EmptyTiles/PokemonEmptyTile';
+import PokemonPartyTiles from './PartyTiles/PokemonPartyTiles';
+import { useContext } from 'react';
+import { RegionContext } from '../context';
+function TrainerPartyPanel({updateVisibility,visibility,trainerList, pokemonList}){
         
     const createTiles=(list)=>{
         const holder =[]
@@ -18,6 +21,19 @@ function TrainerPartyPanel({visibility,trainerList, pokemonList}){
         }
         return holder;
     }
+
+    const {setSelectedPokemon} = useContext(RegionContext)
+    const {setSelectedTrainer} = useContext(RegionContext)
+    const onSelectTrainerClick = (trainer) =>{
+        console.log(trainer)
+        setSelectedTrainer(trainer)
+        updateVisibility(prev=>!prev)
+    }
+    const onSelectPokemonClick = (pokemon) =>{
+        console.log({pokemon: pokemon, source: 'party'})
+        setSelectedPokemon({pokemon: pokemon, source: 'party'})
+    }
+    
         
     return (
     <>
@@ -30,16 +46,16 @@ function TrainerPartyPanel({visibility,trainerList, pokemonList}){
                 return (
                 
                 item
-                ?<TrainerPartyTiles key ={`trainer-${item.id}`}  item = {item}/>
-                :<TrainerEmptyTile key= {`trainer_empty-${index}`}/>
+                ?<TrainerPartyTiles key ={`trainer-${item.id}`}  item = {item} onSelectTrainerClick={onSelectTrainerClick}/>
+                :<TrainerEmptyTile key= {`trainer_empty-${index}`} />
            )})}
             </ul>
             <ul className={visibility?'tileList hiddenx':'tileList slideIn'}>
                     {createTiles(pokemonList).map((item,index)=>{
                     return (
                         item
-                    ?<TrainerPartyTiles key={`pokemon-${item.id}`} item = {item}/>
-                    :<PokemonEmptyTile key={`pokemon_empty-${index}`}/>
+                    ?<PokemonPartyTiles key={`pokemon-${item.id}`} item = {item} onSelectPokemonClick ={onSelectPokemonClick}/>
+                    :<PokemonEmptyTile key={`pokemon_empty-${index}` } />
                 )
                 })}
             </ul>

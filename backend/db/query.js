@@ -1,6 +1,7 @@
 const pool = require('./pool');
 
-require('dotenv').config();
+require('dotenv').config({ path: __dirname + '/../.env' });
+
 
 async function getAllTrainers(){
     try{
@@ -25,11 +26,62 @@ async function deleteTrainer(id){
         DELETE FROM trainer WHERE id= ($1)
     `,[id])
 }
+async function getPokemonsType(id){
+    const response = await pool.query(`
+    
+        SELECT types.type FROM types
+        INNER JOIN types_pokemon ON types_pokemon.type_id = types.id 
+        INNER JOIN pokemon ON pokemon.id = types_pokemon.pokemon_id 
+        WHERE pokemon.id = ${id};
 
+    `)
+   
+    return response;
+}
+async function getPartyFromTrainer(id){
+    const response = await pool.query(`
+            SELECT pokemon.id, pokemon.api_id, pokemon.name, pokemon.sprite,pokemon.hp,
+            pokemon.attack,pokemon.defense,pokemon.special_attack,pokemon.special_defense,pokemon.speed
+            FROM pokemon
+            INNER JOIN trainer_pokemon ON trainer_pokemon.pokemon_id = pokemon.id
+            INNER JOIN trainer ON trainer.id = trainer_pokemon.trainer_id
+            WHERE trainer.id = ${id} AND trainer_pokemon.inParty = true
+        
+        `)
+        return response;
+}
+async function getPokemonCollectionFromTrainer(id){
+    const response = await pool.query(`
+            SELECT pokemon.id, pokemon.api_id, pokemon.name, pokemon.sprite,pokemon.hp,
+            pokemon.attack,pokemon.defense,pokemon.special_attack,pokemon.special_defense,pokemon.speed
+            FROM pokemon
+            INNER JOIN trainer_pokemon ON trainer_pokemon.pokemon_id = pokemon.id
+            INNER JOIN trainer ON trainer.id = trainer_pokemon.trainer_id
+            WHERE trainer.id = ${id} AND trainer_pokemon.inParty = false
+        
+        `)
+        return response;
+}
+
+async function insertPokemonIntoTrainer_pokemon(trainer_id, pokemon_id){
+    const result = await pool.query(`
+        INSERT INTO trainer_pokemon (trainer_id,pokemon_id,nickname,level,inParty)
+        VALUES (${trainer_id},${pokemon_id},null,null,true)
+    `)
+    return result;
+}
+async function removePokemonFromParty(trainerId,pokemonId){
+    await pool.query(`
+        UPDATE trainer_pokemon
+        SET inParty = false
+        WHERE trainer_id = ${trainerId} AND pokemon_id =${pokemonId};
+    `)
+}
 async function getPokemonFromRegion(id,offset , limit ){
     console.log(offset,limit)
     const result = await pool.query(`
-        SELECT pokemon.id, pokemon.api_id, pokemon.name, pokemon.sprite
+        SELECT pokemon.id, pokemon.api_id, pokemon.name, pokemon.sprite,pokemon.hp,
+        pokemon.attack,pokemon.defense,pokemon.special_attack,pokemon.special_defense,pokemon.speed
         FROM pokemon
         INNER JOIN region_pokemon ON pokemon.id = region_pokemon.pokemon_id
         INNER JOIN region ON region.id = region_pokemon.region_id
@@ -52,9 +104,9 @@ async function getRegion(){
 
 
 async function main(){
-
+    
     
 }
 main();
 
-module.exports = {getRegion,getPokemonFromRegion,getAllTrainers}
+module.exports = {getPokemonCollectionFromTrainer,getRegion,getPokemonFromRegion,getAllTrainers,getPokemonsType,getPartyFromTrainer,insertPokemonIntoTrainer_pokemon,removePokemonFromParty}

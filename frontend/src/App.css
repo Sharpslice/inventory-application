@@ -11,7 +11,10 @@
   width: 100vw;
   height: 100vh;
 }
-
+#navBar{
+  display: flex;
+  justify-content: center;
+}
 #mainContainer{
   display: grid;
   grid-template-columns: 0.5fr 1fr 0.5fr;
@@ -19,5 +22,9 @@
 }
 
 #trainerContainer{
+  grid-row: 1/3;
+}
+#pokemonInfo{
+  grid-column: 3/4;
   grid-row: 1/3;
 }
