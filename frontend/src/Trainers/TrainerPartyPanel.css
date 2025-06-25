@@ -1,6 +1,9 @@
 .header{
     border: 1px solid black;
 }
+
+
+
 .tileList{
     display: flex;
     flex-direction: column;
@@ -12,7 +15,7 @@
     list-style: none;
   
 }
-.tiles,.emptyTile{
+.tiles,.emptyTiles{
     width: 100px;
     border: 1px solid black;
     background-color: white;
@@ -21,7 +24,6 @@
 .selected{
     border: 1px solid red;
 }
-
 .hiddenx{
     transform: translateX(-100%);
     transition: transform 0.7s ease;

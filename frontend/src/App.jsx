@@ -1,4 +1,5 @@
 
+import { useState } from 'react'
 import './App.css'
 import PokemonGrid from './PokemonGrid/PokemonGrid'
 import PokemonInfo from './PokemonInfo/PokemonInfo'
@@ -7,7 +8,7 @@ import Trainers from './Trainers/Trainers'
 import { RegionContext } from './context'
 import { RegionProvider } from './context'
 function App() {
-  
+  const [refreshKey,setRefreshKey] = useState(0);
 
   return (
     <>
@@ -15,14 +16,16 @@ function App() {
       <RegionProvider>
         <div id="mainContainer">
 
+          
           <div id="trainerContainer">
-            <Trainers/>
+            <Trainers refreshKey={refreshKey} />
           </div>
-
+          
           <RegionBar/>
           <PokemonGrid/>
 
-          <PokemonInfo/>
+          <PokemonInfo setRefreshKey={setRefreshKey}/>
+          
         </div>
         
       </RegionProvider>

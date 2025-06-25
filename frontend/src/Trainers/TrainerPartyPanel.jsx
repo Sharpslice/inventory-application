@@ -3,9 +3,9 @@ import './TrainerPartyPanel.css'
 import TrainerEmptyTile from './TrainerEmptyTile';
 import PokemonEmptyTile from './PokemonEmptyTile';
 import PokemonPartyTiles from './PokemonPartyTiles';
-import { useState,useContext } from 'react';
+import { useContext } from 'react';
 import { RegionContext } from '../context';
-function TrainerPartyPanel({visibility,trainerList, pokemonList}){
+function TrainerPartyPanel({updateVisibility,visibility,trainerList, pokemonList}){
         
     const createTiles=(list)=>{
         const holder =[]
@@ -22,11 +22,12 @@ function TrainerPartyPanel({visibility,trainerList, pokemonList}){
         return holder;
     }
 
-    const {selectedPokemon,setSelectedPokemon} = useContext(RegionContext)
-    const {selectedTrainer,setSelectedTrainer} = useContext(RegionContext)
+    const {setSelectedPokemon} = useContext(RegionContext)
+    const {setSelectedTrainer} = useContext(RegionContext)
     const onSelectTrainerClick = (trainer) =>{
         console.log(trainer)
         setSelectedTrainer(trainer)
+        updateVisibility(prev=>!prev)
     }
     const onSelectPokemonClick = (pokemon) =>{
         setSelectedPokemon(pokemon)

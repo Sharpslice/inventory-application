@@ -1,12 +1,12 @@
 import axios from "axios"
-import { useContext, useEffect,useState,useRef } from "react"
+import { useContext, useEffect,useState } from "react"
 import PartyTiles from "./TrainerPartyTiles"
 import TrainerPartyPanel from "./TrainerPartyPanel"
 import DropdownBtn from "../components/DropdownBtn"
 import '../App.css'
 import { RegionContext } from "../context"
 
-function Trainers(){
+function Trainers({refreshKey}){
 
     const [trainerList,setTrainerList] =useState(null)
 
@@ -16,7 +16,7 @@ function Trainers(){
 
     
 
-    const {selectedTrainer,setSelectedTrainer} = useContext(RegionContext);
+    const {selectedTrainer} = useContext(RegionContext);
     useEffect(()=>{
         const fetchData =async() =>{
             try{
@@ -43,7 +43,7 @@ function Trainers(){
             }
         }
         fetchPartyData();
-    },[selectedTrainer])
+    },[selectedTrainer,refreshKey])
 
     const onHandleClick = () =>{
     console.log('click')
@@ -55,13 +55,8 @@ function Trainers(){
         <>
             
             <button id="trainerBtn" onClick={onHandleClick}>{"trainer"} </button>
-            <TrainerPartyPanel visibility={visibility} trainerList={trainerList} pokemonList={party}/>
-                   
-               
+            <TrainerPartyPanel updateVisibility={setvisibility} visibility={visibility} trainerList={trainerList} pokemonList={party}/>
             
-        
-        
-        
         </>
     )
 }

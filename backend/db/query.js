@@ -41,7 +41,7 @@ async function getPokemonsType(id){
 async function getPokemonFromTrainer(id){
     const response = await pool.query(`
             SELECT pokemon.id, pokemon.api_id, pokemon.name, pokemon.sprite,pokemon.hp,
-        pokemon.attack,pokemon.defense,pokemon.special_attack,pokemon.special_defense,pokemon.speed
+            pokemon.attack,pokemon.defense,pokemon.special_attack,pokemon.special_defense,pokemon.speed
             FROM pokemon
             INNER JOIN trainer_pokemon ON trainer_pokemon.pokemon_id = pokemon.id
             INNER JOIN trainer ON trainer.id = trainer_pokemon.trainer_id
@@ -50,7 +50,13 @@ async function getPokemonFromTrainer(id){
         `)
         return response;
 }
-
+async function insertPokemonIntoTrainer_pokemon(trainer_id, pokemon_id){
+    const result = await pool.query(`
+        INSERT INTO trainer_pokemon (trainer_id,pokemon_id,nickname,level)
+        VALUES (${trainer_id},${pokemon_id},'test_nickname',50)
+    `)
+    return result;
+}
 async function getPokemonFromRegion(id,offset , limit ){
     console.log(offset,limit)
     const result = await pool.query(`
@@ -83,4 +89,4 @@ async function main(){
 }
 main();
 
-module.exports = {getRegion,getPokemonFromRegion,getAllTrainers,getPokemonsType,getPokemonFromTrainer}
+module.exports = {getRegion,getPokemonFromRegion,getAllTrainers,getPokemonsType,getPokemonFromTrainer,insertPokemonIntoTrainer_pokemon}

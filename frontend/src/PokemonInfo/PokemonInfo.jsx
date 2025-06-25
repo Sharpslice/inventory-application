@@ -6,9 +6,10 @@ import axios from "axios"
 import TypesTile from "./TypesTile"
 import StatsTile from "./StatsTile"
 import DisplayTile from "./DisplayTile"
+import AddToPartyBtn from "./AddToPartyBtn"
 
 
-function PokemonInfo(){
+function PokemonInfo({setRefreshKey}){
 
     const {selectedPokemon} = useContext(RegionContext) 
     const [types,setTypes] = useState(null)
@@ -54,7 +55,7 @@ function PokemonInfo(){
            {<StatsTile title = {'SP. DEF'} stat={selectedPokemon.special_defense}/>}
            {<StatsTile title = {'SPEED'} stat={selectedPokemon.speed}/>}
        </div>
-        
+        <AddToPartyBtn pokemon={selectedPokemon} setRefreshKey={setRefreshKey}/>
     
     
     

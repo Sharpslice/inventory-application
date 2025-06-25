@@ -1,5 +1,5 @@
 function AddTrainerModal(){
-    const [name,setName] = uesState(null);
+   
 
 
     return(
@@ -8,7 +8,7 @@ function AddTrainerModal(){
                 <label>Trainer Name:
                 <input
                     type="text"
-                    value={name}
+                    
                 />
                 </label>   
                 <button type="submit">submit</button>

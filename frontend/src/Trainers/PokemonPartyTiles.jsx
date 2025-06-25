@@ -8,8 +8,8 @@ function PokemonPartyTiles({item,onSelectPokemonClick}){
         <>
             <li>
                 <div className="tiles" onClick={()=>{onSelectPokemonClick(item)}}>
-                    {item.name}
-                   
+                    <span>{item.name}s</span>
+                    
                 </div>
             </li>
         
