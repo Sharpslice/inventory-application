@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router();
-const {getAllTrainers,getPartyFromTrainer, insertPokemonIntoTrainer_pokemon,removePokemonFromParty, getPokemonCollectionFromTrainer} = require("../db/query.js")
+const {getAllTrainers,getPartyFromTrainer, insertPokemonIntoTrainer_pokemon,removePokemonFromParty, getPokemonCollectionFromTrainer, DeletePokemonFromCollection} = require("../db/query.js")
 
 
 
@@ -22,6 +22,10 @@ router.post('/party',async(req,res)=>{
     }catch(error){
         console.log("failed to insert pokemon into party",error)
     }
+})
+router.post('/pokemonCollection',async(req,res)=>{
+    const {trainerId,pokemonId} = req.body
+    await DeletePokemonFromCollection(trainerId,pokemonId)
 })
 router.get('/:id/pokemonCollection',async(req,res)=>{
     const trainerId = req.params.id;

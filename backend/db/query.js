@@ -77,6 +77,12 @@ async function removePokemonFromParty(trainerId,pokemonId){
         WHERE trainer_id = ${trainerId} AND pokemon_id =${pokemonId};
     `)
 }
+async function DeletePokemonFromCollection(trainerId,pokemonId){
+    await pool.query(`
+        DELETE FROM trainer_pokemon WHERE trainer_id = ${trainerId} AND pokemon_id = ${pokemonId}
+    `)
+}
+
 async function getPokemonFromRegion(id,offset , limit ){
     console.log(offset,limit)
     const result = await pool.query(`
@@ -109,4 +115,4 @@ async function main(){
 }
 main();
 
-module.exports = {getPokemonCollectionFromTrainer,getRegion,getPokemonFromRegion,getAllTrainers,getPokemonsType,getPartyFromTrainer,insertPokemonIntoTrainer_pokemon,removePokemonFromParty}
+module.exports = {DeletePokemonFromCollection,getPokemonCollectionFromTrainer,getRegion,getPokemonFromRegion,getAllTrainers,getPokemonsType,getPartyFromTrainer,insertPokemonIntoTrainer_pokemon,removePokemonFromParty}

@@ -5,7 +5,7 @@ import './PokemonGrid.css'
 import triangleLeft from '../assets/triangle-left.svg';
 import triangleRight from '../assets/triangle-right.svg';
 import PokemonTiles from "./PokemonTiles";
-function PokemonGrid({inventoryFlag}){
+function PokemonGrid({inventoryFlag,setInventoryFlag}){
 
     const LIMIT = 30;
 
@@ -56,8 +56,16 @@ function PokemonGrid({inventoryFlag}){
     }
    
     const onSelectClick = (pokemon) =>{
-        console.log({pokemon: pokemon, source: 'grid'})
+        
+        if(inventoryFlag){
+            setSelectedPokemon({pokemon: pokemon, source: 'collection'})
+            console.log({pokemon: pokemon, source: 'collection'})
+            
+        }else{
         setSelectedPokemon({pokemon: pokemon, source: 'grid'})
+            console.log({pokemon: pokemon, source: 'grid'})
+        }
+        
     }
 
     if(!pokemonList) return;

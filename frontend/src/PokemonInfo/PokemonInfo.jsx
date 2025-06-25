@@ -8,6 +8,7 @@ import StatsTile from "./StatsTile"
 import DisplayTile from "./DisplayTile"
 import AddToPartyBtn from "./AddToPartyBtn"
 import DeleteFromPartyBtn from "./DeleteFromPartyBtn"
+import DeleteFromCollectionBtn from "./DeleteFromCollectionBtn"
 
 
 function PokemonInfo({setRefreshKey}){
@@ -58,6 +59,7 @@ function PokemonInfo({setRefreshKey}){
        </div>
        {selectedPokemon.source === 'grid'? <AddToPartyBtn pokemon={selectedPokemon.pokemon} setRefreshKey={setRefreshKey}/>: null}
        {selectedPokemon.source === 'party'? <DeleteFromPartyBtn pokemon={selectedPokemon.pokemon}setRefreshKey={setRefreshKey} />: null}
+       
         
     
     
