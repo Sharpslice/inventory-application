@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useContext, useEffect,useState } from "react"
-import PartyTiles from "./TrainerPartyTiles"
+import PartyTiles from "./PartyTiles/TrainerPartyTiles"
 import TrainerPartyPanel from "./TrainerPartyPanel"
 import DropdownBtn from "../components/DropdownBtn"
 import '../App.css'

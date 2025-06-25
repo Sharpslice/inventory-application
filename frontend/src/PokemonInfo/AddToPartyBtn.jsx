@@ -5,6 +5,7 @@ import { RegionContext } from "../context";
 function AddToPartyBtn({pokemon,setRefreshKey}){
     const {selectedTrainer} = useContext(RegionContext);
     const onAddPokemonToPartyClick =async(pokemon) =>{
+    
        try{
         await axios.post(`http://localhost:3000/api/trainer/party`,{trainerId: selectedTrainer.id, pokemonId: pokemon.id})
         setRefreshKey(prev=>prev+1)

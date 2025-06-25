@@ -46,8 +46,8 @@ function PokemonGrid(){
     }
    
     const onSelectClick = (pokemon) =>{
-        console.log(pokemon)
-        setSelectedPokemon(pokemon)
+        console.log({pokemon: pokemon, source: 'grid'})
+        setSelectedPokemon({pokemon: pokemon, source: 'grid'})
     }
 
     if(!pokemonList) return;

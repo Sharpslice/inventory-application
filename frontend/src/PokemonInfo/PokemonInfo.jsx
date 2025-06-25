@@ -16,7 +16,7 @@ function PokemonInfo({setRefreshKey}){
     useEffect(()=>{
         const getType = async() =>{
             try{
-                const result = await axios.get(`http://localhost:3000/api/region/pokemon/${selectedPokemon.id}`);
+                const result = await axios.get(`http://localhost:3000/api/region/pokemon/${selectedPokemon.pokemon.id}`);
                 console.log(result.data)
 
                 setTypes(result.data);
@@ -34,10 +34,10 @@ function PokemonInfo({setRefreshKey}){
     return (
     <div id="pokemonInfo">
        <header>
-            {selectedPokemon.name}
+            {selectedPokemon.pokemon.name}
        </header>
        <div id ="typePanel">
-            {selectedPokemon.api_id}
+            {selectedPokemon.pokemon.api_id}
             {
                 types.map((obj,index)=>{
                     return <TypesTile key={`${obj.type}-${index}`} type ={obj.type}/>
@@ -45,17 +45,18 @@ function PokemonInfo({setRefreshKey}){
             }
        </div>
        <div id="displayPanel">
-            <DisplayTile sprite={selectedPokemon.sprite}/>
+            <DisplayTile sprite={selectedPokemon.pokemon.sprite}/>
        </div>
        <div id ='statsPanel'>
-           {<StatsTile title = {'HP'} stat={selectedPokemon.hp}/>}
-           {<StatsTile title = {'ATTACK'} stat={selectedPokemon.attack}/>}
-           {<StatsTile title = {'DEFENSE'} stat={selectedPokemon.defense}/>}
-           {<StatsTile title = {'SP. AT'} stat={selectedPokemon.special_attack}/>}
-           {<StatsTile title = {'SP. DEF'} stat={selectedPokemon.special_defense}/>}
-           {<StatsTile title = {'SPEED'} stat={selectedPokemon.speed}/>}
+           {<StatsTile title = {'HP'} stat={selectedPokemon.pokemon.hp}/>}
+           {<StatsTile title = {'ATTACK'} stat={selectedPokemon.pokemon.attack}/>}
+           {<StatsTile title = {'DEFENSE'} stat={selectedPokemon.pokemon.defense}/>}
+           {<StatsTile title = {'SP. AT'} stat={selectedPokemon.pokemon.special_attack}/>}
+           {<StatsTile title = {'SP. DEF'} stat={selectedPokemon.pokemon.special_defense}/>}
+           {<StatsTile title = {'SPEED'} stat={selectedPokemon.pokemon.speed}/>}
        </div>
-        <AddToPartyBtn pokemon={selectedPokemon} setRefreshKey={setRefreshKey}/>
+       {selectedPokemon.source === 'grid'? <AddToPartyBtn pokemon={selectedPokemon.pokemon} setRefreshKey={setRefreshKey}/>: null}
+        
     
     
     

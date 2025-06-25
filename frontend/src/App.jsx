@@ -20,9 +20,12 @@ function App() {
           <div id="trainerContainer">
             <Trainers refreshKey={refreshKey} />
           </div>
+
+          <div id='middleContainer'>
+            <RegionBar/>
+            <PokemonGrid/>
+          </div>
           
-          <RegionBar/>
-          <PokemonGrid/>
 
           <PokemonInfo setRefreshKey={setRefreshKey}/>
           

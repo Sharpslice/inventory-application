@@ -1,8 +1,8 @@
-import TrainerPartyTiles from './TrainerPartyTiles';
+import TrainerPartyTiles from './PartyTiles/TrainerPartyTiles';
 import './TrainerPartyPanel.css'
-import TrainerEmptyTile from './TrainerEmptyTile';
-import PokemonEmptyTile from './PokemonEmptyTile';
-import PokemonPartyTiles from './PokemonPartyTiles';
+import TrainerEmptyTile from './EmptyTiles/TrainerEmptyTile';
+import PokemonEmptyTile from './EmptyTiles/PokemonEmptyTile';
+import PokemonPartyTiles from './PartyTiles/PokemonPartyTiles';
 import { useContext } from 'react';
 import { RegionContext } from '../context';
 function TrainerPartyPanel({updateVisibility,visibility,trainerList, pokemonList}){
@@ -30,7 +30,7 @@ function TrainerPartyPanel({updateVisibility,visibility,trainerList, pokemonList
         updateVisibility(prev=>!prev)
     }
     const onSelectPokemonClick = (pokemon) =>{
-        setSelectedPokemon(pokemon)
+        setSelectedPokemon({pokemon: pokemon, source: 'party'})
     }
     
         

@@ -1,5 +1,5 @@
 
-import { RegionContext } from "../context"
+import { RegionContext } from "../../context"
 
 function PokemonPartyTiles({item,onSelectPokemonClick}){
 
