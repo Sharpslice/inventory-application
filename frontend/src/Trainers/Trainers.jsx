@@ -1,8 +1,6 @@
 import axios from "axios"
 import { useContext, useEffect,useState } from "react"
-import PartyTiles from "./PartyTiles/TrainerPartyTiles"
 import TrainerPartyPanel from "./TrainerPartyPanel"
-import DropdownBtn from "../components/DropdownBtn"
 import '../App.css'
 import { RegionContext } from "../context"
 
@@ -50,7 +48,7 @@ function Trainers({refreshKey}){
        setvisibility(prev=>!prev)
     }
     if(!trainerList) return;
-    //const testArray = [{name: 'pikachu',id:1},{name: 'charizard',id:2}, {name: 'squirtle',id:3}]
+    
     return(
         <>
             

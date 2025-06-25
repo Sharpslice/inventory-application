@@ -30,6 +30,7 @@ function TrainerPartyPanel({updateVisibility,visibility,trainerList, pokemonList
         updateVisibility(prev=>!prev)
     }
     const onSelectPokemonClick = (pokemon) =>{
+        console.log({pokemon: pokemon, source: 'party'})
         setSelectedPokemon({pokemon: pokemon, source: 'party'})
     }
     

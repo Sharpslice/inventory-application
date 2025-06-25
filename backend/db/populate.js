@@ -35,8 +35,9 @@ const SQL = `
     CREATE TABLE IF NOT EXISTS trainer_pokemon(
         trainer_id INTEGER REFERENCES trainer(id) ON DELETE CASCADE,
         pokemon_id INTEGER REFERENCES pokemon(id) ON DELETE CASCADE,
-        nickname varchar(100) NOT NULL,
-        level INTEGER NOT NULL,
+        nickname varchar(100) ,
+        level INTEGER ,
+        inParty BOOLEAN,
         PRIMARY KEY (trainer_id,pokemon_id)
     );
 

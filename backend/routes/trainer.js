@@ -1,7 +1,18 @@
 const express = require('express')
 const router = express.Router();
-const {getAllTrainers,getPokemonFromTrainer, insertPokemonIntoTrainer_pokemon} = require("../db/query.js")
+const {getAllTrainers,getPokemonFromTrainer, insertPokemonIntoTrainer_pokemon,removePokemonFromParty} = require("../db/query.js")
 
+
+
+router.post('/party/remove',async(req,res)=>{
+    const {trainerId, pokemonId} = req.body;
+    try{
+        await removePokemonFromParty(trainerId,pokemonId)
+        res.sendStatus(200)
+    }catch(error){
+        console.log('unable to update pokemon party status',error)
+    }
+})
 router.post('/party',async(req,res)=>{
     try{    
         const {trainerId, pokemonId} = req.body;

@@ -7,6 +7,7 @@ import TypesTile from "./TypesTile"
 import StatsTile from "./StatsTile"
 import DisplayTile from "./DisplayTile"
 import AddToPartyBtn from "./AddToPartyBtn"
+import DeleteFromPartyBtn from "./DeleteFromPartyBtn"
 
 
 function PokemonInfo({setRefreshKey}){
@@ -56,6 +57,7 @@ function PokemonInfo({setRefreshKey}){
            {<StatsTile title = {'SPEED'} stat={selectedPokemon.pokemon.speed}/>}
        </div>
        {selectedPokemon.source === 'grid'? <AddToPartyBtn pokemon={selectedPokemon.pokemon} setRefreshKey={setRefreshKey}/>: null}
+       {selectedPokemon.source === 'party'? <DeleteFromPartyBtn pokemon={selectedPokemon.pokemon}setRefreshKey={setRefreshKey} />: null}
         
     
     

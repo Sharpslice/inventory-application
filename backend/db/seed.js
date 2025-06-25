@@ -35,7 +35,7 @@ async function fetchPokemon(){
         }
         catch{
             
-            return nurequire('dotenv').config();ll;
+            return null;
         }
     }
     
