@@ -8,9 +8,9 @@ async function getAllTrainers(){
         const response = await pool.query(`
         SELECT id,name FROM trainer
         `)
-        return response;
+        return response.rows;
     }catch(error){
-        console.log("unable to query trainer",error)
+        console.log("DB error in getAllTrainer",error.message)
     }
     
 }
@@ -27,19 +27,25 @@ async function deleteTrainer(id){
     `,[id])
 }
 async function getPokemonsType(id){
-    const response = await pool.query(`
+    try{
+        const response = await pool.query(`
     
         SELECT types.type FROM types
         INNER JOIN types_pokemon ON types_pokemon.type_id = types.id 
         INNER JOIN pokemon ON pokemon.id = types_pokemon.pokemon_id 
         WHERE pokemon.id = ${id};
 
-    `)
+        `)
    
-    return response;
+        return response.rows;
+    }catch(error){
+        console.log('DB error in getPokemonsType',error.message)
+    }
+    
 }
 async function getPartyFromTrainer(id){
-    const response = await pool.query(`
+    try{
+        const response = await pool.query(`
             SELECT pokemon.id, pokemon.api_id, pokemon.name, pokemon.sprite,pokemon.hp,
             pokemon.attack,pokemon.defense,pokemon.special_attack,pokemon.special_defense,pokemon.speed
             FROM pokemon
@@ -48,10 +54,16 @@ async function getPartyFromTrainer(id){
             WHERE trainer.id = ${id} AND trainer_pokemon.inParty = true
         
         `)
-        return response;
+        return response.rows;
+    }catch(error)
+    {
+        console.log("DB error in getPartyFromTrainer" , error.message)
+    }
+    
 }
 async function getPokemonCollectionFromTrainer(id){
-    const response = await pool.query(`
+    try{
+        const response = await pool.query(`
             SELECT pokemon.id, pokemon.api_id, pokemon.name, pokemon.sprite,pokemon.hp,
             pokemon.attack,pokemon.defense,pokemon.special_attack,pokemon.special_defense,pokemon.speed
             FROM pokemon
@@ -60,32 +72,52 @@ async function getPokemonCollectionFromTrainer(id){
             WHERE trainer.id = ${id} AND trainer_pokemon.inParty = false
         
         `)
-        return response;
+        return response.rows;
+    }catch(error){
+        console.log("DB error in getPokemonCollectionFromTrainer",error.message)
+    }
+    
 }
 
 async function insertPokemonIntoTrainer_pokemon(trainer_id, pokemon_id){
-    const result = await pool.query(`
+    try{
+        const result = await pool.query(`
         INSERT INTO trainer_pokemon (trainer_id,pokemon_id,nickname,level,inParty)
         VALUES (${trainer_id},${pokemon_id},null,null,true)
-    `)
-    return result;
+        `)
+        return result.rows;
+    }catch(error)
+    {
+        console.log('DB error in insertPokemonIntoTrainer_pokemon',error.message)
+    }
+    
 }
 async function removePokemonFromParty(trainerId,pokemonId){
-    await pool.query(`
+    try{
+        await pool.query(`
         UPDATE trainer_pokemon
         SET inParty = false
         WHERE trainer_id = ${trainerId} AND pokemon_id =${pokemonId};
     `)
+    }catch(error){
+        console.log("DB error in removePokemonFromParty",error)
+    }
+    
 }
 async function DeletePokemonFromCollection(trainerId,pokemonId){
-    await pool.query(`
+    try{
+        await pool.query(`
         DELETE FROM trainer_pokemon WHERE trainer_id = ${trainerId} AND pokemon_id = ${pokemonId}
     `)
+    }catch(error){
+        console.log("DB error in DeletePokemonFromCollection",error.message)
+    }
+    
 }
 
 async function getPokemonFromRegion(id,offset , limit ){
-    console.log(offset,limit)
-    const result = await pool.query(`
+    try{
+        const result = await pool.query(`
         SELECT pokemon.id, pokemon.api_id, pokemon.name, pokemon.sprite,pokemon.hp,
         pokemon.attack,pokemon.defense,pokemon.special_attack,pokemon.special_defense,pokemon.speed
         FROM pokemon
@@ -94,15 +126,20 @@ async function getPokemonFromRegion(id,offset , limit ){
         WHERE region.id = '${id}'
         LIMIT ${limit} OFFSET ${offset}
         
-    `)
-    return result;
+        `)
+        return result.rows;
+    }catch(error){
+        console.log('DB error in getPokemonFromRegion',error.message)
+    }
+    
 }
 async function getRegion(){
     try{
-        const result = pool.query(`SELECT id,region FROM region`)
-        return result;
+        const result = await pool.query(`SELECT id,region FROM region`)
+        console.log(result)
+        return result.rows;
     }catch(error){
-        console.log("error fetching region",error)
+        console.log("DB error in getRegion",error.message)
     }
 
 }

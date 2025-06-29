@@ -10,7 +10,7 @@ import { RegionProvider } from './context'
 import OwnedPokemonBar from './ownedPokemonBar/OwnedPokemonBar'
 function App() {
   const [refreshKey,setRefreshKey] = useState(0);
-  const [inventoryFlag,setInventoryFlag] = useState(false)
+ 
   return (
     <>
       
@@ -25,9 +25,9 @@ function App() {
           <div id='middleContainer'>
             <div id='navBar'>
               <RegionBar/>
-              <OwnedPokemonBar setInventoryFlag={setInventoryFlag}/>
+              <OwnedPokemonBar/>
             </div>
-            <PokemonGrid inventoryFlag={inventoryFlag} setInventoryFlag={setInventoryFlag} />
+            <PokemonGrid/>
           </div>
           
 

@@ -12,14 +12,14 @@ function Trainers({refreshKey}){
 
     const [party,setParty] =useState([]);
 
-    
-
     const {selectedTrainer} = useContext(RegionContext);
+
+
     useEffect(()=>{
         const fetchData =async() =>{
             try{
                 const response = await axios.get('http://localhost:3000/api/trainer')
-                console.log(response.data)
+                
                 setTrainerList(response.data)
             }catch(error){
                 console.log("Unable to fetch trainers",error)
@@ -30,10 +30,10 @@ function Trainers({refreshKey}){
 
     useEffect(()=>{
         const fetchPartyData = async() =>{
-           console.log('useEffect ran')
+           
             try{
                 const result = await axios.get(`http://localhost:3000/api/trainer/${selectedTrainer.id}/party`)
-                console.log(result.data)
+                
                 setParty(result.data);
             }catch(error)
             {
@@ -44,7 +44,6 @@ function Trainers({refreshKey}){
     },[selectedTrainer,refreshKey])
 
     const onHandleClick = () =>{
-    console.log('click')
        setvisibility(prev=>!prev)
     }
     if(!trainerList) return;
