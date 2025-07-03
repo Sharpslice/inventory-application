@@ -24,13 +24,14 @@ function TrainerPartyPanel({updateVisibility,visibility,trainerList, pokemonList
 
     const {setSelectedPokemon} = useContext(RegionContext)
     const {setSelectedTrainer} = useContext(RegionContext)
+
     const onSelectTrainerClick = (trainer) =>{
-        console.log(trainer)
+        
         setSelectedTrainer(trainer)
         updateVisibility(prev=>!prev)
     }
     const onSelectPokemonClick = (pokemon) =>{
-        console.log({pokemon: pokemon, source: 'party'})
+        
         setSelectedPokemon({pokemon: pokemon, source: 'party'})
     }
     

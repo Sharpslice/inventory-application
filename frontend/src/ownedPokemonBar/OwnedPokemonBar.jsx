@@ -1,8 +1,8 @@
 import './OwnedPokemonBar.css'
 
-function OwnedPokemonBar({setInventoryFlag}){
+function OwnedPokemonBar(){
     return(
-        <button id='ownedPokemonBar' onClick={()=>setInventoryFlag(prev=>!prev)}>
+        <button id='ownedPokemonBar' >
             {'Owned'}
         </button>
     )

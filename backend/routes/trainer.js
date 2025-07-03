@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router();
-const {getAllTrainers,getPartyFromTrainer, insertPokemonIntoTrainer_pokemon,removePokemonFromParty, getPokemonCollectionFromTrainer} = require("../db/query.js")
+const {getAllTrainers,getPartyFromTrainer, insertPokemonIntoTrainer_pokemon,removePokemonFromParty, getPokemonCollectionFromTrainer, DeletePokemonFromCollection, getPartySize} = require("../db/query.js")
 
 
 
@@ -10,32 +10,46 @@ router.post('/party/remove',async(req,res)=>{
         await removePokemonFromParty(trainerId,pokemonId)
         res.sendStatus(200)
     }catch(error){
-        console.log('unable to update pokemon party status',error)
+        console.log('Error in /api/trainer/party/remove route',error.message)
+        
     }
 })
 router.post('/party',async(req,res)=>{
     try{    
         const {trainerId, pokemonId} = req.body;
         console.log(trainerId,pokemonId)
-        const result = await insertPokemonIntoTrainer_pokemon(trainerId,pokemonId)
+        await insertPokemonIntoTrainer_pokemon(trainerId,pokemonId)
         res.sendStatus(200)
     }catch(error){
-        console.log("failed to insert pokemon into party",error)
+        console.log("Error in /api/trainer/party route",error.message)
     }
+})
+router.post('/pokemonCollection',async(req,res)=>{
+    
+    const {trainerId,pokemonId} = req.body
+    await DeletePokemonFromCollection(trainerId,pokemonId)
 })
 router.get('/:id/pokemonCollection',async(req,res)=>{
     const trainerId = req.params.id;
     const result = await getPokemonCollectionFromTrainer(trainerId);
-    res.send(result.rows)
+    res.send(result)
 })
-
+router.get('/:id/party/size',async(req,res)=>{
+    try{
+        const trainerId = req.params.id;
+        const result = await getPartySize(trainerId);
+        return result;
+    }catch(error){
+        console.log('unable to query party size',error)
+    }
+})
 router.get('/:id/party',async(req,res)=>{
     try{
 
         const trainerId = req.params.id;
         const result = await getPartyFromTrainer(trainerId)
         
-        res.send(result.rows);
+        res.send(result);
     }catch(error){
         console.log('unable to query trainer party',error)
     }
@@ -44,7 +58,7 @@ router.get('/',async(req,res)=>{
     try{
          const results = await getAllTrainers();
         
-            res.send(results.rows)
+            res.send(results)
     }catch(error){
         console.log("unable to query trainer",error)
     }

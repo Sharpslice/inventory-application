@@ -13,7 +13,7 @@ router.get("/:regionId/pokemon",async (req,res)=>{
         const offset = req.query.offset;
       
         const result = await getPokemonFromRegion(regionId,offset,limit)
-        res.send(result.rows);
+        res.send(result);
     }catch(error){
         console.error("failed to send regionId",error)
         res.status(500).send("server error")
@@ -26,7 +26,7 @@ router.get("/pokemon/:id",async(req,res)=>{
         const id = req.params.id;
         const response = await getPokemonsType(id)
         
-        res.send(response.rows)
+        res.send(response)
     }catch(error){
         console.log("error querying pokemon type", error)
     }
@@ -35,7 +35,7 @@ router.get("/pokemon/:id",async(req,res)=>{
 router.get("/", async (req,res)=>{
     try{
         const result = await getRegion();
-        res.send(result.rows)
+        res.send(result)
     } catch (error){
         console.error("error inside backend",error);
         res.status(500).send("server error")
