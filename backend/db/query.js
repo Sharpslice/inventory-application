@@ -43,6 +43,17 @@ async function getPokemonsType(id){
     }
     
 }
+async function getPartySize(id){
+    try{
+        const response = await pool.query(`
+            SELECT COUNT(*) FROM trainer_pokemon
+            WHERE trainer_id = ${id} AND inParty = true
+        `)
+        return response.rows;
+    }catch(error){
+        console.log("DB ERROR in getPartySize")
+    }
+}
 async function getPartyFromTrainer(id){
     try{
         const response = await pool.query(`
@@ -136,7 +147,7 @@ async function getPokemonFromRegion(id,offset , limit ){
 async function getRegion(){
     try{
         const result = await pool.query(`SELECT id,region FROM region`)
-        console.log(result)
+       
         return result.rows;
     }catch(error){
         console.log("DB error in getRegion",error.message)
@@ -152,4 +163,4 @@ async function main(){
 }
 main();
 
-module.exports = {DeletePokemonFromCollection,getPokemonCollectionFromTrainer,getRegion,getPokemonFromRegion,getAllTrainers,getPokemonsType,getPartyFromTrainer,insertPokemonIntoTrainer_pokemon,removePokemonFromParty}
+module.exports = {getPartySize,DeletePokemonFromCollection,getPokemonCollectionFromTrainer,getRegion,getPokemonFromRegion,getAllTrainers,getPokemonsType,getPartyFromTrainer,insertPokemonIntoTrainer_pokemon,removePokemonFromParty}

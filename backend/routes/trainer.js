@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router();
-const {getAllTrainers,getPartyFromTrainer, insertPokemonIntoTrainer_pokemon,removePokemonFromParty, getPokemonCollectionFromTrainer, DeletePokemonFromCollection} = require("../db/query.js")
+const {getAllTrainers,getPartyFromTrainer, insertPokemonIntoTrainer_pokemon,removePokemonFromParty, getPokemonCollectionFromTrainer, DeletePokemonFromCollection, getPartySize} = require("../db/query.js")
 
 
 
@@ -34,7 +34,15 @@ router.get('/:id/pokemonCollection',async(req,res)=>{
     const result = await getPokemonCollectionFromTrainer(trainerId);
     res.send(result)
 })
-
+router.get('/:id/party/size',async(req,res)=>{
+    try{
+        const trainerId = req.params.id;
+        const result = await getPartySize(trainerId);
+        return result;
+    }catch(error){
+        console.log('unable to query party size',error)
+    }
+})
 router.get('/:id/party',async(req,res)=>{
     try{
 
