@@ -8,6 +8,7 @@ import Trainers from './Trainers/Trainers'
 import { RegionContext } from './context'
 import { RegionProvider } from './context'
 import OwnedPokemonBar from './ownedPokemonBar/OwnedPokemonBar'
+import PokemonDashboard from './PokemonDashboard/PokemonDashboard'
 function App() {
   const [refreshKey,setRefreshKey] = useState(0);
  
@@ -16,18 +17,12 @@ function App() {
       
       <RegionProvider>
         <div id="mainContainer">
-
-          
           <div id="trainerContainer">
             <Trainers refreshKey={refreshKey} />
           </div>
 
           <div id='middleContainer'>
-            <div id='navBar'>
-              <RegionBar/>
-              <OwnedPokemonBar/>
-            </div>
-            <PokemonGrid/>
+            <PokemonDashboard/>
           </div>
           
 

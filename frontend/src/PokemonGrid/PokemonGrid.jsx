@@ -5,7 +5,7 @@ import './PokemonGrid.css'
 import triangleLeft from '../assets/triangle-left.svg';
 import triangleRight from '../assets/triangle-right.svg';
 import PokemonTiles from "./PokemonTiles";
-function PokemonGrid(){
+function PokemonGrid({display}){
 
     const LIMIT = 30;
 
@@ -15,8 +15,18 @@ function PokemonGrid(){
     const [pokemonList,setPokemonList] = useState(null)
     const [offset,setOffset] = useState(null)
     
+     useEffect(()=>{
+        const fetchData = async() =>{
+            const result = await axios.get(`http://localhost:3000/api/trainer/${selectedTrainer.id}/pokemonCollection`);
+            setPokemonList(result.data)
+        }
+        if(display==='region') return;
+        fetchData();
+    },[selectedTrainer.id,display]) // this needs to be changed where clicking on owned, activates this useEffect
+
     useEffect(()=>{
         const fetchData = async()=>{
+            
             try{
                
                 const regionId = currentRegion.id;
@@ -30,16 +40,11 @@ function PokemonGrid(){
             }
             
         }
+        if(display==='owned') return;
         fetchData()
-    },[currentRegion,offset]) 
+    },[currentRegion,offset,display]) 
 
-    useEffect(()=>{
-        const fetchData = async() =>{
-            const result = await axios.get(`http://localhost:3000/api/trainer/${selectedTrainer.id}/pokemonCollection`);
-            setPokemonList(result.data)
-        }
-        fetchData();
-    },[selectedTrainer.id])
+   
 
 
     useEffect(()=>{
