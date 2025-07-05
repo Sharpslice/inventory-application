@@ -36,6 +36,8 @@ function Trainers(){
                 const result = await axios.get(`http://localhost:3000/api/trainer/${selectedTrainer.id}/party`)
                 
                 setParty(result.data);
+              
+                
             }catch(error)
             {
                 console.log("unable to fetch party",error)

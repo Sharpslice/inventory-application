@@ -8,11 +8,12 @@ export function RegionProvider({children}){
     
     const [selectedPokemon, setSelectedPokemon] = useState(null)
     const [selectedTrainer,setSelectedTrainer] = useState({id:1,name:'David'})
+    const [collection,setCollection] = useState([])
     const [partyRefresh,setPartyRefresh] = useState(0);
     const [collectionRefresh,setCollectionRefresh] = useState(0)
     return (
     <RegionContext.Provider value ={{selectedPokemon,setSelectedPokemon,selectedTrainer,setSelectedTrainer,partyRefresh,setPartyRefresh,
-                                        collectionRefresh,setCollectionRefresh
+                                        collectionRefresh,setCollectionRefresh,collection,setCollection
     }}>
         {children}
     </RegionContext.Provider>

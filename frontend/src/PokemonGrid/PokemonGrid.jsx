@@ -15,10 +15,14 @@ function PokemonGrid({display,currentRegion}){
     const [pokemonList,setPokemonList] = useState(null)
     const [offset,setOffset] = useState(null)
     
+
+    
      useEffect(()=>{
         const fetchData = async() =>{
             const result = await axios.get(`http://localhost:3000/api/trainer/${selectedTrainer.id}/pokemonCollection`);
             setPokemonList(result.data)
+            
+            console.log("initiated")
         }
         if(display==='region') return;
         fetchData();

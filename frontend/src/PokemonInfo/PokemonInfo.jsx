@@ -37,9 +37,11 @@ function PokemonInfo(){
            {<StatsTile title = {'SP. DEF'} stat={selectedPokemon.pokemon.special_defense}/>}
            {<StatsTile title = {'SPEED'} stat={selectedPokemon.pokemon.speed}/>}
        </div>
-       {selectedPokemon.source === 'grid'? <AddToPartyBtn pokemon={selectedPokemon.pokemon} />: null}
+       {/* check if the selected pokemon belongs in trainer's collection and then you can display which button needs to show up */}
+       {selectedPokemon.source === 'grid'? <AddToPartyBtn pokemon={selectedPokemon.pokemon} ownedByTrainer={false} />: null}
        {selectedPokemon.source === 'party'? <DeleteFromPartyBtn pokemon={selectedPokemon.pokemon} />: null}
        {selectedPokemon.source === 'owned'? <DeleteFromCollectionBtn pokemon={selectedPokemon.pokemon} />: null}
+       {selectedPokemon.source === 'owned'? <AddToPartyBtn pokemon={selectedPokemon.pokemon} ownedByTrainer={true} />: null}
         
     
     
