@@ -4,18 +4,18 @@ import axios from 'axios';
 import triangleLeft from '../assets/triangle-left.svg';
 import triangleRight from '../assets/triangle-right.svg';
 import { RegionContext } from "../context";
-import { useContext } from "react";
-function RegionBar(){
+
+function RegionBar({setCurrentRegion}){
     const [regions,setRegions] = useState(null)
     const [currentIndex,setCurrentIndex] = useState(0);
     
-    const {setCurrentRegion} = useContext(RegionContext);
+
     
     useEffect(()=>{
         const getRegionData = async()=>{
             try{
                 const result = await axios.get('http://localhost:3000/api/region');
-                //console.log(result.data)
+                
                 setRegions(result.data)
             } catch(error){
                 console.log("Error recieving data",error)

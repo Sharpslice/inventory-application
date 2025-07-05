@@ -1,38 +1,22 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext} from "react"
 import "./PokemonInfo.css"
 import "./StatsTile.css"
 import { RegionContext } from "../context"
-import axios from "axios"
-import TypesTile from "./TypesTile"
+
 import StatsTile from "./StatsTile"
 import DisplayTile from "./DisplayTile"
-import AddToPartyBtn from "./AddToPartyBtn"
-import DeleteFromPartyBtn from "./DeleteFromPartyBtn"
-import DeleteFromCollectionBtn from "./DeleteFromCollectionBtn"
+import AddToPartyBtn from "./buttons/AddToPartyBtn"
+import DeleteFromPartyBtn from "./buttons/DeleteFromPartyBtn"
+import DeleteFromCollectionBtn from "./buttons/DeleteFromCollectionBtn"
+import TypesPanel from "./TypesPanel"
 
 
-function PokemonInfo({setRefreshKey}){
+function PokemonInfo(){
 
     const {selectedPokemon} = useContext(RegionContext) 
-    const [types,setTypes] = useState(null)
-    useEffect(()=>{
-        const getType = async() =>{
-            try{
-                const result = await axios.get(`http://localhost:3000/api/region/pokemon/${selectedPokemon.pokemon.id}`);
-                console.log(result.data)
-
-                setTypes(result.data);
-            }catch(error){
-                console.log(`failed to fetch ${selectedPokemon}'s type`,error)
-            }
-    }
-    if(!selectedPokemon)return;
-    getType();
-    },[selectedPokemon])
     
-
     if(!selectedPokemon) return;
-    if(!types) return;
+    
     return (
     <div id="pokemonInfo">
        <header>
@@ -40,11 +24,7 @@ function PokemonInfo({setRefreshKey}){
        </header>
        <div id ="typePanel">
             {selectedPokemon.pokemon.api_id}
-            {
-                types.map((obj,index)=>{
-                    return <TypesTile key={`${obj.type}-${index}`} type ={obj.type}/>
-                })
-            }
+            <TypesPanel/>
        </div>
        <div id="displayPanel">
             <DisplayTile sprite={selectedPokemon.pokemon.sprite}/>
@@ -57,9 +37,11 @@ function PokemonInfo({setRefreshKey}){
            {<StatsTile title = {'SP. DEF'} stat={selectedPokemon.pokemon.special_defense}/>}
            {<StatsTile title = {'SPEED'} stat={selectedPokemon.pokemon.speed}/>}
        </div>
-       {selectedPokemon.source === 'grid'? <AddToPartyBtn pokemon={selectedPokemon.pokemon} setRefreshKey={setRefreshKey}/>: null}
-       {selectedPokemon.source === 'party'? <DeleteFromPartyBtn pokemon={selectedPokemon.pokemon}setRefreshKey={setRefreshKey} />: null}
-       
+       {/* check if the selected pokemon belongs in trainer's collection and then you can display which button needs to show up */}
+       {selectedPokemon.source === 'grid'? <AddToPartyBtn pokemon={selectedPokemon.pokemon} ownedByTrainer={false} />: null}
+       {selectedPokemon.source === 'party'? <DeleteFromPartyBtn pokemon={selectedPokemon.pokemon} />: null}
+       {selectedPokemon.source === 'owned'? <DeleteFromCollectionBtn pokemon={selectedPokemon.pokemon} />: null}
+       {selectedPokemon.source === 'owned'? <AddToPartyBtn pokemon={selectedPokemon.pokemon} ownedByTrainer={true} />: null}
         
     
     

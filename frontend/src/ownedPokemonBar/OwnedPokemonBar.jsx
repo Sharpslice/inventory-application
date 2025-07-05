@@ -1,9 +1,14 @@
 import './OwnedPokemonBar.css'
 
-function OwnedPokemonBar(){
+function OwnedPokemonBar({setDisplay}){
+    const onHandleClick =()=>{
+        setDisplay(prev =>prev === 'region' ? 'owned': 'region')
+        
+    }
     return(
-        <button id='ownedPokemonBar' >
+        <button id='ownedPokemonBar' onClick={onHandleClick}>
             {'Owned'}
+        
         </button>
     )
 }

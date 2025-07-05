@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router();
-const {getAllTrainers,getPartyFromTrainer, insertPokemonIntoTrainer_pokemon,removePokemonFromParty, getPokemonCollectionFromTrainer, DeletePokemonFromCollection, getPartySize} = require("../db/query.js")
+const {addPokemonBackToParty,getAllTrainers,getPartyFromTrainer, insertPokemonIntoTrainer_pokemon,removePokemonFromParty, getPokemonCollectionFromTrainer, DeletePokemonFromCollection, getPartySize} = require("../db/query.js")
 
 
 
@@ -14,6 +14,15 @@ router.post('/party/remove',async(req,res)=>{
         
     }
 })
+router.post('/party/addback',async(req,res)=>{
+    try{
+        const {trainerId,pokemonId} = req.body;
+        await addPokemonBackToParty(trainerId,pokemonId)
+        res.sendStatus(200)
+    }catch(error){
+        console.log('error in api/trainer/party/addback')
+    }
+})
 router.post('/party',async(req,res)=>{
     try{    
         const {trainerId, pokemonId} = req.body;
@@ -24,10 +33,16 @@ router.post('/party',async(req,res)=>{
         console.log("Error in /api/trainer/party route",error.message)
     }
 })
-router.post('/pokemonCollection',async(req,res)=>{
+router.delete('/:trainerId/pokemonCollection/:pokemonId',async(req,res)=>{
     
-    const {trainerId,pokemonId} = req.body
-    await DeletePokemonFromCollection(trainerId,pokemonId)
+    const {trainerId,pokemonId} = req.params;
+    try{
+        await DeletePokemonFromCollection(trainerId,pokemonId)
+        res.sendStatus(200)
+    }catch(error){
+        console.log("Error in /api/trainer/:trainerId/pokemonCollection/:pokemonId",error.message)
+    }
+    
 })
 router.get('/:id/pokemonCollection',async(req,res)=>{
     const trainerId = req.params.id;

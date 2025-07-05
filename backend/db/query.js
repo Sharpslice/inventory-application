@@ -103,12 +103,24 @@ async function insertPokemonIntoTrainer_pokemon(trainer_id, pokemon_id){
     }
     
 }
+async function addPokemonBackToParty(trainerId,pokemonId){
+    try{
+        await pool.query(`
+            UPDATE trainer_pokemon
+            SET inParty = true
+            WHERE trainer_id = ${trainerId} AND pokemon_id = ${pokemonId}
+        `)
+        
+    }catch(error){
+        console.log("DB error in addPokemonBackToParty")
+    }
+}
 async function removePokemonFromParty(trainerId,pokemonId){
     try{
         await pool.query(`
         UPDATE trainer_pokemon
         SET inParty = false
-        WHERE trainer_id = ${trainerId} AND pokemon_id =${pokemonId};
+        WHERE trainer_id = ${trainerId} AND pokemon_id =${pokemonId}
     `)
     }catch(error){
         console.log("DB error in removePokemonFromParty",error)
@@ -163,4 +175,4 @@ async function main(){
 }
 main();
 
-module.exports = {getPartySize,DeletePokemonFromCollection,getPokemonCollectionFromTrainer,getRegion,getPokemonFromRegion,getAllTrainers,getPokemonsType,getPartyFromTrainer,insertPokemonIntoTrainer_pokemon,removePokemonFromParty}
+module.exports = {addPokemonBackToParty,getPartySize,DeletePokemonFromCollection,getPokemonCollectionFromTrainer,getRegion,getPokemonFromRegion,getAllTrainers,getPokemonsType,getPartyFromTrainer,insertPokemonIntoTrainer_pokemon,removePokemonFromParty}
