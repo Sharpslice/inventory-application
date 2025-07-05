@@ -22,10 +22,9 @@ function App() {
           </div>
 
           <div id='middleContainer'>
-            <PokemonDashboard/>
+            <PokemonDashboard refreshKey={refreshKey} setRefreshKey={setRefreshKey}/>
           </div>
           
-
           <PokemonInfo setRefreshKey={setRefreshKey}/>
           
         </div>

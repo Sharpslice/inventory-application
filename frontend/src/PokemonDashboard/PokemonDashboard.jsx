@@ -3,7 +3,7 @@ import OwnedPokemonBar from "../ownedPokemonBar/OwnedPokemonBar"
 import PokemonGrid from "../PokemonGrid/PokemonGrid"
 import RegionBar from "../RegionBar/RegionBar"
 
-function PokemonDashboard(){
+function PokemonDashboard({refreshKey,setRefreshKey}){
 
     const [display,setDisplay] = useState('region')
 
@@ -11,9 +11,9 @@ function PokemonDashboard(){
         <>
             <div id='navBar'>
                 <RegionBar/>
-                <OwnedPokemonBar setDisplay={setDisplay}/>
+                <OwnedPokemonBar setDisplay={setDisplay} setRefreshKey={setRefreshKey}/>
             </div>
-            <PokemonGrid display={display}/>
+            <PokemonGrid display={display} refreshKey={refreshKey}/>
         </>
     )
 }

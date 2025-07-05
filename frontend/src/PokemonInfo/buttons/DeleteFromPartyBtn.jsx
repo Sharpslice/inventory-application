@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useContext } from "react";
-import { RegionContext } from "../context";
+import { RegionContext } from "../../context";
 
 function DeleteFromPartyBtn({pokemon,setRefreshKey}){
 
