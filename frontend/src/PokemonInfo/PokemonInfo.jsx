@@ -11,7 +11,7 @@ import DeleteFromCollectionBtn from "./buttons/DeleteFromCollectionBtn"
 import TypesPanel from "./TypesPanel"
 
 
-function PokemonInfo({setRefreshKey}){
+function PokemonInfo(){
 
     const {selectedPokemon} = useContext(RegionContext) 
     
@@ -37,9 +37,9 @@ function PokemonInfo({setRefreshKey}){
            {<StatsTile title = {'SP. DEF'} stat={selectedPokemon.pokemon.special_defense}/>}
            {<StatsTile title = {'SPEED'} stat={selectedPokemon.pokemon.speed}/>}
        </div>
-       {selectedPokemon.source === 'grid'? <AddToPartyBtn pokemon={selectedPokemon.pokemon} setRefreshKey={setRefreshKey}/>: null}
-       {selectedPokemon.source === 'party'? <DeleteFromPartyBtn pokemon={selectedPokemon.pokemon}setRefreshKey={setRefreshKey} />: null}
-       {selectedPokemon.source === 'owned'? <DeleteFromCollectionBtn pokemon={selectedPokemon.pokemon}setRefreshKey={setRefreshKey} />: null}
+       {selectedPokemon.source === 'grid'? <AddToPartyBtn pokemon={selectedPokemon.pokemon} />: null}
+       {selectedPokemon.source === 'party'? <DeleteFromPartyBtn pokemon={selectedPokemon.pokemon} />: null}
+       {selectedPokemon.source === 'owned'? <DeleteFromCollectionBtn pokemon={selectedPokemon.pokemon} />: null}
         
     
     

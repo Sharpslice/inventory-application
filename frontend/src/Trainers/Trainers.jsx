@@ -4,7 +4,7 @@ import TrainerPartyPanel from "./TrainerPartyPanel"
 import '../App.css'
 import { RegionContext } from "../context"
 
-function Trainers({refreshKey}){
+function Trainers(){
 
     const [trainerList,setTrainerList] =useState(null)
 
@@ -12,9 +12,10 @@ function Trainers({refreshKey}){
 
     const [party,setParty] =useState([]);
 
-    const {selectedTrainer} = useContext(RegionContext);
+    const {selectedTrainer,partyRefresh} = useContext(RegionContext);
+    
 
-
+    
     useEffect(()=>{
         const fetchData =async() =>{
             try{
@@ -41,7 +42,7 @@ function Trainers({refreshKey}){
             }
         }
         fetchPartyData();
-    },[selectedTrainer,refreshKey])
+    },[selectedTrainer,partyRefresh])
 
     const onHandleClick = () =>{
        setvisibility(prev=>!prev)

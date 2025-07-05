@@ -2,13 +2,14 @@ import axios from "axios";
 import { useContext } from "react";
 import { RegionContext } from "../../context";
 
-function DeleteFromPartyBtn({pokemon,setRefreshKey}){
+function DeleteFromPartyBtn({pokemon}){
 
-    const {selectedTrainer} = useContext(RegionContext)
+    const {selectedTrainer,setPartyRefresh,setCollectionRefresh} = useContext(RegionContext)
     const onHandleClick = async(pokemon) =>{
         try{
             await axios.post(`http://localhost:3000/api/trainer/party/remove`,{trainerId: selectedTrainer.id, pokemonId: pokemon.id})
-            setRefreshKey(prev=>prev+1)
+            setPartyRefresh(prev=>prev+1)
+            setCollectionRefresh(prev=>prev+1)
         }catch(error)
         {
             console.log('unable to post removal of pokemon from party',error)

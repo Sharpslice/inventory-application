@@ -5,12 +5,12 @@ import './PokemonGrid.css'
 import triangleLeft from '../assets/triangle-left.svg';
 import triangleRight from '../assets/triangle-right.svg';
 import PokemonTiles from "./PokemonTiles";
-function PokemonGrid({display,refreshKey}){
+function PokemonGrid({display,currentRegion}){
 
     const LIMIT = 30;
 
-    const {currentRegion} = useContext(RegionContext)
-    const {setSelectedPokemon} = useContext(RegionContext);
+    
+    const {setSelectedPokemon,collectionRefresh} = useContext(RegionContext);
     const {selectedTrainer} = useContext(RegionContext)
     const [pokemonList,setPokemonList] = useState(null)
     const [offset,setOffset] = useState(null)
@@ -22,7 +22,7 @@ function PokemonGrid({display,refreshKey}){
         }
         if(display==='region') return;
         fetchData();
-    },[selectedTrainer.id,display,refreshKey]) // this needs to be changed where clicking on owned, activates this useEffect
+    },[selectedTrainer.id,display,collectionRefresh]) // this needs to be changed where clicking on owned, activates this useEffect
 
     useEffect(()=>{
         const fetchData = async()=>{

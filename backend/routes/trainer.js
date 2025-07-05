@@ -27,7 +27,13 @@ router.post('/party',async(req,res)=>{
 router.delete('/:trainerId/pokemonCollection/:pokemonId',async(req,res)=>{
     
     const {trainerId,pokemonId} = req.params;
-    await DeletePokemonFromCollection(trainerId,pokemonId)
+    try{
+        await DeletePokemonFromCollection(trainerId,pokemonId)
+        res.sendStatus(200)
+    }catch(error){
+        console.log("Error in /api/trainer/:trainerId/pokemonCollection/:pokemonId",error.message)
+    }
+    
 })
 router.get('/:id/pokemonCollection',async(req,res)=>{
     const trainerId = req.params.id;

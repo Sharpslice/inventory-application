@@ -4,12 +4,12 @@ import axios from 'axios';
 import triangleLeft from '../assets/triangle-left.svg';
 import triangleRight from '../assets/triangle-right.svg';
 import { RegionContext } from "../context";
-import { useContext } from "react";
-function RegionBar(){
+
+function RegionBar({setCurrentRegion}){
     const [regions,setRegions] = useState(null)
     const [currentIndex,setCurrentIndex] = useState(0);
     
-    const {setCurrentRegion} = useContext(RegionContext);
+
     
     useEffect(()=>{
         const getRegionData = async()=>{
