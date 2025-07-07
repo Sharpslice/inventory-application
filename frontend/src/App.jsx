@@ -23,7 +23,10 @@ function App() {
             <PokemonDashboard/>
           </div>
           
-          <PokemonInfo />
+          <div id='infoContainer'>
+            <PokemonInfo />
+          </div>
+          
           
         </div>
         

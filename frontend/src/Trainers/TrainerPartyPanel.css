@@ -1,38 +1,47 @@
 .header{
+    width: 22rem;
+    padding: 8px 15px 8px 15px;
+    text-align: center;
     border: 1px solid black;
+    border-radius: 0.9rem;
+    
 }
 
+#wrapper{
 
+}
 
 .tileList{
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 0.8rem;
     position: absolute;
-    transform: translateX(0%);
-    transition: transform 0.7s ease;
-
+    transform: translateX(-50%);
+    transition: transform 0.75s ease;
     list-style: none;
-  
+
+    
 }
 .tiles,.emptyTiles{
-    width: 100px;
+    display: flex;
+    width: 23rem;
+    height: 7rem;
     border: 1px solid black;
     background-color: white;
+
+    border-radius: 0.8rem;
    
 }
 .selected{
     border: 1px solid red;
 }
 .hiddenx{
-    transform: translateX(-100%);
-    transition: transform 0.7s ease;
+    transform: translateX(-170%);
+    transition: transform 0.75s ease;
+    
 }
 .slideIn{
-    transform: translateX(0%);
-    transition: transform 0.7s ease;
+    transform: translateX(-50%);
+    transition: transform 0.75s ease;
 }
-.wrapper{
-    position: relative;
-    margin-left: 20px;
-}
+

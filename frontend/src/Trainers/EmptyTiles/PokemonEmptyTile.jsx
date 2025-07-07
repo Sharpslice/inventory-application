@@ -3,7 +3,7 @@ function PokemonEmptyTile(){
     return(<>
             <li>
                 <div className='emptyTiles'>
-                    {'empty'}
+                    <div>{'empty'}</div>
                 </div>
             </li>
     </>)

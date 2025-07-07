@@ -4,7 +4,7 @@ function TrainerPartyTiles({item,onSelectTrainerClick}){
         <>
             <li>
                 <div className="tiles" onClick={()=>onSelectTrainerClick(item)}>
-                    {item.name}
+                    <div className="trainerTileName">{item.name}</div>
                    
                 </div>
             </li>

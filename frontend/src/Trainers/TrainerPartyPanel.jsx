@@ -1,5 +1,7 @@
 import TrainerPartyTiles from './PartyTiles/TrainerPartyTiles';
 import './TrainerPartyPanel.css'
+import './PartyTiles/partyTiles.css'
+import './EmptyTiles/emptyTiles.css'
 import TrainerEmptyTile from './EmptyTiles/TrainerEmptyTile';
 import PokemonEmptyTile from './EmptyTiles/PokemonEmptyTile';
 import PokemonPartyTiles from './PartyTiles/PokemonPartyTiles';
