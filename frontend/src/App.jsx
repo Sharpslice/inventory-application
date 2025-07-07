@@ -26,10 +26,8 @@ function App() {
           <div id='infoContainer'>
             <PokemonInfo />
           </div>
-          
-          
         </div>
-        
+        {/* <footer>Pokemon</footer> */}
       </RegionProvider>
 
     </>

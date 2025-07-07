@@ -1,15 +1,14 @@
 import { useContext} from "react"
 import "./PokemonInfo.css"
-import "./StatsTile.css"
 import { RegionContext } from "../context"
 
-import StatsTile from "./StatsTile"
-import DisplayTile from "./DisplayTile"
+import StatsTile from "./Stats/StatsTile"
+import DisplayTile from "./DisplayTile/DisplayTile"
 import AddToPartyBtn from "./buttons/AddToPartyBtn"
 import DeleteFromPartyBtn from "./buttons/DeleteFromPartyBtn"
 import DeleteFromCollectionBtn from "./buttons/DeleteFromCollectionBtn"
-import TypesPanel from "./TypesPanel"
-
+import TypesPanel from "./Types/TypesPanel"
+import PokeballIcon from '../assets/pokeball.svg'
 
 function PokemonInfo(){
 
@@ -18,13 +17,19 @@ function PokemonInfo(){
     if(!selectedPokemon) return;
     
     return (
-    <div id="pokemonInfo">
-       <header>
-            {selectedPokemon.pokemon.name}
-       </header>
-       <div id ="typePanel">
-            {selectedPokemon.pokemon.api_id}
-            <TypesPanel/>
+    <>
+       <div id='title'>
+            <img src={PokeballIcon} alt="" />
+            <div>{(selectedPokemon.pokemon.name).toUpperCase()}</div>
+       </div>
+       <div id='info-wrapper'>
+            <div id='subtitle'>
+                <span>{`No. ${selectedPokemon.pokemon.api_id}`}</span>
+                <span>{selectedPokemon.pokemon.name}</span>
+            </div>
+            <div id ="typePanel">
+                <TypesPanel/>
+            </div>
        </div>
        <div id="displayPanel">
             <DisplayTile sprite={selectedPokemon.pokemon.sprite}/>
@@ -48,7 +53,7 @@ function PokemonInfo(){
     
     
     
-    </div>  
+    </>
     )
 
 

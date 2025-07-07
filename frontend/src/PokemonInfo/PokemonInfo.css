@@ -1,18 +1,23 @@
-#pokemonInfo{
-    border: 1px solid black;
-    display: flex;
-    flex-direction: column;
-}
 
-#typePanel{
+#title{
     display: flex;
-    gap: 10px;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.4rem;
+    font-size: 20pt;
+    background-color: lightgray;
+    
 }
-.typeTile{
-    border: 1px solid black;
+#title >img{
+    width: 2.2rem;
+    height: auto;
 }
-
-#pokemonImg{
-    width: 300px;
-    height: 300px;
+#subtitle{
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 0.3rem;
+   
+}
+#info-wrapper{
+    padding: 1rem;
 }

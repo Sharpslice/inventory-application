@@ -1,10 +1,10 @@
 import { useContext } from "react";
 import { useState } from "react";
-import { RegionContext } from "../context";
+import { RegionContext } from "../../context";
 import { useEffect } from "react";
 import axios from "axios";
 import TypesTile from "./TypesTile"
-
+import './Types.css'
 function TypesPanel(){
     const {selectedPokemon} = useContext(RegionContext) 
     const [types,setTypes] = useState(null)
