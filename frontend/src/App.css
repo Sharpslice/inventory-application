@@ -14,14 +14,18 @@ body{
 }
 
 #navBar{
+  
   display: flex;
+  position: relative;
   justify-content: center;
-  align-items: center;
+
 }
 #mainContainer{
   
+  padding-top: 1rem;
   display: grid;
   grid-template-columns: 0.5fr 1fr 0.5fr;
+  
 }
 
 #trainerContainer{
@@ -31,7 +35,10 @@ body{
   
 }
 #middleContainer{
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
 }
 #infoContainer{
 
