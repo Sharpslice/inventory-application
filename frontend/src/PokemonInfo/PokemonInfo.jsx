@@ -9,13 +9,26 @@ import DeleteFromPartyBtn from "./buttons/DeleteFromPartyBtn"
 import DeleteFromCollectionBtn from "./buttons/DeleteFromCollectionBtn"
 import TypesPanel from "./Types/TypesPanel"
 import PokeballIcon from '../assets/pokeball.svg'
+import { useEffect } from "react"
+import axios from "axios"
 
 function PokemonInfo(){
 
     const {selectedPokemon} = useContext(RegionContext) 
-    
+     
+    useEffect(()=>{
+        const fetchData = async()=>{
+             const result = await axios.get(`http://localhost:3000/api/pokemon/${selectedPokemon.pokemon.id}/moveset`);
+             console.log(result.data);
+        }
+        if(!selectedPokemon) return;
+        fetchData();
+    },[selectedPokemon])
+
+
+
+
     if(!selectedPokemon) return;
-    
     return (
     <>
        <div id='title'>

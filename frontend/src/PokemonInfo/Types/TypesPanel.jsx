@@ -12,7 +12,7 @@ function TypesPanel(){
         const getType = async() =>{
             try{
                 const result = await axios.get(`http://localhost:3000/api/region/pokemon/${selectedPokemon.pokemon.id}`);
-                console.log(result.data)
+               
 
                 setTypes(result.data);
             }catch(error){

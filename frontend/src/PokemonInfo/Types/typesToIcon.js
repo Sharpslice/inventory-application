@@ -39,7 +39,7 @@ const TypeToIcon = {
 }
 
 function getTypeIcon(type){
-    console.log(TypeToIcon[type])
+ 
     return TypeToIcon[type];
 }
 

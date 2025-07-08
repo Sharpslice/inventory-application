@@ -1,8 +1,6 @@
 
 import './App.css'
-import PokemonGrid from './PokemonGrid/PokemonGrid'
 import PokemonInfo from './PokemonInfo/PokemonInfo'
-import RegionBar from './RegionBar/RegionBar'
 import Trainers from './Trainers/Trainers'
 import { RegionContext } from './context'
 import { RegionProvider } from './context'
