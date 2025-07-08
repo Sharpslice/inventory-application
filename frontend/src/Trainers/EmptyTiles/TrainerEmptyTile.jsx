@@ -9,7 +9,7 @@ function TrainerEmptyTile(){
     return(
     <>
     <li>
-        <button className="emptyTile" onClick={onHandleClick}>
+        <button className="emptyTiles" onClick={onHandleClick}>
             <img src={plus} alt="" />
         </button>
     </li>

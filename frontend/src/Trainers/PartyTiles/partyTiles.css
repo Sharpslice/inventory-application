@@ -1,0 +1,14 @@
+.tiles img{
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    object-fit: cover;
+}
+.pokemonTileName,.trainerTileName{
+    
+    align-self: center;
+    padding: 10px;
+}
+.trainerTileName{
+    justify-content: center;
+}

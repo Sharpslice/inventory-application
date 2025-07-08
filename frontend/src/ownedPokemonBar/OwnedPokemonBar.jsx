@@ -6,10 +6,12 @@ function OwnedPokemonBar({setDisplay}){
         
     }
     return(
-        <button id='ownedPokemonBar' onClick={onHandleClick}>
-            {'Owned'}
+        <div id='ownedPokemonBar'>
+            <button  onClick={onHandleClick}>
+                {'Owned'}
+            </button>
+        </div>
         
-        </button>
     )
 }
 

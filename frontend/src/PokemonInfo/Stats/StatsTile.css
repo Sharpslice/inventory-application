@@ -3,14 +3,21 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    background-color: rgba(0,0,0,0.43);
 }
 .statsTile{
-    border: 1px solid black;
+    /* border: 1px solid black; */
     display: flex;
     gap: 10px;
+    align-items: center;
 }
 .statsTitle{
-    width: 85px;
+    font-size: 14pt;
+    width: 7rem;
+    
     background-color: lightgray;
     text-align: center;
+}
+.statsValue{
+    font-size: 14pt;
 }

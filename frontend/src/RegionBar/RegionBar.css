@@ -8,15 +8,16 @@
     display: flex;
     justify-content: center;
     border: 1px solid black;
-    border-radius: 20px;
-    margin: 20px;
-    grid-column: 2/3;
-    width: 100%;
+    border-radius: 1rem;
+    
+    position: absolute;
+    
 }
 .regionText{
-    padding: 5px;
-    min-width: 150px;
+    padding: 0.4rem;
+    min-width: 9rem;
     text-align: center;
+   
 }
 button{
     all: unset;
@@ -29,6 +30,6 @@ button:focus{
     outline: none;
 }
 img{
-    width: 25px;
-    height: 25px;
+    width: 1.6rem;
+    height: 1.6rem;
 }

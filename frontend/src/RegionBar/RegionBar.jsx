@@ -32,6 +32,7 @@ function RegionBar({setCurrentRegion}){
             region: regions[currentIndex].region
             }
         )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[currentIndex,regions])
 
     const incrementClick = ()=>{

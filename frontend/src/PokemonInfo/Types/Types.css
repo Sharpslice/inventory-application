@@ -1,0 +1,28 @@
+#typePanel{
+    display: flex;
+    gap: 10px;
+    
+}
+.typeTile{
+    display: flex;
+    align-items: center;
+    background-color: #414F5A;
+    width: 12rem;
+}
+.typeTile>div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   padding: 10px;
+}
+.typeImg{
+    
+    width: 2rem;
+    height: auto;
+}
+.typeText{
+    color: white;
+    font-size: 16pt;
+    font-weight: bold;
+    margin: auto;
+}

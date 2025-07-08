@@ -1,7 +1,9 @@
-#ownedPokemonBar{
+#ownedPokemonBar{  
     display: flex;
     justify-content: center;
-    align-items: center;
+    border-radius: 1rem;
     border: 1px solid black;
-    width: 100%;
-}
+    padding: 0.4rem;
+    transform: translatex(250%);
+    
+    }
