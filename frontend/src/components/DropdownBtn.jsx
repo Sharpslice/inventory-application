@@ -9,10 +9,12 @@ function DropdownBtn({moveset,setMoveset}){
     }
 
     const sortAlphabetical=()=>{
-        console.log(moveset)
+        
         setMoveset([...moveset].sort((a,b)=> (a.name).localeCompare(b.name)))
-        console.log('Sorted alphabetically')
-        console.log(moveset)
+        
+    }
+    const sortPower =()=>{
+        
     }
 
     return(
