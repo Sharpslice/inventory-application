@@ -53,7 +53,7 @@ router.get('/:id/party/size',async(req,res)=>{
     try{
         const trainerId = req.params.id;
         const result = await getPartySize(trainerId);
-        return result;
+        res.send(result)
     }catch(error){
         console.log('unable to query party size',error)
     }
