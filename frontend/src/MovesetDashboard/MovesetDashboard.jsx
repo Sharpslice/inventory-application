@@ -4,7 +4,7 @@ import { RegionContext } from '../context';
 import axios from 'axios';
 import MovesTile from './MovesTile';
 import FilterBar from './FilterBar';
-import DropdownBtn from '../components/DropdownBtn';
+import SortBtn from './SortBtn';
 import MovesetGrid from './MovesetGrid';
 function MovesetDashboard(){
     const {selectedPokemon} = useContext(RegionContext) 
@@ -32,7 +32,7 @@ function MovesetDashboard(){
                 setMoveset={setMoveset} 
             
             />
-            <DropdownBtn moveset ={moveset} setMoveset={setMoveset}/>
+            <SortBtn moveset ={moveset} setMoveset={setMoveset}/>
             
             {moveset && <MovesetGrid moveset={moveset}/>}
             

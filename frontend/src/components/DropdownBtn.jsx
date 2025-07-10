@@ -1,43 +1,36 @@
-import { useState } from 'react';
+import { isValidElement, useState } from 'react';
 import './DropdownBtn.css'
 
-function DropdownBtn({moveset,setMoveset}){
+function DropdownBtn({dropDownTitle,listClassName,valueList}){
     const [visibility,setVisibility] = useState(false)
     const onHandleClick = ()=>{
         setVisibility(prev => !prev)
-        
+        console.log('click')
     }
 
-    const sortAlphabetical=()=>{
-        
-        setMoveset([...moveset].sort((a,b)=> (a.name).localeCompare(b.name)))
-        
-    }
-    const sortPower=()=>{
-        setMoveset([...moveset].sort((a,b)=> a.power - b.power))
-    }
- 
+   
     return(
         <>
             <div id = 'dropDownMenu'>
-                <button className="dropDownBtn" onClick={onHandleClick}>
-                    {'Sort'}
+                <button className={"dropDownBtn"} onClick={onHandleClick}>
+                    {dropDownTitle}
                 </button>
-                <ul className={visibility? 'sortList': 'sortList hidden'}>
-                    <li>
+                <ul className={visibility? listClassName: `${listClassName} hidden`}>
+                    {valueList.map((item)=>{
                         
-                        <button onClick={sortAlphabetical}>
-                            {'Alphabetical'}
-                        </button>
+                        return(
+                            <li key = {item.id}>
+                            {isValidElement(item.component) 
+                                ? item.component 
+                                : <button onClick={item.function}>
+                                    {item.title}
+                                    </button>}
+                            
+                            </li>  
+                        )
                         
-                    </li>
-                    <li>
                         
-                        <button onClick={sortPower}>
-                            {'Power'}
-                        </button>
-                        
-                    </li>
+                    })}
 
                 </ul>
             </div>
