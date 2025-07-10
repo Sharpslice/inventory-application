@@ -13,10 +13,10 @@ function DropdownBtn({moveset,setMoveset}){
         setMoveset([...moveset].sort((a,b)=> (a.name).localeCompare(b.name)))
         
     }
-    const sortPower =()=>{
-        
+    const sortPower=()=>{
+        setMoveset([...moveset].sort((a,b)=> a.power - b.power))
     }
-
+ 
     return(
         <>
             <div id = 'dropDownMenu'>
@@ -33,7 +33,7 @@ function DropdownBtn({moveset,setMoveset}){
                     </li>
                     <li>
                         
-                        <button >
+                        <button onClick={sortPower}>
                             {'Power'}
                         </button>
                         
