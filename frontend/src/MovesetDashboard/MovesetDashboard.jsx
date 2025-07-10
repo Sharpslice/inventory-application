@@ -30,7 +30,7 @@ function MovesetDashboard(){
                 originalMoveset={originalMoveSet} 
                 moveset = {moveset} 
                 setMoveset={setMoveset} 
-                selectedMove={selectedMove}
+            
             />
             <DropdownBtn moveset ={moveset} setMoveset={setMoveset}/>
             
