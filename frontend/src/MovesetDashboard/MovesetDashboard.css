@@ -1,7 +1,9 @@
 #movesetDashboard{
     grid-column: 1/3;
-    
- 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
 }
 #movesGrid{
     

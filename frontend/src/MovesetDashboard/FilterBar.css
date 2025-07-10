@@ -1,0 +1,17 @@
+
+#filterBar{
+    display: flex;
+    gap: 1rem;
+   
+}
+.filterBtn{
+    border: 1px solid black;
+    font-size: 18pt;
+    padding: 0.6rem;
+    border-radius: 0.5rem;
+}
+.filterBtn:focus{
+    outline: none;
+    box-shadow: none;
+    border: none;
+}
