@@ -1,14 +1,29 @@
 import { useState } from 'react';
 import DropdownBtn from '../components/DropdownBtn';
 import './FilterBar.css'
+import { getTypeArray } from '../PokemonInfo/Types/typesToIcon';
 function FilterBar({originalMoveset,setMoveset}){
 
     
     const [currentFilteredMoveset,setCurrentFilteredMoveset] = useState(originalMoveset)  
 
+
+    const getTypesList =()=>{
+        const typeList = getTypeArray().map((type,index)=>{
+            return {id:index+1,title:type,function: ()=>typeFilter(type)}
+        })
+        typeList.unshift({id:0,title:'any',function: ()=>typeFilter('any')})
+        
+        return typeList
+    }
+
+
+
     const resetFilter=()=>{
+      
         setMoveset(originalMoveset)
         setCurrentFilteredMoveset(originalMoveset)
+        
     }
     const offenseFilter =()=>{
           setMoveset(originalMoveset.filter((item)=> item.power !== null && item.damage_class !== 'status'));
@@ -19,6 +34,7 @@ function FilterBar({originalMoveset,setMoveset}){
     const supportFilter =()=>{
         setMoveset(originalMoveset.filter((item)=>item.power=== null && item.damage_class === 'status'));
         setCurrentFilteredMoveset(originalMoveset)
+        
     }
 
 
@@ -57,11 +73,7 @@ function FilterBar({originalMoveset,setMoveset}){
                     dropDownTitle={'Types'}
 
                     valueList={
-                        [
-                            {id:0,title:'any',function: ()=>typeFilter('any')},
-                            {id:1,title:'normal',function: ()=>typeFilter('normal')},
-                            {id:2,title:'water',function: ()=>typeFilter('water')},
-                        ]
+                        getTypesList()
                     }
                 />
             </div>

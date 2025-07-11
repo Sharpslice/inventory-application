@@ -1,5 +1,5 @@
 
-import getTypeIcon from "./typesToIcon";
+import {getTypeIcon} from "./typesToIcon";
 
 function TypesTile({type}){
     return(

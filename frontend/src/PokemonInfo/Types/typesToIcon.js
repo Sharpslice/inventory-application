@@ -38,9 +38,11 @@ const TypeToIcon = {
     water: {icon: WaterIcon, color: '#539DDF'},
 }
 
-function getTypeIcon(type){
+export function getTypeIcon(type){
  
     return TypeToIcon[type];
 }
+export function getTypeArray(){
+    return Object.keys(TypeToIcon)
+}
 
-export default getTypeIcon

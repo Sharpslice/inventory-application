@@ -1,4 +1,4 @@
-import getTypeIcon from "../PokemonInfo/Types/typesToIcon";
+import {getTypeIcon} from "../PokemonInfo/Types/typesToIcon";
 import './MovesetDashboard.css'
 function MovesTile({move}){
 

@@ -136,21 +136,13 @@ async function fetchMoves (pokemonToMovesMap){
 }
 async function fetchTypes(){
      const response = await axios.get("https://pokeapi.co/api/v2/type");
-     const typesList = response.data.results.map(types=>types.name)
+     const typesList = response.data.results.map(types=>({name: types.name, icon:}))
+    
      return typesList
 }
-async function test(){
-    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/pikachu`)
-    return response.data.abilities[0].ability.name
-}
-async function test2(){
-    const response = await axios.get(`https://pokeapi.co/api/v2/ability/intimidate`)
-    return response.data.effect_entries[1].short_effect;
-}
-async function main(){ 
-    // const {pokemonDetailsList} = await fetchPokemon();
-    // console.log(pokemonDetailsList)
 
+async function main(){ 
+    // console.log(await fetchTypes())
  }
 
 main();
