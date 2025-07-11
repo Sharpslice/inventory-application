@@ -29,10 +29,10 @@ function App() {
           </div>
           
           <div id='infoContainer'>
-            <PokemonInfo setMovesMode={setMovesMode}/>
+            <PokemonInfo setMovesMode={setMovesMode} selectedMove={selectedMove}/>
           </div>
         </div>
-        {/* <footer>Pokemon</footer> */}
+       
       </RegionProvider>
 
     </>

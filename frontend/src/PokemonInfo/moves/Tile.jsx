@@ -1,8 +1,12 @@
-function Tile(){
+function Tile({move}){
     return(
+        
         <div className='moveset-panel__tile'>
-            {'Example'}
+            {move? move.name:'empty'}
+
         </div>
+       
+        
     )
 }
 export default Tile

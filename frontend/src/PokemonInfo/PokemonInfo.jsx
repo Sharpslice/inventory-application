@@ -15,7 +15,7 @@ import MovesetPanel from "./moves/MovesetPanel"
 import StatsPanel from "./Stats/StatsPanel"
 import MovesetModeBtn from "./buttons/MovesetModeBtn"
 
-function PokemonInfo({setMovesMode}){
+function PokemonInfo({setMovesMode,selectedMove}){
 
     const {selectedPokemon} = useContext(RegionContext) 
      
@@ -51,7 +51,7 @@ function PokemonInfo({setMovesMode}){
         {selectedPokemon.source === 'owned'? <AddToPartyBtn pokemon={selectedPokemon.pokemon} ownedByTrainer={true} />: null}
 
         {selectedPokemon.source === 'grid'? <MovesetModeBtn setMovesMode={setMovesMode}/> : null}
-        {selectedPokemon.source === 'grid'? <MovesetPanel/> : null}
+        {selectedPokemon.source === 'grid'? <MovesetPanel selectedMove={selectedMove}/> : null}
     
     
     
