@@ -1,11 +1,14 @@
+import Tile from "./Tile"
+import './MovesetPanel.css'
 
 function MovesetPanel(){
 
     return(
-        <div id='movesetPanel'>
-
-        {'test'}
-
+        <div id='moveset-panel'>
+            <Tile/>
+            <Tile/>
+            <Tile/>
+            <Tile/>
         </div>
     )
 }

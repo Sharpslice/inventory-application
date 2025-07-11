@@ -1,12 +1,13 @@
 import MovesTile from "./MovesTile";
 
-function MovesetGrid({moveset}){
+function MovesetGrid({moveset,setSelectedMove}){
     return(
-        <div id ='movesGrid'>
+        <div id ='moveset-grid'>
                 {moveset.map((move)=>(
                 <MovesTile
                     key ={move.id}
                     move ={move}
+                    setSelectedMove={setSelectedMove}
                 />
                 ))}
             </div>

@@ -49,26 +49,26 @@ function FilterBar({originalMoveset,setMoveset}){
     }
 
     return(
-        <div id="filterBar">
+        <div id="filter-bar">
            
-            <div className='filterBtn'>
+            <div className='filter-bar__btn'>
                 <button onClick={resetFilter}>
                     {'All'}
                 </button>
             </div>
 
-             <div className='filterBtn'>
+             <div className='filter-bar__btn'>
                 <button onClick={offenseFilter}>
                     {'Offensive'}
                 </button>
             </div>
             
-            <div className='filterBtn'>
+            <div className='filter-bar__btn'>
                 <button onClick={()=>supportFilter()}>
                     {'Support'}
                 </button>
             </div>
-            <div className='filterBtn'>
+            <div className='filter-bar__btn'>
                 <DropdownBtn
                     dropDownTitle={'Types'}
 

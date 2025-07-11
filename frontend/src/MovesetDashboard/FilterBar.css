@@ -1,16 +1,16 @@
 
-#filterBar{
+#filter-bar{
     display: flex;
     gap: 1rem;
    
 }
-.filterBtn{
+.filter-bar__btn{
     border: 1px solid black;
     font-size: 18pt;
     padding: 0.6rem;
     border-radius: 0.5rem;
 }
-.filterBtn:focus{
+.filter-bar__btn:focus{
     outline: none;
     box-shadow: none;
     border: none;

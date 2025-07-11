@@ -1,14 +1,18 @@
 import {getTypeIcon} from "../PokemonInfo/Types/typesToIcon";
 import './MovesetDashboard.css'
-function MovesTile({move}){
+function MovesTile({move,setSelectedMove}){
 
     const type = getTypeIcon(move.type);
+    const onSelectClick=()=>{
+        setSelectedMove(move)
+        console.log(move)
+    }
     return(
-        <div className="moveTile" style={{backgroundColor: type.color}}>
-            <div style={{backgroundColor : type.color}}>
-                <img src={type.icon} alt="" />
+        <div className="moveset-grid__tile" style={{backgroundColor: type.color}} onClick={onSelectClick}>
+            <div className="moveset-grid__tile-icon" style={{backgroundColor : type.color}}>
+                <img src={type.icon} alt="type-icon" />
             </div>
-            <div className = 'moveText'>
+            <div className = 'moveset-grid__tile-text'>
                 <div>{move.name}</div>
             </div>
         </div>

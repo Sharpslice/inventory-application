@@ -12,13 +12,13 @@ import MovesetDashboard from './MovesetDashboard/MovesetDashboard'
 function App() {
 
   const [movesMode,setMovesMode] = useState(false);
- 
+  const [selectedMove,setSelectedMove] = useState(false)
   return (
     <>
       <RegionProvider>
         <div id="mainContainer">
 
-          {movesMode && <MovesetDashboard/>}
+          {movesMode && <MovesetDashboard setSelectedMove={setSelectedMove}/>}
 
           <div id="trainerContainer" className={movesMode? 'hide': null}>
             <Trainers />
