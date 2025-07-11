@@ -22,13 +22,13 @@ function MovesetDashboard(){
         },[])
 
     
-
+    if(!originalMoveSet) return;
     return(
         <div id='movesetDashboard'>
 
             <FilterBar 
                 originalMoveset={originalMoveSet} 
-                moveset = {moveset} 
+                
                 setMoveset={setMoveset} 
             
             />

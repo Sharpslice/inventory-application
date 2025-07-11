@@ -1,12 +1,8 @@
-import { useState } from "react"
+
 import DropdownBtn from "../components/DropdownBtn"
 
 function SortBtn({moveset,setMoveset}){
-    const [visibility,setVisibility] = useState(false)
-    const onHandleClick = ()=>{
-        setVisibility(prev => !prev)
-        
-    }
+
 
     const sortAlphabetical=()=>{
         
@@ -25,7 +21,6 @@ function SortBtn({moveset,setMoveset}){
         <>
             <DropdownBtn
                 dropDownTitle = {'sort'}
-                listClassName = {'sortList'}
                 valueList ={
                     [   {id:1,title:'Alphabetical',function: sortAlphabetical },
                         {id:2,title:'Power',function: sortPower },
@@ -35,28 +30,7 @@ function SortBtn({moveset,setMoveset}){
                 }
             
             />
-            {/* <div id = 'dropDownMenu'>
-                <button className="dropDownBtn" onClick={onHandleClick}>
-                    {'Sort'}
-                </button>
-                <ul className={visibility? 'sortList': 'sortList hidden'}>
-                    <li>
-                        
-                        <button onClick={sortAlphabetical}>
-                            {'Alphabetical'}
-                        </button>
-                        
-                    </li>
-                    <li>
-                        
-                        <button onClick={sortPower}>
-                            {'Power'}
-                        </button>
-                        
-                    </li>
-
-                </ul>
-            </div> */}
+            
             
                 
             

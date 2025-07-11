@@ -1,7 +1,7 @@
 import { isValidElement, useState } from 'react';
 import './DropdownBtn.css'
 
-function DropdownBtn({dropDownTitle,listClassName,valueList}){
+function DropdownBtn({dropDownTitle,valueList}){
     const [visibility,setVisibility] = useState(false)
     const onHandleClick = ()=>{
         setVisibility(prev => !prev)
@@ -15,7 +15,7 @@ function DropdownBtn({dropDownTitle,listClassName,valueList}){
                 <button className={"dropDownBtn"} onClick={onHandleClick}>
                     {dropDownTitle}
                 </button>
-                <ul className={visibility? listClassName: `${listClassName} hidden`}>
+                <ul className={visibility? 'dropDownList': `dropDownList hidden`}>
                     {valueList.map((item)=>{
                         
                         return(
