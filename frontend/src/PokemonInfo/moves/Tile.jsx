@@ -13,6 +13,9 @@ function Tile({id,move,setSelectedTile}){
     return(
         
         <div className={'moveset-panel__tile'} style={{backgroundColor: move?getTypeIcon(move.type).color:'white' }} onClick={onSelectClick}>
+            {move?<div className="moveset-panel__tile-icon">
+                <img src={getTypeIcon(move.type).icon} alt="" />
+            </div>:null}
             <span className="moveset-panel__tile-text" style={{color: move?'white':'black'}}>
                 {move? move.name:'empty'}
             </span>
