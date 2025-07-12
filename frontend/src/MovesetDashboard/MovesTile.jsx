@@ -5,7 +5,7 @@ function MovesTile({move,setSelectedMove}){
     const type = getTypeIcon(move.type);
     const onSelectClick=()=>{
         setSelectedMove(move)
-        console.log(move)
+        
     }
     return(
         <div className="moveset-grid__tile" style={{backgroundColor: type.color}} onClick={onSelectClick}>
