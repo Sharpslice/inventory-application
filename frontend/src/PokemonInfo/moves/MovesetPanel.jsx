@@ -20,7 +20,7 @@ function MovesetPanel({selectedMove}){
             setSelectedTile(null)
         }
         else{
-            tileId = tileArray.findIndex((tileElement)=>tileElement.isFilled ===false)+1
+            tileId = tileArray.findIndex((tileElement)=>tileElement.isFilled ===false)
         }
         setTileArray(prev=>{
         return prev.map((tile)=>{
@@ -32,31 +32,35 @@ function MovesetPanel({selectedMove}){
             )})
             })
             
-        
+        setHighlightId(null)
     }
     
 
     const [tileArray,setTileArray] = useState([
+                                    {id:0,isFilled: false, move:null},
                                     {id:1,isFilled: false, move:null},
                                     {id:2,isFilled: false, move:null},
-                                    {id:3,isFilled: false, move:null},
-                                    {id:4,isFilled: false, move:null}
+                                    {id:3,isFilled: false, move:null}
                                         
                                     ])
 
 
-    useEffect(()=>{
-        setSelectedTile(null)
-    },[selectedPokemon])
+    
 
     
     useEffect(()=>{
-        if(!selectedMove) return; //bug if this is removed
+        if(!selectedMove ) return; //bug if this is removed
         addMoveToMoveset()
-        setHighlightId(null)
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[selectedMove])
+
+    useEffect(()=>{
+        setTileArray([{id:0,isFilled: false, move:null},
+                                    {id:1,isFilled: false, move:null},
+                                    {id:2,isFilled: false, move:null},
+                                    {id:3,isFilled: false, move:null}])
+        setSelectedTile(null)
+    },[selectedPokemon])
 
 
     const [highlightId, setHighlightId] = useState(null)
