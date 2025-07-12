@@ -9,17 +9,15 @@ function MovesetPanel({selectedMove}){
     const addMoveToMoveset = () =>{
          let tileId;
 
-        if(selectedTile)
+        if(selectedTile!== null)
         {
+            console.log("changing tile: "+selectedTile)
             tileId= selectedTile;
             setSelectedTile(null)
         }
         else{
             tileId = tileArray.findIndex((tileElement)=>tileElement.isFilled ===false)
         }
-        
-
-         
         setTileArray(prev=>{
         return prev.map((tile)=>{
            
@@ -65,17 +63,3 @@ function MovesetPanel({selectedMove}){
 }
 export default MovesetPanel
 
-// for (const [index,tileElement] of tileArray.entries()){
-//             if(!tileElement.isFilled){
-//               setTileArray(prev=>{
-//                 return prev.map((tile)=>{
-//                     return(
-//                         tile.id ===index
-//                             ? {...tile,isFilled:true,move:selectedMove}
-//                             : tile
-//                     )})
-//                  })
-//               break;
-//             }
-        
-//        }
