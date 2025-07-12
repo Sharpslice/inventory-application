@@ -17,9 +17,13 @@
     gap: 0.3rem;
 
 }
+.highlighted{
+    filter: brightness(0.8);
+
+}
 
 
 .moveset-panel__tile-icon{
     display: flex;
-    align-items: ;
+
 }

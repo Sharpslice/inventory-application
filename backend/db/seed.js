@@ -136,13 +136,13 @@ async function fetchMoves (pokemonToMovesMap){
 }
 async function fetchTypes(){
      const response = await axios.get("https://pokeapi.co/api/v2/type");
-     const typesList = response.data.results.map(types=>({name: types.name, icon:}))
-    
+     const typesList = response.data.results.map(types=>types.name)
+     console.log(response.data.results)
      return typesList
 }
 
 async function main(){ 
-    // console.log(await fetchTypes())
+    
  }
 
 main();

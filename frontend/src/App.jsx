@@ -12,7 +12,7 @@ import MovesetDashboard from './MovesetDashboard/MovesetDashboard'
 function App() {
 
   const [movesMode,setMovesMode] = useState(false);
-  const [selectedMove,setSelectedMove] = useState(false)
+  const [selectedMove,setSelectedMove] = useState(null)
   return (
     <>
       <RegionProvider>
