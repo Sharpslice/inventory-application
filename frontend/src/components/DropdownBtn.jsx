@@ -1,28 +1,40 @@
-import { useState } from 'react';
+import { isValidElement, useState } from 'react';
 import './DropdownBtn.css'
 
-function DropdownBtn({title,data}){
+function DropdownBtn({dropDownTitle,valueList}){
     const [visibility,setVisibility] = useState(false)
     const onHandleClick = ()=>{
         setVisibility(prev => !prev)
-        console.log("click")
+        console.log('click')
     }
 
-    const trainerList = data?.map((trainer)=>
-                    <li className={visibility?'trainerTiles' : 'trainerTiles hidden'} key = {trainer.id}>
-                        {trainer.name}
-                    </li>
-                    )
-    if(!data) return;
+   
     return(
         <>
+            <div id = 'dropDownMenu'>
+                <button className={"dropDownBtn"} onClick={onHandleClick}>
+                    {dropDownTitle}
+                </button>
+                <ul className={visibility? 'dropDownList': `dropDownList hidden`}>
+                    {valueList.map((item)=>{
+                        
+                        return(
+                            <li key = {item.id}>
+                            {isValidElement(item.component) 
+                                ? item.component 
+                                : <button onClick={item.function}>
+                                    {item.title}
+                                    </button>}
+                            
+                            </li>  
+                        )
+                        
+                        
+                    })}
+
+                </ul>
+            </div>
             
-            <button id="dropDownBtn" onClick={onHandleClick}>
-                {title}
-            </button>
-            <ul>
-                {trainerList}
-            </ul>
                 
             
         </>

@@ -3,6 +3,9 @@
   padding: 0;
   box-sizing: border-box;
 }
+button{
+  outline: none;
+}
 
 body{
   display: block;
@@ -21,10 +24,11 @@ body{
 
 }
 #mainContainer{
-  
+ 
   padding-top: 1rem;
   display: grid;
   grid-template-columns: 0.5fr 1fr 0.5fr;
+ 
   
 }
 
@@ -41,7 +45,7 @@ body{
   gap: 0.7rem;
 }
 #infoContainer{
-
+  grid-column: 3/4;
   border: 1px solid black;
   display: flex;
   flex-direction: column;

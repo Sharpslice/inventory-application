@@ -1,7 +1,14 @@
-#dropDownBtn{
+#dropDownMenu{
+    display: flex;
+    flex-direction: column;
+}
+.dropDownBtn{
+    width: 5rem;
     border: 1px solid black;
-    grid-row: 1/2;
-    grid-column: 1/2;
+    
+}
+.dropDownList{
+    list-style: none;
 }
 .hidden{
     display: none;
