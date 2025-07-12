@@ -13,15 +13,26 @@ function MovesetPanel({selectedMove}){
     const addMoveToMoveset = () =>{
          let tileId;
 
-        if(selectedTile!== null)
+         const result = tileArray.find((tileElement)=>tileElement.move === selectedMove)
+         if(result)
+         {
+            console.log('error. pokemon already learned',selectedMove)
+            return;
+         }
+
+        if(selectedTile !== null )
         {
             console.log("changing tile: "+selectedTile)
             tileId= selectedTile;
-            setSelectedTile(null)
+            
         }
         else{
             tileId = tileArray.findIndex((tileElement)=>tileElement.isFilled ===false)
         }
+        
+
+       
+        
         setTileArray(prev=>{
         return prev.map((tile)=>{
            
