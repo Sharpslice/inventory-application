@@ -41,13 +41,13 @@ function Trainers(){
             try{
                 const result = await axios.get(`http://localhost:3000/api/trainer/${selectedTrainer.id}/party`)
                 if(result.data.success){
+                    console.log(result.data.data)
                     setParty(result.data.data);
                 }
                 else{
                     console.log('Backend error: Party fetch failed')
                 }
               
-                
             }catch(error)
             {
                 console.log("Network error: ",error.message)
@@ -65,7 +65,7 @@ function Trainers(){
         <>
             
             <button id="trainerBtn" onClick={onHandleClick}>{"trainer"} </button>
-            <TrainerPartyPanel updateVisibility={setvisibility} visibility={visibility} trainerList={trainerList} pokemonList={party}/>
+            <TrainerPartyPanel updateVisibility={setvisibility} visibility={visibility} trainerList={trainerList} partyList={party}/>
             
         </>
     )

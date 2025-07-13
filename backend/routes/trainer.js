@@ -51,15 +51,7 @@ router.get('/:id/pokemonCollection',async(req,res)=>{
     const result = await getPokemonCollectionFromTrainer(trainerId);
     res.send(result)
 })
-router.get('/:id/party/size',async(req,res)=>{
-    try{
-        const trainerId = req.params.id;
-        const result = await getPartySize(trainerId);
-        res.send(result)
-    }catch(error){
-        console.log('unable to query party size',error)
-    }
-})
+
 router.get('/:id/party',asyncHandler(async(req,res)=>{
 
         const trainerId = req.params.id;

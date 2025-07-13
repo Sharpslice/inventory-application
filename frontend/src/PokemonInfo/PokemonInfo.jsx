@@ -47,10 +47,10 @@ function PokemonInfo({setMovesMode,selectedMove}){
         </div>
         {/* check if the selected pokemon belongs in trainer's collection and then you can display which button needs to show up */}
         {/* compareSelectedPokemon to trainer's pokemonCollection */}
-        {selectedPokemon.source === 'grid'? <AddToPartyBtn pokemon={selectedPokemon.pokemon} ownedByTrainer={false} />: null}
+        {selectedPokemon.source === 'grid'? <AddToPartyBtn pokemon={selectedPokemon.pokemon} isOwnedByTrainer={false} />: null}
         {selectedPokemon.source === 'party'? <DeleteFromPartyBtn pokemon={selectedPokemon.pokemon} />: null}
         {selectedPokemon.source === 'owned'? <DeleteFromCollectionBtn pokemon={selectedPokemon.pokemon} />: null}
-        {selectedPokemon.source === 'owned'? <AddToPartyBtn pokemon={selectedPokemon.pokemon} ownedByTrainer={true} />: null}
+        {selectedPokemon.source === 'owned'? <AddToPartyBtn pokemon={selectedPokemon.pokemon} isOwnedByTrainer={true} />: null}
 
         {selectedPokemon.source === 'grid'? <MovesetModeBtn setMovesMode={setMovesMode}/> : null}
 

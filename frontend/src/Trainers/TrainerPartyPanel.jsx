@@ -7,7 +7,7 @@ import PokemonEmptyTile from './EmptyTiles/PokemonEmptyTile';
 import PokemonPartyTiles from './PartyTiles/PokemonPartyTiles';
 import { useContext } from 'react';
 import { RegionContext } from '../context';
-function TrainerPartyPanel({updateVisibility,visibility,trainerList, pokemonList}){
+function TrainerPartyPanel({updateVisibility,visibility,trainerList, partyList}){
         
     const createTiles=(list)=>{
         const holder =[]
@@ -54,7 +54,7 @@ function TrainerPartyPanel({updateVisibility,visibility,trainerList, pokemonList
            )})}
             </ul>
             <ul className={visibility?'tileList hiddenx':'tileList slideIn'}>
-                    {createTiles(pokemonList).map((item,index)=>{
+                    {createTiles(partyList).map((item,index)=>{
                     return (
                         item
                     ?<PokemonPartyTiles key={`pokemon-${item.id}`} item = {item} onSelectPokemonClick ={onSelectPokemonClick}/>

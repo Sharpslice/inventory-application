@@ -47,16 +47,5 @@ async function removePokemonFromParty(trainerId,pokemonId){
     
 }
 
-async function getPartySize(id){
-    try{
-        const response = await pool.query(`
-            SELECT COUNT(*) FROM trainer_pokemon
-            WHERE trainer_id = ${id} AND inParty = true
-        `)
-        return response.rows;
-    }catch(error){
-        console.log("DB ERROR in getPartySize")
-    }
-}
 
-module.exports={getPartyFromTrainer,addPokemonBackToParty,getPartySize,removePokemonFromParty}
+module.exports={getPartyFromTrainer,addPokemonBackToParty,removePokemonFromParty}
