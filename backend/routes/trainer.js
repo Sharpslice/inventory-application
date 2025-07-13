@@ -35,22 +35,24 @@ router.post('/party',async(req,res)=>{
     }
 })
 
-router.delete('/:trainerId/pokemonCollection/:pokemonId',async(req,res)=>{
+router.delete('/:id/pokemonCollection/:pokemonId',asyncHandler(async(req,res)=>{
     
     const {trainerId,pokemonId} = req.params;
-    try{
-        await DeletePokemonFromCollection(trainerId,pokemonId)
-        res.sendStatus(200)
-    }catch(error){
-        console.log("Error in /api/trainer/:trainerId/pokemonCollection/:pokemonId",error.message)
-    }
     
-})
-router.get('/:id/pokemonCollection',async(req,res)=>{
+    await DeletePokemonFromCollection(trainerId,pokemonId)
+    res.sendStatus(200)
+    
+    
+}))
+router.get('/:id/pokemonCollection',asyncHandler(async(req,res)=>{
     const trainerId = req.params.id;
     const result = await getPokemonCollectionFromTrainer(trainerId);
-    res.send(result)
-})
+    if(!result){
+        throw new Error('getPokemonCollectionFromTrainer query failed')
+    }
+
+    res.send({success:true,data:result})
+}))
 
 router.get('/:id/party',asyncHandler(async(req,res)=>{
 
@@ -59,7 +61,7 @@ router.get('/:id/party',asyncHandler(async(req,res)=>{
         if(!result){
             throw new Error('getPartyFromTrainer query failed')
         }
-        console.log(result)
+        
         res.json({success:true,data:result});
    
 }))
