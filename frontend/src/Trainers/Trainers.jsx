@@ -18,13 +18,13 @@ function Trainers(){
     
     useEffect(()=>{
         const fetchData =async() =>{
-            try{
-                const response = await axios.get('http://localhost:3000/api/trainer')
-                
-                setTrainerList(response.data)
-            }catch(error){
-                console.log("Unable to fetch trainers",error)
+            
+            const response = await axios.get('http://localhost:3000/api/trainer')
+            if(response.data.success){
+                setTrainerList(response.data.data)
             }
+            
+           
         }
         fetchData();
     },[])

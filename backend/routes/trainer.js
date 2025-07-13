@@ -3,7 +3,7 @@ const router = express.Router();
 const { insertPokemonIntoTrainer_pokemon, getPokemonCollectionFromTrainer, DeletePokemonFromCollection} = require("../db/query/collection.js");
 const { getAllTrainers } = require('../db/query/trainer.js');
 const {addPokemonBackToParty,getPartyFromTrainer,getPartySize,removePokemonFromParty} =require('../db/query/party.js');
-
+const {asyncHandler} = require('../utlity/asyncHandler.js')
 
 router.post('/party/remove',async(req,res)=>{
     const {trainerId, pokemonId} = req.body;
@@ -71,16 +71,17 @@ router.get('/:id/party',async(req,res)=>{
         console.log('unable to query trainer party',error)
     }
 })
-router.get('/',async(req,res)=>{
-    try{
-         const results = await getAllTrainers();
-        
-            res.send(results)
-    }catch(error){
-        console.log("unable to query trainer",error)
+
+router.get('/',asyncHandler(async(req,res)=>{
+
+    const results = await getAllTrainers();
+    if(!results){
+        throw new Error('getAllTrainer query failed')
     }
    
+
+    res.json({success:true,data:results})
     
-})
+}))
 
 module.exports=router
