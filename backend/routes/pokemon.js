@@ -1,4 +1,4 @@
-const { getAllMovesFromPokemon } = require("../db/query");
+const { getAllMovesFromPokemon } = require("../db/query/pokemon.js");
 
 const express = require('express');
 
@@ -7,7 +7,7 @@ const router = express.Router();
 router.get('/:id/moveset',async(req,res)=>{
     try{
         const pokemonId = req.params.id;
-        console.log('pokemonId, ',pokemonId)
+       
         const result = await getAllMovesFromPokemon(pokemonId);
         res.send(result);
     }catch(error){

@@ -1,7 +1,8 @@
 const express = require('express')
 const router = express.Router();
-const {addPokemonBackToParty,getAllTrainers,getPartyFromTrainer, insertPokemonIntoTrainer_pokemon,removePokemonFromParty, getPokemonCollectionFromTrainer, DeletePokemonFromCollection, getPartySize} = require("../db/query.js")
-
+const { insertPokemonIntoTrainer_pokemon, getPokemonCollectionFromTrainer, DeletePokemonFromCollection} = require("../db/query/collection.js");
+const { getAllTrainers } = require('../db/query/trainer.js');
+const {addPokemonBackToParty,getPartyFromTrainer,getPartySize,removePokemonFromParty} =require('../db/query/party.js');
 
 
 router.post('/party/remove',async(req,res)=>{
@@ -33,6 +34,7 @@ router.post('/party',async(req,res)=>{
         console.log("Error in /api/trainer/party route",error.message)
     }
 })
+
 router.delete('/:trainerId/pokemonCollection/:pokemonId',async(req,res)=>{
     
     const {trainerId,pokemonId} = req.params;

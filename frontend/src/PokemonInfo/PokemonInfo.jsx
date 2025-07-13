@@ -1,4 +1,4 @@
-import { useContext} from "react"
+import { use, useContext, useEffect} from "react"
 import "./PokemonInfo.css"
 import { RegionContext } from "../context"
 
@@ -19,7 +19,9 @@ function PokemonInfo({setMovesMode,selectedMove}){
 
     const {selectedPokemon} = useContext(RegionContext) 
      
-    
+    useEffect(()=>{
+        console.log(selectedPokemon)
+    },[selectedPokemon])
 
     if(!selectedPokemon) return;
     return (
@@ -51,6 +53,7 @@ function PokemonInfo({setMovesMode,selectedMove}){
         {selectedPokemon.source === 'owned'? <AddToPartyBtn pokemon={selectedPokemon.pokemon} ownedByTrainer={true} />: null}
 
         {selectedPokemon.source === 'grid'? <MovesetModeBtn setMovesMode={setMovesMode}/> : null}
+
         {selectedPokemon.source === 'grid'? <MovesetPanel selectedMove={selectedMove}/> : null}
     
     
