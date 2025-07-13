@@ -60,17 +60,17 @@ router.get('/:id/party/size',async(req,res)=>{
         console.log('unable to query party size',error)
     }
 })
-router.get('/:id/party',async(req,res)=>{
-    try{
+router.get('/:id/party',asyncHandler(async(req,res)=>{
 
         const trainerId = req.params.id;
         const result = await getPartyFromTrainer(trainerId)
-        
-        res.send(result);
-    }catch(error){
-        console.log('unable to query trainer party',error)
-    }
-})
+        if(!result){
+            throw new Error('getPartyFromTrainer query failed')
+        }
+        console.log(result)
+        res.json({success:true,data:result});
+   
+}))
 
 router.get('/',asyncHandler(async(req,res)=>{
 
