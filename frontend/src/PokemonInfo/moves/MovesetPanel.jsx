@@ -5,9 +5,9 @@ import { RegionContext } from "../../context"
 
 function MovesetPanel({selectedMove}){
    
-    //checks selectTrainer id and selectPokemon id and see if that matches
+    
     const {selectedPokemon} = useContext(RegionContext) 
-    // has to be pulled from database.
+   
     const [selectedTile, setSelectedTile]= useState(null)
 
     const addMoveToMoveset = () =>{

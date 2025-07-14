@@ -9,8 +9,8 @@ async function getAllMovesFromPokemon(pokemonId){
             FROM moves
             INNER JOIN pokemon_moveset ON pokemon_moveset.moves_id = moves.id
             INNER JOIN pokemon ON pokemon.id = pokemon_moveset.pokemon_id
-            WHERE pokemon.id = ${pokemonId}
-        `)
+            WHERE pokemon.id = $1
+        `,[pokemonId])
         console.log(result.rows)
         return result.rows;
     }catch(error){
