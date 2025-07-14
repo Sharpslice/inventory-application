@@ -42,11 +42,14 @@ async function addOrUpdatePokemonToParty(trainerId,pokemonId){
 
 async function removePokemonFromParty(trainerId,pokemonId){
     try{
-        await pool.query(`
-        UPDATE trainer_pokemon
-        SET inParty = false
-        WHERE trainer_id = ${trainerId} AND pokemon_id =${pokemonId}
-    `)
+        const result = await pool.query(`
+            UPDATE trainer_pokemon
+            SET inParty = false
+            WHERE trainer_id = $1 AND pokemon_id =$2
+        
+    `,[trainerId,pokemonId])
+
+    return result;
     }catch(error){
         console.log("DB error in removePokemonFromParty",error)
     }

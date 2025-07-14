@@ -5,26 +5,17 @@ const { getAllTrainers } = require('../db/query/trainer.js');
 const {getPartyFromTrainer,removePokemonFromParty, addOrUpdatePokemonToParty} =require('../db/query/party.js');
 const {asyncHandler} = require('../utlity/asyncHandler.js')
 
-router.post('/party/remove',async(req,res)=>{
-    const {trainerId, pokemonId} = req.body;
-    try{
-        await removePokemonFromParty(trainerId,pokemonId)
-        res.sendStatus(200)
-    }catch(error){
-        console.log('Error in /api/trainer/party/remove route',error.message)
-        
-    }
-})
-// router.post('/party/addback',async(req,res)=>{
-//     try{
-//         const {trainerId,pokemonId} = req.body;
-//         await addOrUpdatePokemonToParty(trainerId,pokemonId)
-//         res.sendStatus(200)
-//     }catch(error){
-//         console.log('error in api/trainer/party/addback')
-//     }
-// })
-//
+router.patch('/:trainerId/party/:pokemonId',asyncHandler(async(req,res)=>{
+    const {trainerId,pokemonId} = req.params;
+        const result = await removePokemonFromParty(trainerId,pokemonId)
+        if(!result)
+        {
+            throw new Error("remove pokemon from party query failed");
+        }
+        res.json({success:true})
+   
+}))
+
 router.post('/:id/party',asyncHandler(async(req,res)=>{
       
         const trainerId = req.params.id;
