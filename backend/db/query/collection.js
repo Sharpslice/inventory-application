@@ -39,9 +39,12 @@ async function insertPokemonIntoTrainer_pokemon(trainer_id, pokemon_id){
 
 async function DeletePokemonFromCollection(trainerId,pokemonId){
     try{
-        await pool.query(`
-        DELETE FROM trainer_pokemon WHERE trainer_id = ${trainerId} AND pokemon_id = ${pokemonId}
-    `)
+        const result = await pool.query(`
+            DELETE FROM trainer_pokemon 
+            WHERE trainer_id = $1 AND pokemon_id = $2
+        `,[trainerId,pokemonId])
+    
+        return result.rowCount > 0
     }catch(error){
         console.log("DB error in DeletePokemonFromCollection",error.message)
     }

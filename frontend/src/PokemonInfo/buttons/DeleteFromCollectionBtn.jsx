@@ -5,14 +5,23 @@ import { RegionContext } from "../../context"
 function DeleteFromCollectionBtn({pokemon}){
     const {selectedTrainer,setCollectionRefresh} = useContext(RegionContext)
     const onHandleClick = async() =>{
-
+       
         try{
-            await axios.delete(`http://localhost:3000/api/trainer/${selectedTrainer.id}/pokemonCollection/${pokemon.id}`,)
-            console.log('deleting' ,pokemon.name)
-            setCollectionRefresh(prev=>prev+1)
+            const result = await axios.delete(`http://localhost:3000/api/trainer/${selectedTrainer.id}/pokemonCollection/${pokemon.id}`)
+           
+            if(result.data.success){
+                
+                setCollectionRefresh(prev=>prev+1)
+                
+            }
+            else{
+                
+                console.log("backend error: unable to delete pokemon from collection")
+            }
+            
         }catch(error)
         {
-            console.log(`unable to delete ${pokemon.name}`,error.message)
+            console.error(`unable to delete ${pokemon.name}`,error.message)
         }
 
         
@@ -20,7 +29,7 @@ function DeleteFromCollectionBtn({pokemon}){
     }
 
     return(
-        <button onClick={()=>onHandleClick(pokemon)}>
+        <button onClick={()=>onHandleClick()}>
             {'Delete from collection'}
         </button>
     )

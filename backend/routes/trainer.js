@@ -36,13 +36,16 @@ router.post('/:id/party',asyncHandler(async(req,res)=>{
         
     
 }))
-//
-router.delete('/:id/pokemonCollection/:pokemonId',asyncHandler(async(req,res)=>{
+
+router.delete('/:trainerId/pokemonCollection/:pokemonId',asyncHandler(async(req,res)=>{
     
     const {trainerId,pokemonId} = req.params;
-    await DeletePokemonFromCollection(trainerId,pokemonId)
-    
-    res.sendStatus(200)
+    console.log(trainerId,pokemonId)
+    const result = await DeletePokemonFromCollection(trainerId,pokemonId)
+    if(!result){
+        throw new Error('Deleting pokemon from collection query failed')
+    }
+    res.json({success:true})
     
     
 }))
