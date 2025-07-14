@@ -1,4 +1,5 @@
 const pool = require('../pool');
+const { insertPokemonIntoTrainer_pokemon } = require('./collection');
 
 require('dotenv').config({ path: __dirname + '/../.env' })
 
@@ -21,17 +22,22 @@ async function getPartyFromTrainer(id){
     
 }
 
-async function addPokemonBackToParty(trainerId,pokemonId){
-    try{
-        await pool.query(`
-            UPDATE trainer_pokemon
-            SET inParty = true
-            WHERE trainer_id = ${trainerId} AND pokemon_id = ${pokemonId}
-        `)
-        
-    }catch(error){
-        console.log("DB error in addPokemonBackToParty")
-    }
+
+
+
+async function addOrUpdatePokemonToParty(trainerId,pokemonId){
+    const result = await pool.query(`
+        INSERT INTO trainer_pokemon (trainer_id,pokemon_id,nickname,level,inParty)
+        VALUES ($1,$2,null,null,true)
+        ON CONFLICT (trainer_id,pokemon_id)
+        DO UPDATE SET inParty = EXCLUDED.inParty
+        RETURNING
+            CASE
+                WHEN xmax = 0 THEN 'inserted'
+                ELSE 'updated'
+            END as action
+    `,[trainerId,pokemonId])
+    return result.rows[0].action;
 }
 
 async function removePokemonFromParty(trainerId,pokemonId){
@@ -48,4 +54,4 @@ async function removePokemonFromParty(trainerId,pokemonId){
 }
 
 
-module.exports={getPartyFromTrainer,addPokemonBackToParty,removePokemonFromParty}
+module.exports={getPartyFromTrainer,addOrUpdatePokemonToParty,removePokemonFromParty}

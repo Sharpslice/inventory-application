@@ -2,11 +2,10 @@ import axios from "axios";
 import { useContext } from "react";
 import { RegionContext } from "../../context";
 
-function AddToPartyBtn({pokemon,isOwnedByTrainer}){
+function AddToPartyBtn({pokemon}){
     const {selectedTrainer,setPartyRefresh,setCollectionRefresh} = useContext(RegionContext);
 
     const isPartyFull = async()=>{
-        
         try{
             const partySize = await axios.get(`http://localhost:3000/api/trainer/${selectedTrainer.id}/party`)
             if(partySize.data.success){
@@ -32,25 +31,28 @@ function AddToPartyBtn({pokemon,isOwnedByTrainer}){
     const onAddPokemonToPartyClick =async(pokemon) =>{
         
         if(! (await isPartyFull())) return;
-      
-        if(isOwnedByTrainer){
+
             try{
-                await axios.post(`http://localhost:3000/api/trainer/party/addback`,{trainerId: selectedTrainer.id, pokemonId: pokemon.id})
+                const result = await axios.post(`http://localhost:3000/api/trainer/${selectedTrainer.id}/party`,{pokemonId: pokemon.id})
+                if(result.data.success){
+                    if(result.data.action ==='inserted'){
+                        console.log('inserted')
+                        setPartyRefresh(prev=>prev+1)
+                    }
+                    else{
+                        console.log('update')
+                        setPartyRefresh(prev=>prev+1)
+                        setCollectionRefresh(prev=>prev+1)
+                    }
+                    
+                }
+                else{
+                    console.log('backend error in adding pokemon')
+                }
                 
-                setPartyRefresh(prev=>prev+1)
-                setCollectionRefresh(prev=>prev+1)
             }catch(error){
-                console.log("error sending pokemon to server",error)
+                console.log("Network error",error.message)
             }
-        }else{
-            try{
-                await axios.post(`http://localhost:3000/api/trainer/party`,{trainerId: selectedTrainer.id, pokemonId: pokemon.id})
-                setPartyRefresh(prev=>prev+1)
-            }catch(error){
-                console.log("error sending pokemon to server",error)
-            }
-        }
-        
         
     }
 

@@ -26,8 +26,8 @@ async function insertPokemonIntoTrainer_pokemon(trainer_id, pokemon_id){
     try{
         const result = await pool.query(`
         INSERT INTO trainer_pokemon (trainer_id,pokemon_id,nickname,level,inParty)
-        VALUES (${trainer_id},${pokemon_id},null,null,true)
-        `)
+        VALUES ($1,$2,null,null,true)
+        `,[trainer_id,pokemon_id])
         return result.rows;
     }catch(error)
     {
