@@ -35,12 +35,16 @@ router.post('/:trainerId/:pokemonId/moveset',asyncHandler(async(req,res)=>{
     const moveId = req.body.moveId
     
     const result = await addMoveToPokemon(trainerId,pokemonId,moveId)
-    console.log(result)
+    
     if(result===undefined){
         console.log('throwing error')
         throw new Error('adding move to pokemon query failed');
     }
     if(result === false){
+        res.json({success:false})
+    }
+    else if(result === 'moveset full')
+    {
         res.json({success:false})
     }
     else if(result.rowCount === 0){

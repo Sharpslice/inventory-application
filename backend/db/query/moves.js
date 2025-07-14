@@ -33,30 +33,52 @@ async function getPokemonsMoveset(trainerId,pokemonId){
 }
 
 async function addMoveToPokemon(trainerId,pokemonId,movesId){
+    const client = await pool.connect();
     try{
-        const isPokemonOwned = await pool.query(`
+        await client.query('BEGIN');
+
+        const isPokemonOwned = await client.query(`
             SELECT * from trainer_pokemon
             WHERE trainer_id = $1 AND pokemon_id = $2
+            FOR UPDATE
         `,[trainerId,pokemonId])
         
-        if(isPokemonOwned.rowCount > 0){
+        if(isPokemonOwned.rowCount===0)
+        {
+            await client.query('ROLLBACK')
+            return false;
+        }
+
+
+        
+            const countResult = await client.query(`
+                SELECT COUNT (*) FROM learned_moves
+                WHERE trainer_id = $1 AND pokemon_id = $2
+            `,[trainerId,pokemonId])
+            const moveCount = parseInt(countResult.rows[0].count)
+            if(moveCount>=4){
+                await pool.query('ROLLBACK')
+                return "moveset full";
+            } 
+
             console.log('inserting move in database')
-            const result = await pool.query(` 
+            const result = await client.query(` 
             INSERT INTO learned_moves (trainer_id,pokemon_id,moves_id)
             VALUES ($1,$2,$3)
             ON CONFLICT (trainer_id,pokemon_id,moves_id) DO NOTHING
             RETURNING *
             `,[trainerId,pokemonId,movesId])
-            
+            await client.query('COMMIT')
             return result
         }
-        else{
-            return false;
-        }
+        
 
         
-    }catch(error){
+    catch(error){
+        await client.query('ROLLBACK')
         console.log('DB error in addMoveToPokemon')
+    }finally{
+        client.release();
     }
 }
 
