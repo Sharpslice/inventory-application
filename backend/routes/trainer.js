@@ -15,10 +15,17 @@ router.get('/:trainerId/:pokemonId/moveset',asyncHandler(async(req,res)=>{
    
     const result = await getPokemonsMoveset(trainerId,pokemonId);
     
-    // if(!result){
-    //     throw new Error('getting pokemon moveset query failed');
-    // }
-    res.json({success:true,data:[{id:23,name:'dig',type:'ground',power:100,damage_class:'physical'}]})
+    if(!result){
+        throw new Error('getting pokemon moveset query failed');
+    }
+    //pokemon does not know any moves
+    if(result.length===0){
+        res.json({success:false})
+    }
+    else{
+        res.json({success:true,data:result})
+    }
+    
     
 }));
 
@@ -28,10 +35,23 @@ router.post('/:trainerId/:pokemonId/moveset',asyncHandler(async(req,res)=>{
     const moveId = req.body.moveId
     
     const result = await addMoveToPokemon(trainerId,pokemonId,moveId)
-    if(!result){
+    console.log(result)
+    if(result===undefined){
+        console.log('throwing error')
         throw new Error('adding move to pokemon query failed');
     }
-    res.json({success:true})
+    if(result === false){
+        res.json({success:false})
+    }
+    else if(result.rowCount === 0){
+        console.log(`${pokemonId} already knows this move: `,moveId)
+        res.json({success:false})
+    }
+    else{
+        console.log('success adding move')
+        res.json({success:true, data:result.rows})
+    }
+    
     
 }));
 

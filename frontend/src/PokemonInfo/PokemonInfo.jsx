@@ -19,9 +19,6 @@ function PokemonInfo({setMovesMode,selectedMove}){
 
     const {selectedPokemon} = useContext(RegionContext) 
      
-    useEffect(()=>{
-        console.log(selectedPokemon)
-    },[selectedPokemon])
 
     if(!selectedPokemon) return;
     return (
@@ -52,9 +49,9 @@ function PokemonInfo({setMovesMode,selectedMove}){
         {selectedPokemon.source === 'owned'? <DeleteFromCollectionBtn pokemon={selectedPokemon.pokemon} />: null}
         {selectedPokemon.source === 'owned'? <AddToPartyBtn pokemon={selectedPokemon.pokemon}  />: null}
 
-        {selectedPokemon.source === 'grid'? <MovesetModeBtn setMovesMode={setMovesMode}/> : null}
+        {selectedPokemon.source === 'grid' || selectedPokemon.source === 'party'? <MovesetModeBtn setMovesMode={setMovesMode}/> : null}
 
-        {selectedPokemon.source === 'grid'? <MovesetPanel selectedMove={selectedMove}/> : null}
+        {selectedPokemon.source === 'grid' || selectedPokemon.source === 'party'? <MovesetPanel selectedMove={selectedMove}/> : null}
     
     
     
