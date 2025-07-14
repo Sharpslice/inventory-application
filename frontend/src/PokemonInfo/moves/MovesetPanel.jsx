@@ -9,12 +9,12 @@ function MovesetPanel({selectedMove}){
     
     const {selectedPokemon} = useContext(RegionContext) 
     const {selectedTrainer} = useContext(RegionContext)
-    const [selectedTile, setSelectedTile]= useState(null)
+    const [selectedTileId, setSelectedTileId]= useState(null)
     const [tileArray,setTileArray] = useState([
-                                    {id:'w', move:null},
-                                    {id:'x',move:null},
-                                    {id:'y',move:null},
-                                    {id:'z',move:null}
+                                    {id:'tile-0', move:null},
+                                    {id:'tile-1',move:null},
+                                    {id:'tile-2',move:null},
+                                    {id:'tile-3',move:null}
         
                                     ])
 
@@ -23,11 +23,11 @@ function MovesetPanel({selectedMove}){
         setTileArray(prev=>{
             return prev.map((tile,index)=>{
                 if(moveset?.[index]!== undefined){
-                    console.log('hit')
-                    return {id:moveset[index].id,move:moveset[index]}
+                    
+                    return {id:`tile-${index}`,move:moveset[index]}
                 }
                 else{
-                    return tile
+                    return {id:`tile-${index}`, move: null}
                 }
                 
             })
@@ -60,8 +60,9 @@ function MovesetPanel({selectedMove}){
 
     
     const addMoveToMoveset = () =>{
+      
          let tileId;
-
+        console.log(selectedMove)
          const result = tileArray.find((tileElement)=>tileElement.move === selectedMove)
          if(result)
          {
@@ -69,14 +70,17 @@ function MovesetPanel({selectedMove}){
             return;
          }
 
-        if(selectedTile !== null )
+        if(selectedTileId !== null )
         {
-            console.log("changing tile: "+selectedTile)
-            tileId= selectedTile;
+            console.log("changing tile: "+selectedTileId)
+            tileId= selectedTileId;
             
         }
         else{
-            tileId = tileArray.findIndex((tileElement)=>tileElement.move ===null)
+            
+            const id = tileArray.findIndex((tileElement)=>tileElement.move ===null)
+            tileId = `tile-${id}`
+            console.log(tileId)
         }
         
         setTileArray(prev=>{
@@ -88,7 +92,7 @@ function MovesetPanel({selectedMove}){
                     : tile
             )})
             })
-        setSelectedTile(null)
+        setSelectedTileId(null)
         setHighlightId(null)
     }
     useEffect(()=>{
@@ -98,13 +102,6 @@ function MovesetPanel({selectedMove}){
     },[selectedMove])
 
 
-    // useEffect(()=>{
-    //     setTileArray([{id:0,isFilled: false, move:null},
-    //                                 {id:1,isFilled: false, move:null},
-    //                                 {id:2,isFilled: false, move:null},
-    //                                 {id:3,isFilled: false, move:null}])
-    //     setSelectedTile(null)
-    // },[selectedPokemon])
 
 
     const [highlightId, setHighlightId] = useState(null)
@@ -118,7 +115,7 @@ function MovesetPanel({selectedMove}){
                             highlightId={highlightId}
                             setHighlightId={setHighlightId}
                             move={tile.move} 
-                            setSelectedTile={setSelectedTile}
+                            setSelectedTile={setSelectedTileId}
                             />
                 }
             )}
