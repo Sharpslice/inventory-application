@@ -18,12 +18,18 @@ function Trainers(){
     
     useEffect(()=>{
         const fetchData =async() =>{
-            try{
-                const response = await axios.get('http://localhost:3000/api/trainer')
-                
-                setTrainerList(response.data)
-            }catch(error){
-                console.log("Unable to fetch trainers",error)
+           try {
+                const response = await axios.get('http://localhost:3000/api/trainer');
+            
+                if (response.data.success) {
+                    setTrainerList(response.data.data);
+                } else {
+                    console.error('Backend error: Trainer fetch failed');
+                    // Optionally set an error state for UI display
+                }
+            } catch (err) {
+                console.error('Network error:', err.message);
+                // Optionally set a different error state for connection issues
             }
         }
         fetchData();
@@ -34,13 +40,17 @@ function Trainers(){
            
             try{
                 const result = await axios.get(`http://localhost:3000/api/trainer/${selectedTrainer.id}/party`)
-                
-                setParty(result.data);
+                if(result.data.success){
+                    console.log(result.data.data)
+                    setParty(result.data.data);
+                }
+                else{
+                    console.log('Backend error: Party fetch failed')
+                }
               
-                
             }catch(error)
             {
-                console.log("unable to fetch party",error)
+                console.log("Network error: ",error.message)
             }
         }
         fetchPartyData();
@@ -55,7 +65,7 @@ function Trainers(){
         <>
             
             <button id="trainerBtn" onClick={onHandleClick}>{"trainer"} </button>
-            <TrainerPartyPanel updateVisibility={setvisibility} visibility={visibility} trainerList={trainerList} pokemonList={party}/>
+            <TrainerPartyPanel updateVisibility={setvisibility} visibility={visibility} trainerList={trainerList} partyList={party}/>
             
         </>
     )

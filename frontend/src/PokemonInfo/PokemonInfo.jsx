@@ -1,11 +1,11 @@
-import { useContext} from "react"
+import {  useContext, useEffect} from "react"
 import "./PokemonInfo.css"
 import { RegionContext } from "../context"
 
 
 import DisplayTile from "./DisplayTile/DisplayTile"
 import AddToPartyBtn from "./buttons/AddToPartyBtn"
-import DeleteFromPartyBtn from "./buttons/DeleteFromPartyBtn"
+import RemoveFromPartyBtn from "./buttons/RemoveFromPartyBtn"
 import DeleteFromCollectionBtn from "./buttons/DeleteFromCollectionBtn"
 import TypesPanel from "./Types/TypesPanel"
 import PokeballIcon from '../assets/pokeball.svg'
@@ -19,7 +19,9 @@ function PokemonInfo({setMovesMode,selectedMove}){
 
     const {selectedPokemon} = useContext(RegionContext) 
      
-    
+    useEffect(()=>{
+        console.log(selectedPokemon)
+    },[selectedPokemon])
 
     if(!selectedPokemon) return;
     return (
@@ -45,12 +47,13 @@ function PokemonInfo({setMovesMode,selectedMove}){
         </div>
         {/* check if the selected pokemon belongs in trainer's collection and then you can display which button needs to show up */}
         {/* compareSelectedPokemon to trainer's pokemonCollection */}
-        {selectedPokemon.source === 'grid'? <AddToPartyBtn pokemon={selectedPokemon.pokemon} ownedByTrainer={false} />: null}
-        {selectedPokemon.source === 'party'? <DeleteFromPartyBtn pokemon={selectedPokemon.pokemon} />: null}
+        {selectedPokemon.source === 'grid'? <AddToPartyBtn pokemon={selectedPokemon.pokemon} />: null}
+        {selectedPokemon.source === 'party'? <RemoveFromPartyBtn pokemon={selectedPokemon.pokemon} />: null}
         {selectedPokemon.source === 'owned'? <DeleteFromCollectionBtn pokemon={selectedPokemon.pokemon} />: null}
-        {selectedPokemon.source === 'owned'? <AddToPartyBtn pokemon={selectedPokemon.pokemon} ownedByTrainer={true} />: null}
+        {selectedPokemon.source === 'owned'? <AddToPartyBtn pokemon={selectedPokemon.pokemon}  />: null}
 
         {selectedPokemon.source === 'grid'? <MovesetModeBtn setMovesMode={setMovesMode}/> : null}
+
         {selectedPokemon.source === 'grid'? <MovesetPanel selectedMove={selectedMove}/> : null}
     
     

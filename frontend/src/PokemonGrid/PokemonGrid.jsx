@@ -19,10 +19,19 @@ function PokemonGrid({display,currentRegion}){
     
      useEffect(()=>{
         const fetchData = async() =>{
-            const result = await axios.get(`http://localhost:3000/api/trainer/${selectedTrainer.id}/pokemonCollection`);
-            setPokemonList(result.data)
+            try{
+                const result = await axios.get(`http://localhost:3000/api/trainer/${selectedTrainer.id}/pokemonCollection`);
+                if(result.data.success){
+                    setPokemonList(result.data.data)
+                }
+                else{
+                    console.error('Backend error: cannot fetch trainer pokemon collection')
+                }
+            }
+            catch(error){
+                console.log("Network error" ,error.message)
+            }
             
-            console.log("initiated")
         }
         if(display==='region') return;
         fetchData();

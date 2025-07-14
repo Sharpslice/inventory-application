@@ -11,12 +11,16 @@ function TypesPanel(){
     useEffect(()=>{
         const getType = async() =>{
             try{
-                const result = await axios.get(`http://localhost:3000/api/region/pokemon/${selectedPokemon.pokemon.id}`);
-               
-
-                setTypes(result.data);
+                const result = await axios.get(`http://localhost:3000/api/pokemon/${selectedPokemon.pokemon.id}/types`);
+                if(result.data.success){
+                    setTypes(result.data.data);
+                }
+                else{
+                    console.error('Unable to fetch pokemons type')
+                }
+                
             }catch(error){
-                console.log(`failed to fetch ${selectedPokemon}'s type`,error)
+                console.log(`Network error`,error.message)
             }
     }
     if(!selectedPokemon)return;

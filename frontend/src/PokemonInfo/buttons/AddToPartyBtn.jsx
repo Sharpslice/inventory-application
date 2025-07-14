@@ -2,49 +2,57 @@ import axios from "axios";
 import { useContext } from "react";
 import { RegionContext } from "../../context";
 
-function AddToPartyBtn({pokemon,ownedByTrainer}){
+function AddToPartyBtn({pokemon}){
     const {selectedTrainer,setPartyRefresh,setCollectionRefresh} = useContext(RegionContext);
 
     const isPartyFull = async()=>{
-        let partySize;
         try{
-            const response = await axios.get(`http://localhost:3000/api/trainer/${selectedTrainer.id}/party`)
-            partySize = response.data.length;
+            const partySize = await axios.get(`http://localhost:3000/api/trainer/${selectedTrainer.id}/party`)
+            if(partySize.data.success){
+                if(partySize.data.data.length < 6){
+                    console.log("party is not full")
+                    return true;
+                }
+                else{
+                    console.log("party is full")
+                    return false;
+                }
+            }
+            else{
+                console.log("Backend error in fetching party")
+            }
         }
         catch(error){
-            console.log("unable to fetch party size from api", error.message)
+            console.log("Network error", error.message)
         }
 
-        if(partySize>=6){
-            return true
-        }
-        else{
-            return false;
-        }
         
     }
     const onAddPokemonToPartyClick =async(pokemon) =>{
         
-        if(await isPartyFull()) return;
-      
-        if(ownedByTrainer){
+        if(! (await isPartyFull())) return;
+
             try{
-                await axios.post(`http://localhost:3000/api/trainer/party/addback`,{trainerId: selectedTrainer.id, pokemonId: pokemon.id})
-                console.log("hit")
-                setPartyRefresh(prev=>prev+1)
-                setCollectionRefresh(prev=>prev+1)
+                const result = await axios.post(`http://localhost:3000/api/trainer/${selectedTrainer.id}/party`,{pokemonId: pokemon.id})
+                if(result.data.success){
+                    if(result.data.action ==='inserted'){
+                        console.log('inserted')
+                        setPartyRefresh(prev=>prev+1)
+                    }
+                    else{
+                        console.log('update')
+                        setPartyRefresh(prev=>prev+1)
+                        setCollectionRefresh(prev=>prev+1)
+                    }
+                    
+                }
+                else{
+                    console.log('backend error in adding pokemon')
+                }
+                
             }catch(error){
-                console.log("error sending pokemon to server",error)
+                console.log("Network error",error.message)
             }
-        }else{
-            try{
-                await axios.post(`http://localhost:3000/api/trainer/party`,{trainerId: selectedTrainer.id, pokemonId: pokemon.id})
-                setPartyRefresh(prev=>prev+1)
-            }catch(error){
-                console.log("error sending pokemon to server",error)
-            }
-        }
-        
         
     }
 

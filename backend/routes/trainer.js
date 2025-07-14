@@ -1,84 +1,87 @@
 const express = require('express')
 const router = express.Router();
-const {addPokemonBackToParty,getAllTrainers,getPartyFromTrainer, insertPokemonIntoTrainer_pokemon,removePokemonFromParty, getPokemonCollectionFromTrainer, DeletePokemonFromCollection, getPartySize} = require("../db/query.js")
+const { insertPokemonIntoTrainer_pokemon, getPokemonCollectionFromTrainer, DeletePokemonFromCollection} = require("../db/query/collection.js");
+const { getAllTrainers } = require('../db/query/trainer.js');
+const {getPartyFromTrainer,removePokemonFromParty, addOrUpdatePokemonToParty} =require('../db/query/party.js');
+const {asyncHandler} = require('../utlity/asyncHandler.js')
 
+router.patch('/:trainerId/party/:pokemonId',asyncHandler(async(req,res)=>{
+    const {trainerId,pokemonId} = req.params;
+        const result = await removePokemonFromParty(trainerId,pokemonId)
+        if(!result)
+        {
+            throw new Error("remove pokemon from party query failed");
+        }
+        res.json({success:true})
+   
+}))
 
-
-router.post('/party/remove',async(req,res)=>{
-    const {trainerId, pokemonId} = req.body;
-    try{
-        await removePokemonFromParty(trainerId,pokemonId)
-        res.sendStatus(200)
-    }catch(error){
-        console.log('Error in /api/trainer/party/remove route',error.message)
+router.post('/:id/party',asyncHandler(async(req,res)=>{
+      
+        const trainerId = req.params.id;
+        const {pokemonId} = req.body;
         
-    }
-})
-router.post('/party/addback',async(req,res)=>{
-    try{
-        const {trainerId,pokemonId} = req.body;
-        await addPokemonBackToParty(trainerId,pokemonId)
-        res.sendStatus(200)
-    }catch(error){
-        console.log('error in api/trainer/party/addback')
-    }
-})
-router.post('/party',async(req,res)=>{
-    try{    
-        const {trainerId, pokemonId} = req.body;
-        console.log(trainerId,pokemonId)
-        await insertPokemonIntoTrainer_pokemon(trainerId,pokemonId)
-        res.sendStatus(200)
-    }catch(error){
-        console.log("Error in /api/trainer/party route",error.message)
-    }
-})
-router.delete('/:trainerId/pokemonCollection/:pokemonId',async(req,res)=>{
+        const result = await addOrUpdatePokemonToParty(trainerId,pokemonId)
+        
+        if(!result){
+            throw new Error('inserting pokemon to party query failed')
+        }
+        if(result === 'inserted')
+        {
+            res.json({success:true,action:'inserted'})
+        }
+        if(result==='updated'){
+            res.json({success:true,action:'updated'})
+        }
+        
+    
+}))
+
+router.delete('/:trainerId/pokemonCollection/:pokemonId',asyncHandler(async(req,res)=>{
     
     const {trainerId,pokemonId} = req.params;
-    try{
-        await DeletePokemonFromCollection(trainerId,pokemonId)
-        res.sendStatus(200)
-    }catch(error){
-        console.log("Error in /api/trainer/:trainerId/pokemonCollection/:pokemonId",error.message)
+    console.log(trainerId,pokemonId)
+    const result = await DeletePokemonFromCollection(trainerId,pokemonId)
+    if(!result){
+        throw new Error('Deleting pokemon from collection query failed')
     }
+    res.json({success:true})
     
-})
-router.get('/:id/pokemonCollection',async(req,res)=>{
+    
+}))
+
+router.get('/:id/pokemonCollection',asyncHandler(async(req,res)=>{
     const trainerId = req.params.id;
     const result = await getPokemonCollectionFromTrainer(trainerId);
-    res.send(result)
-})
-router.get('/:id/party/size',async(req,res)=>{
-    try{
-        const trainerId = req.params.id;
-        const result = await getPartySize(trainerId);
-        res.send(result)
-    }catch(error){
-        console.log('unable to query party size',error)
+    if(!result){
+        throw new Error('getPokemonCollectionFromTrainer query failed')
     }
-})
-router.get('/:id/party',async(req,res)=>{
-    try{
+
+    res.send({success:true,data:result})
+}))
+
+router.get('/:id/party',asyncHandler(async(req,res)=>{
 
         const trainerId = req.params.id;
         const result = await getPartyFromTrainer(trainerId)
+        if(!result){
+            throw new Error('getPartyFromTrainer query failed')
+        }
         
-        res.send(result);
-    }catch(error){
-        console.log('unable to query trainer party',error)
-    }
-})
-router.get('/',async(req,res)=>{
-    try{
-         const results = await getAllTrainers();
-        
-            res.send(results)
-    }catch(error){
-        console.log("unable to query trainer",error)
+        res.json({success:true,data:result});
+   
+}))
+
+router.get('/',asyncHandler(async(req,res)=>{
+
+    const results = await getAllTrainers();
+    if(!results){
+        throw new Error('getAllTrainer query failed')
     }
    
+
+    res.json({success:true,data:results})
     
-})
+}))
 
 module.exports=router
