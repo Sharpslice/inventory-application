@@ -47,7 +47,7 @@ async function removePokemonFromParty(trainerId,pokemonId){
             SET inParty = false
             WHERE trainer_id = $1 AND pokemon_id =$2
         
-    `,[trainerId,pokemonId])
+        `,[trainerId,pokemonId])
 
     return result;
     }catch(error){

@@ -18,4 +18,31 @@ async function getAllMovesFromPokemon(pokemonId){
     }
 }
 
-module.exports={getAllMovesFromPokemon}
+async function getPokemonsMoveset(trainerId,pokemonId){
+    try{
+        const result = pool.query(`   
+            SELECT moves.id,moves.name,moves.type,moves.power,moves.damage_class
+            FROM moves
+            INNER JOIN learned_moves ON learned_moves.moves_id = moves.id
+            WHERE learned_moves.trainer_id = $1 AND learned_moves.pokemon_id = $2
+        `,[trainerId,pokemonId])
+        return result.rows
+    }catch(error){
+        console.log('DB error in getPokemonsMoveset')
+    }
+}
+
+async function addMoveToPokemon(trainerId,pokemonId,movesId){
+    try{
+        const result = pool.query(` 
+            INSERT INTO learned_moves (trainer_id,pokemon_id,moves_id)
+            VALUES ($1,$2,$3)
+        `,[trainerId,pokemonId,movesId])
+    }catch(error){
+        console.log('DB error in addMoveToPokemon')
+    }
+}
+
+
+
+module.exports={getAllMovesFromPokemon,getPokemonsMoveset,addMoveToPokemon}

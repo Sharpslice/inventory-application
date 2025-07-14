@@ -3,7 +3,38 @@ const router = express.Router();
 const { insertPokemonIntoTrainer_pokemon, getPokemonCollectionFromTrainer, DeletePokemonFromCollection} = require("../db/query/collection.js");
 const { getAllTrainers } = require('../db/query/trainer.js');
 const {getPartyFromTrainer,removePokemonFromParty, addOrUpdatePokemonToParty} =require('../db/query/party.js');
-const {asyncHandler} = require('../utlity/asyncHandler.js')
+const {asyncHandler} = require('../utlity/asyncHandler.js');
+const { getPokemonsMoveset, addMoveToPokemon } = require('../db/query/moves.js');
+
+
+
+
+router.get('/:trainerId/:pokemonId/moveset',asyncHandler(async(req,res)=>{
+
+    const {trainerId,pokemonId} = req.params;
+   
+    const result = await getPokemonsMoveset(trainerId,pokemonId);
+    
+    // if(!result){
+    //     throw new Error('getting pokemon moveset query failed');
+    // }
+    res.json({success:true,data:[{id:23,name:'dig',type:'ground',power:100,damage_class:'physical'}]})
+    
+}));
+
+router.post('/:trainerId/:pokemonId/moveset',asyncHandler(async(req,res)=>{
+
+    const {trainerId,pokemonId} = req.params;
+    const moveId = req.body.moveId
+    
+    const result = await addMoveToPokemon(trainerId,pokemonId,moveId)
+    if(!result){
+        throw new Error('adding move to pokemon query failed');
+    }
+    res.json({success:true})
+    
+}));
+
 
 router.patch('/:trainerId/party/:pokemonId',asyncHandler(async(req,res)=>{
     const {trainerId,pokemonId} = req.params;

@@ -13,7 +13,7 @@ function MovesetDashboard({setSelectedMove}){
     useEffect(()=>{
             const fetchData = async()=>{
                 try{
-                    const result = await axios.get(`http://localhost:3000/api/pokemon/${selectedPokemon.pokemon.id}/moveset`);
+                    const result = await axios.get(`http://localhost:3000/api/pokemon/${selectedPokemon.pokemon.id}/movepool`);
                     if(result.data.success){
                         setMoveset(result.data.data)
                         setOriginalMoveset(result.data.data)
