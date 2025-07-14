@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const {getPokemonsType} =require("../db/query/pokemon.js");
 const { getRegion, getPokemonFromRegion } = require("../db/query/region.js");
+const { asyncHandler } = require("../utlity/asyncHandler.js");
 
 
 router.get("/:regionId/pokemon",async (req,res)=>{
@@ -34,15 +35,15 @@ router.get("/pokemon/:id",async(req,res)=>{
     }
 })
 
-router.get("/", async (req,res)=>{
-    try{
+router.get("/",asyncHandler(async(req,res)=>{
+    
         const result = await getRegion();
-        res.send(result)
-    } catch (error){
-        console.error("error inside backend",error);
-        res.status(500).send("server error")
-    }
-})
+        if(!result){
+            throw new Error('unable to get region query')
+        }
+        res.json({success:true,data:result})
+    
+}))
 
 
 

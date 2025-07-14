@@ -15,10 +15,15 @@ function RegionBar({setCurrentRegion}){
         const getRegionData = async()=>{
             try{
                 const result = await axios.get('http://localhost:3000/api/region');
+                if(result.data.success){
+                    setRegions(result.data.data)
+                }
+                else{
+                    console.error('unable to fetch region')
+                }
                 
-                setRegions(result.data)
             } catch(error){
-                console.log("Error recieving data",error)
+                console.log("Network error",error.message)
             }
         }
         getRegionData()
