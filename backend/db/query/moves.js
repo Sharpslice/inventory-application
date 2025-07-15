@@ -21,7 +21,7 @@ async function getAllMovesFromPokemon(pokemonId){
 async function getPokemonsMoveset(trainerId,pokemonId){
     try{
         const result = await pool.query(`   
-            SELECT moves.id,moves.name,moves.type,moves.power,moves.damage_class
+            SELECT moves.*, learned_moves.slots
             FROM moves
             INNER JOIN learned_moves ON learned_moves.moves_id = moves.id
             WHERE learned_moves.trainer_id = $1 AND learned_moves.pokemon_id = $2

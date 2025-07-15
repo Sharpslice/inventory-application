@@ -10,23 +10,24 @@ function MovesetPanel({selectedMove}){
     const {selectedPokemon} = useContext(RegionContext) 
     const {selectedTrainer} = useContext(RegionContext)
     const [selectedTileId, setSelectedTileId]= useState(null)
-    const [dbRefresh,setDbRefresh] = useState(0);
+   
     const [highlightId, setHighlightId] = useState(null)
-    const [tileArray,setTileArray] = useState([
-                                    {id:'tile-0', move:null},
-                                    {id:'tile-1',move:null},
-                                    {id:'tile-2',move:null},
-                                    {id:'tile-3',move:null}
-                                    ])
 
-    //store the key (slot position) in the db so that you can select where it gets placed
-    //this is for db
-    const updateTiles = (moveset)=>{
+    const emptyTiles =  [
+                                    {id:'slot-0', move:null},
+                                    {id:'slot-1',move:null},
+                                    {id:'slot-2',move:null},
+                                    {id:'slot-3',move:null}
+                                    ]
+    const [tileArray,setTileArray] = useState(emptyTiles)
+
+   
+    const updateTilesFromDb = (moveset)=>{
         setTileArray(prev=>{
             return prev.map((_,index)=>{
                 if(moveset?.[index]!== undefined){
                     console.log('hit')
-                    return {id:`tile-${index}`,move:moveset[index]}
+                    return {id:`tile-${moveset[index].slots}`,move:moveset[index]}
                 }
                 else{
                     return {id:`tile-${index}`, move: null}
@@ -35,109 +36,85 @@ function MovesetPanel({selectedMove}){
             })
         })
     }
-
-    useEffect(()=>{
-        if(!selectedMove) return; //bug if this is removed
-        console.log(selectedMove)
-        addMoveToMoveset()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[selectedMove])
-
-    useEffect(()=>{
-        
-        const fetchMoveset=async()=>{
-           
-            const response = await axios.get(`http://localhost:3000/api/trainer/${selectedTrainer.id}/${selectedPokemon.pokemon.id}/moveset`)
-            if(response.data.success){
-                console.log('updating database')
-                updateTiles(response.data.data)
-            }
-            else{
-                updateTiles([])
-            }
-           
-          
-        }
-
-        if(!selectedPokemon) return;
-        fetchMoveset()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[selectedPokemon,dbRefresh])
-
-   
-
-
-
-
-    const isDuplicate=()=>{
-        const isDuplicate = tileArray.find((tileElement)=>tileElement.move === selectedMove)
-         if(isDuplicate)
-         {
-            console.log('error. pokemon already learned',selectedMove)
-            return true;
-         }
+    const resetTilesLocally = ()=>{
+        setTileArray(emptyTiles)
     }
 
-   
-    
-    const addMoveToMoveset = async() =>{
-      
-        let tileId;
+    const isDuplicate=()=>{
+        const result = tileArray.find((tileElement)=>tileElement.move === selectedMove)
+        if(result){
+            console.log('duplicate move')
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+   const addMoveLocally =()=>{
+        const slotId = tileArray.findIndex((tileElement)=>tileElement.move ===null)
+        
         if(isDuplicate()) return;
         
-        if(selectedTileId !== null )
+        setTileArray(prev=>{    
+            return prev.map((tile)=>{
+                return(
+                    tile.id ===`slot-${slotId}`
+                        ? {...tile,move:selectedMove}
+                        : tile
+                )})
+                })
+   }
+   const addMoveToDb = async()=>{
+        try{
+            const result = await axios.post(`http://localhost:3000/api/trainer/${selectedTrainer.id}/${selectedPokemon.pokemon.id}/moveset`,{moveId: selectedMove.id})
+            if(result.data.success === false)
+            {
+                console.log(result.data.message)
+            }
+            
+        }catch(error)
         {
-            
-            tileId= selectedTileId;
-            
+            console.error('Network error', error.message)
+        }
+   }
+    
+   const fetchMovesetFromDb=async()=>{
+            const response = await axios.get(`http://localhost:3000/api/trainer/${selectedTrainer.id}/${selectedPokemon.pokemon.id}/moveset`)
+            if(response.data.success){
+                updateTilesFromDb(response.data.data)
+            }
+        }
+
+    
+
+    useEffect(()=>{
+        if(selectedPokemon.source === 'owned' || selectedPokemon.source === 'party'){
+            fetchMovesetFromDb()
+        }
+        else{
+            resetTilesLocally()
+        }
+        
+    },[selectedPokemon])
+
+    useEffect(()=>{
+
+    },[tileArray])
+
+   useEffect(()=>{
+    
+        if(selectedPokemon.source === 'owned' || selectedPokemon.source === 'party'){
+            addMoveToDb()
         }
         else{
             
-            const id = tileArray.findIndex((tileElement)=>tileElement.move ===null)
-            tileId = `tile-${id}`
-           
+           addMoveLocally()
         }
-        try{
-            const result = await axios.post(`http://localhost:3000/api/trainer/${selectedTrainer.id}/${selectedPokemon.pokemon.id}/moveset`,{moveId: selectedMove.id})
-            if(result.data.success === false){
-                console.log('successfully added move locally')
-                setTileArray(prev=>{
-                    return prev.map((tile)=>{
-                        
-                        return(
-                            tile.id ===tileId
-                                ? {...tile,move:selectedMove}
-                                : tile
-                        )})
-                        })
-                   
-                   
-            }
-            else{
-                console.log('adding move to db')
-                setDbRefresh(prev=>prev+1)
-            }
-            setSelectedTileId(null)
-            setHighlightId(null)
-           
-            
-            
-        }
-        catch(error){
-            console.log('network error',error.message)
-        }
-
-
-
-
-        
-    }
     
+   },[selectedMove])
 
 
-
-
-    
     return(
         <div id='moveset-panel'>
             {tileArray.map((tile)=>
