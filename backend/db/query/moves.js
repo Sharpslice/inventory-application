@@ -32,12 +32,32 @@ async function getPokemonsMoveset(trainerId,pokemonId){
         console.log('DB error in getPokemonsMoveset')
     }
 }
-async function addMoveToPokemon(trainerId,pokemonId,movesId){
-    const client = await pool.connect();
+async function addMoveToPokemonSlot(trainerId,pokemonId,movesId,slotsId){
     try{
-        await client.query('BEGIN');
-
-        await client.query(`
+        await pool.query(`
+            INSERT INTO learned_moves(trainer_id,pokemon_id,moves_id,slots)
+            VALUES ($1,$2,$3,$4)
+        `,[trainerId,pokemonId,movesId,slotsId])
+        return {success:true}
+    }
+    catch(error){
+        return {success:false}
+    }
+}
+async function addMoveToPokemon(trainerId,pokemonId,movesId,slotId = null){
+    
+    try{
+        if(slotId){
+            console.log('inserting into', slotId)
+            await pool.query(`
+                INSERT INTO learned_moves(trainer_id,pokemon_id,moves_id,slots)
+                VALUES ($1,$2,$3,$4)
+                `,[trainerId,pokemonId,movesId,slotId])
+            return {success:true}
+        }
+        else{
+            console.log('inserting into next open slot')
+            await pool.query(`
             INSERT INTO learned_moves (trainer_id,pokemon_id,moves_id,slots)
             VALUES ($1,$2,$3,
                 (   SELECT gs.slot FROM generate_series(0,3) AS gs(slot)
@@ -51,12 +71,14 @@ async function addMoveToPokemon(trainerId,pokemonId,movesId){
                 )    
             )
         `,[trainerId,pokemonId,movesId,trainerId,pokemonId]);
-
-        await client.query('COMMIT')
+        return {success: true}
+        }
+        
+       
         
     }   
     catch(error){
-        await client.query('ROLLBACK')
+       
         if(error.code === '23505')
         {
             return {success: false,error: 'duplicate move'}
@@ -65,9 +87,6 @@ async function addMoveToPokemon(trainerId,pokemonId,movesId){
             return {success: false,error: 'slot is filled'}
         }
         return {success: false,error:error.message}
-    }finally{
-        client.release();
-        return {success: true}
     }
 }
 

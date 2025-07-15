@@ -14,25 +14,25 @@ function MovesetPanel({selectedMove}){
     const [highlightId, setHighlightId] = useState(null)
 
     const emptyTiles =  [
-                                    {id:'slot-0', move:null},
-                                    {id:'slot-1',move:null},
-                                    {id:'slot-2',move:null},
-                                    {id:'slot-3',move:null}
+                                    {id:0, move:null},
+                                    {id:1,move:null},
+                                    {id:2,move:null},
+                                    {id:3,move:null}
                                     ]
     const [tileArray,setTileArray] = useState(emptyTiles)
 
    
     const updateTilesFromDb = (moveset)=>{
-       
+
+        console.log(`grabbing 's moveset`,moveset)
         setTileArray(prev=>{
             return prev.map((_,index)=>{
-                if(moveset?.[index]!== undefined){
-                    return {id:`tile-${moveset[index].slots}`,move:moveset[index]}
-                }
-                else{
-                    return {id:`tile-${index}`, move: null}
-                }
-                
+                const move = moveset.find((move)=>move.slots === index)
+                return(
+                    move
+                    ? {id: move.slots,move:move}
+                    : {id: index, move: null}
+                )
             })
         })
         
@@ -68,7 +68,9 @@ function MovesetPanel({selectedMove}){
    }
    const addMoveToDb = async()=>{
         try{
-            const result = await axios.post(`http://localhost:3000/api/trainer/${selectedTrainer.id}/${selectedPokemon.pokemon.id}/moveset`,{moveId: selectedMove.id})
+            
+            const result = await axios.post(`http://localhost:3000/api/trainer/${selectedTrainer.id}/${selectedPokemon.pokemon.id}/moveset`,{moveId: selectedMove.id,slotId:selectedTileId})
+            
             if(result.data.success === false)
             {
                 console.log(result.data.message)
@@ -87,7 +89,12 @@ function MovesetPanel({selectedMove}){
    const fetchMovesetFromDb=async()=>{
             const response = await axios.get(`http://localhost:3000/api/trainer/${selectedTrainer.id}/${selectedPokemon.pokemon.id}/moveset`)
             if(response.data.success){
+               
                 updateTilesFromDb(response.data.data)
+            }
+            else{
+                console.log('pokemon has no learned moves')
+                resetTilesLocally();
             }
         }
 
@@ -95,12 +102,13 @@ function MovesetPanel({selectedMove}){
 
     useEffect(()=>{
         if(selectedPokemon.source === 'owned' || selectedPokemon.source === 'party'){
+            console.log('grabbing',selectedPokemon.pokemon.name)
             fetchMovesetFromDb()
         }
         else{
             resetTilesLocally()
         }
-        
+        console.log(tileArray)
     },[selectedPokemon])
 
     useEffect(()=>{
