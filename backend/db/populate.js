@@ -65,8 +65,10 @@ const SQL = `
         trainer_id INTEGER,
         pokemon_id INTEGER,
         moves_id INTEGER REFERENCES moves(id) ON DELETE CASCADE,
-        PRIMARY KEY (trainer_id,pokemon_id, moves_id),
-        FOREIGN KEY (trainer_id, pokemon_id) REFERENCES trainer_pokemon(trainer_id, pokemon_id) ON DELETE CASCADE
+        slots INTEGER CHECK (slots>=0 AND slots <=3),
+        PRIMARY KEY (trainer_id,pokemon_id, slots),
+        FOREIGN KEY (trainer_id, pokemon_id) REFERENCES trainer_pokemon(trainer_id, pokemon_id) ON DELETE CASCADE,
+        UNIQUE (trainer_id,pokemon_id,moves_id)
     );
 
    

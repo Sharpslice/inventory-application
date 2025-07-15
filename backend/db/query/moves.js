@@ -31,54 +31,42 @@ async function getPokemonsMoveset(trainerId,pokemonId){
         console.log('DB error in getPokemonsMoveset')
     }
 }
-
 async function addMoveToPokemon(trainerId,pokemonId,movesId){
     const client = await pool.connect();
     try{
         await client.query('BEGIN');
 
-        const isPokemonOwned = await client.query(`
-            SELECT * from trainer_pokemon
-            WHERE trainer_id = $1 AND pokemon_id = $2
-            FOR UPDATE
-        `,[trainerId,pokemonId])
-        
-        if(isPokemonOwned.rowCount===0)
-        {
-            await client.query('ROLLBACK')
-            return false;
-        }
+        await client.query(`
+            INSERT INTO learned_moves (trainer_id,pokemon_id,moves_id,slots)
+            VALUES ($1,$2,$3,
+                (   SELECT gs.slot FROM generate_series(0,3) AS gs(slot)
+                    LEFT JOIN learned_moves 
+                    ON gs.slot = learned_moves.slots
+                    AND learned_moves.trainer_id =$4
+                    AND learned_moves.pokemon_id =$5
+                    WHERE learned_moves.slots IS NULL
+                    order by gs.slot
+                    LIMIT 1
+                )    
+            )
+        `,[trainerId,pokemonId,movesId,trainerId,pokemonId]);
 
-
+        await client.query('COMMIT')
         
-            const countResult = await client.query(`
-                SELECT COUNT (*) FROM learned_moves
-                WHERE trainer_id = $1 AND pokemon_id = $2
-            `,[trainerId,pokemonId])
-            const moveCount = parseInt(countResult.rows[0].count)
-            if(moveCount>=4){
-                await pool.query('ROLLBACK')
-                return "moveset full";
-            } 
-
-            console.log('inserting move in database')
-            const result = await client.query(` 
-            INSERT INTO learned_moves (trainer_id,pokemon_id,moves_id)
-            VALUES ($1,$2,$3)
-            ON CONFLICT (trainer_id,pokemon_id,moves_id) DO NOTHING
-            RETURNING *
-            `,[trainerId,pokemonId,movesId])
-            await client.query('COMMIT')
-            return result
-        }
-        
-
-        
+    }   
     catch(error){
         await client.query('ROLLBACK')
-        console.log('DB error in addMoveToPokemon')
+        if(error.code === '23505')
+        {
+            return {success: false,error: 'duplicate move'}
+        }
+        if(error.code=== '23514'){
+            return {success: false,error: 'slot is filled'}
+        }
+        return {success: false,error:error.message}
     }finally{
         client.release();
+        
     }
 }
 

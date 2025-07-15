@@ -8,7 +8,7 @@ function Tile({id,highlightId,setHighlightId,move,setSelectedTile}){
     const onSelectClick=()=>{
         setSelectedTile(prev=>prev===id?null:id)
         setHighlightId(prev=> prev===id? null:id)
-        
+        console.log(id)
     }
 
     return(

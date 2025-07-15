@@ -35,25 +35,18 @@ router.post('/:trainerId/:pokemonId/moveset',asyncHandler(async(req,res)=>{
     const moveId = req.body.moveId
     
     const result = await addMoveToPokemon(trainerId,pokemonId,moveId)
-    
-    if(result===undefined){
-        console.log('throwing error')
-        throw new Error('adding move to pokemon query failed');
-    }
-    if(result === false){
-        res.json({success:false})
-    }
-    else if(result === 'moveset full')
-    {
-        res.json({success:false})
-    }
-    else if(result.rowCount === 0){
-        console.log(`${pokemonId} already knows this move: `,moveId)
-        res.json({success:false})
+    if(!result.success){
+        if(result.message = 'duplicate move')
+        {
+            res.status(409).json(result)
+        }
+        else if(result.message='slot is filled')
+        {
+            res.status(400).json(result)
+        }
     }
     else{
-        console.log('success adding move')
-        res.json({success:true, data:result.rows})
+        res.status(200).json(result)
     }
     
     
