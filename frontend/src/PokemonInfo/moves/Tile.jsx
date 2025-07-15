@@ -2,18 +2,18 @@
 import { getTypeIcon } from "../Types/typesToIcon"
 
 
-function Tile({id,highlightId,setHighlightId,move,setSelectedTile}){
+function Tile({id,move,selectedTileId,setSelectedTileId}){
 
     
     const onSelectClick=()=>{
-        setSelectedTile(prev=>prev===id?null:id)
-        setHighlightId(prev=> prev===id? null:id)
+        setSelectedTileId(prev=>prev===id?null:id)
+        
         console.log(id)
     }
 
     return(
         
-        <div className={highlightId===id?'moveset-panel__tile highlighted':'moveset-panel__tile'} 
+        <div className={selectedTileId===id?'moveset-panel__tile highlighted':'moveset-panel__tile'} 
             style={{backgroundColor: move?getTypeIcon(move.type).color:'white' }} onClick={onSelectClick}>
 
             {move?<div className="moveset-panel__tile-icon">

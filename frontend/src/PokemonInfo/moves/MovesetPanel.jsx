@@ -11,7 +11,7 @@ function MovesetPanel({selectedMove}){
     const {selectedTrainer} = useContext(RegionContext)
     const [selectedTileId, setSelectedTileId]= useState(null)
    
-    const [highlightId, setHighlightId] = useState(null)
+  
 
     const emptyTiles =  [
                                     {id:0, move:null},
@@ -134,6 +134,9 @@ function MovesetPanel({selectedMove}){
             
            addMoveLocally()
         }
+        if(selectedTileId){
+            setSelectedTileId(null)
+        }
     
    },[selectedMove])
 
@@ -145,10 +148,9 @@ function MovesetPanel({selectedMove}){
                     return <Tile 
                             key={tile.id} 
                             id={tile.id} 
-                            highlightId={highlightId}
-                            setHighlightId={setHighlightId}
                             move={tile.move} 
-                            setSelectedTile={setSelectedTileId}
+                            selectedTileId={selectedTileId}
+                            setSelectedTileId={setSelectedTileId}
                             />
                 }
             )}
