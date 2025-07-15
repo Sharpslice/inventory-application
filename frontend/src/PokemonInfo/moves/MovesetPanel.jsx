@@ -52,8 +52,18 @@ function MovesetPanel({selectedMove}){
         }
     }
 
+  
+
    const addMoveLocally =()=>{
-        const slotId = tileArray.findIndex((tileElement)=>tileElement.move ===null)
+        let slotId;
+        if(selectedTileId){
+             slotId = selectedTileId
+            
+        }
+        else{
+            slotId = tileArray.findIndex((tileElement)=>tileElement.move ===null)
+        }
+        
         
         if(isDuplicate()) return;
         
