@@ -23,10 +23,10 @@ function MovesetPanel({selectedMove}){
 
    
     const updateTilesFromDb = (moveset)=>{
+       
         setTileArray(prev=>{
             return prev.map((_,index)=>{
                 if(moveset?.[index]!== undefined){
-                    console.log('hit')
                     return {id:`tile-${moveset[index].slots}`,move:moveset[index]}
                 }
                 else{
@@ -35,6 +35,7 @@ function MovesetPanel({selectedMove}){
                 
             })
         })
+        
     }
     const resetTilesLocally = ()=>{
         setTileArray(emptyTiles)
@@ -72,6 +73,10 @@ function MovesetPanel({selectedMove}){
             {
                 console.log(result.data.message)
             }
+            else{
+                const response = await axios.get(`http://localhost:3000/api/trainer/${selectedTrainer.id}/${selectedPokemon.pokemon.id}/moveset`)
+                updateTilesFromDb(response.data.data)
+            }
             
         }catch(error)
         {
@@ -103,7 +108,7 @@ function MovesetPanel({selectedMove}){
     },[tileArray])
 
    useEffect(()=>{
-    
+        if(!selectedMove) return;
         if(selectedPokemon.source === 'owned' || selectedPokemon.source === 'party'){
             addMoveToDb()
         }

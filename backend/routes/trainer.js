@@ -35,6 +35,7 @@ router.post('/:trainerId/:pokemonId/moveset',asyncHandler(async(req,res)=>{
     const moveId = req.body.moveId
     
     const result = await addMoveToPokemon(trainerId,pokemonId,moveId)
+    console.log(result)
     if(!result.success){
         if(result.message = 'duplicate move')
         {
@@ -46,6 +47,7 @@ router.post('/:trainerId/:pokemonId/moveset',asyncHandler(async(req,res)=>{
         }
     }
     else{
+        console.log('success')
         res.status(200).json(result)
     }
     

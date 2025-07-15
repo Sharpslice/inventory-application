@@ -25,6 +25,7 @@ async function getPokemonsMoveset(trainerId,pokemonId){
             FROM moves
             INNER JOIN learned_moves ON learned_moves.moves_id = moves.id
             WHERE learned_moves.trainer_id = $1 AND learned_moves.pokemon_id = $2
+            ORDER BY learned_moves.slots ASC
         `,[trainerId,pokemonId])
         return result.rows
     }catch(error){
@@ -66,7 +67,7 @@ async function addMoveToPokemon(trainerId,pokemonId,movesId){
         return {success: false,error:error.message}
     }finally{
         client.release();
-        
+        return {success: true}
     }
 }
 
