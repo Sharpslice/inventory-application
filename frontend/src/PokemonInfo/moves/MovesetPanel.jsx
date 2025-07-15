@@ -60,7 +60,7 @@ function MovesetPanel({selectedMove}){
         setTileArray(prev=>{    
             return prev.map((tile)=>{
                 return(
-                    tile.id ===`slot-${slotId}`
+                    tile.id ===slotId
                         ? {...tile,move:selectedMove}
                         : tile
                 )})
