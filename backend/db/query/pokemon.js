@@ -20,4 +20,6 @@ async function getPokemonsType(id){
     
 }
 
+
+
 module.exports={getPokemonsType}

@@ -12,9 +12,18 @@ function MovesetDashboard({setSelectedMove}){
     
     useEffect(()=>{
             const fetchData = async()=>{
-                 const result = await axios.get(`http://localhost:3000/api/pokemon/${selectedPokemon.pokemon.id}/moveset`);
-                 setMoveset(result.data)
-                 setOriginalMoveset(result.data)
+                try{
+                    const result = await axios.get(`http://localhost:3000/api/pokemon/${selectedPokemon.pokemon.id}/movepool`);
+                    if(result.data.success){
+                        setMoveset(result.data.data)
+                        setOriginalMoveset(result.data.data)
+                    }
+                   
+                }catch(error)
+                {
+                    console.log("network error",error.message)
+                }
+                 
             }
             fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
