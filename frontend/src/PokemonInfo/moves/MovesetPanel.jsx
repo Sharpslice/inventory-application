@@ -22,7 +22,6 @@ function MovesetPanel({selectedMove}){
    
     const updateTilesFromDb = (moveset)=>{
 
-        console.log(`grabbing 's moveset`,moveset)
         setTileArray(prev=>{
             return prev.map((_,index)=>{
                 const move = moveset.find((move)=>move.slots === index)
@@ -73,15 +72,19 @@ function MovesetPanel({selectedMove}){
                         : tile
                 )})
                 })
+        console.log('adding move locally')
    }
    const addMoveToDb = async()=>{
+    
         try{
             
             await axios.post(`http://localhost:3000/api/trainer/${selectedTrainer.id}/${selectedPokemon.pokemon.id}/moveset`,{moveId: selectedMove.id,slotId:selectedTileId})
-            
+            console.log(`Adding ${selectedMove.name}: ${selectedMove.id} to slot:${selectedTileId}`)
             
             try{
+              
                 const response = await axios.get(`http://localhost:3000/api/trainer/${selectedTrainer.id}/${selectedPokemon.pokemon.id}/moveset`)
+                console.log('updating tiles from db')
                 updateTilesFromDb(response.data)
             }catch(error){
                 if(error.response){
@@ -90,8 +93,6 @@ function MovesetPanel({selectedMove}){
                     console.error('Network error', error.message)
                 }
             }
-            
-            
         }catch(error)
         {
             if(error.response)
@@ -131,7 +132,7 @@ function MovesetPanel({selectedMove}){
 
     useEffect(()=>{
         if(selectedPokemon.source === 'owned' || selectedPokemon.source === 'party'){
-            console.log('grabbing',selectedPokemon.pokemon.name)
+            
             fetchMovesetFromDb()
         }
         else{
@@ -153,7 +154,7 @@ function MovesetPanel({selectedMove}){
             
            addMoveLocally()
         }
-        if(selectedTileId){
+        if(selectedTileId!=null){
             setSelectedTileId(null)
         }
     

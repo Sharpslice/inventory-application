@@ -38,7 +38,7 @@ router.post('/:trainerId/:pokemonId/moveset',asyncHandler(async(req,res)=>{
     try{
         await addMoveToPokemon(trainerId,pokemonId,moveId,slotId)
         console.log('success!')
-        res.status(201)
+        res.sendStatus(201);
     }catch(error){
         if(error.message ==='Duplicate move'){
             res.status(409).json({error: 'Duplicate move'})
@@ -50,6 +50,7 @@ router.post('/:trainerId/:pokemonId/moveset',asyncHandler(async(req,res)=>{
             res.status(400).json({error:'No Slots available'})
         }
         else{
+            
             res.status(500).json({error:'Internal Server error'})
         }
     }

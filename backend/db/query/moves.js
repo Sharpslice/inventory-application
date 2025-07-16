@@ -36,12 +36,50 @@ async function getPokemonsMoveset(trainerId,pokemonId){
 async function addMoveToPokemon(trainerId,pokemonId,movesId,slotId = null){
     
     try{
-        if(slotId){
-             console.log('inserting into', slotId)
-            await pool.query(`
-                INSERT INTO learned_moves(trainer_id,pokemon_id,moves_id,slots)
-                VALUES ($1,$2,$3,$4)
-                `,[trainerId,pokemonId,movesId,slotId])
+        if(slotId!=null){
+             
+             const client = await pool.connect();
+           
+            try{
+               
+                await client.query('BEGIN')
+                console.log('////////////////////')
+                const result = await client.query(`
+                    SELECT * FROM learned_moves
+                    WHERE trainer_id = $1 AND pokemon_id = $2 AND slots = $3
+                    FOR UPDATE
+                `,[trainerId,pokemonId,slotId])
+
+                if(result.rows.length===0) 
+                {
+                    console.log('inserting into', slotId)
+                     await client.query(`
+                    INSERT INTO learned_moves(trainer_id,pokemon_id,moves_id,slots)
+                    VALUES ($1,$2,$3,$4)
+                    `,[trainerId,pokemonId,movesId,slotId])
+                    
+                }
+                else{
+                    console.log('updating slot ', slotId)
+                    const result = await client.query(`
+                        UPDATE learned_moves
+                        SET moves_id = $1
+                        WHERE trainer_id = $2 AND pokemon_id=$3 AND slots=$4
+                    `,[movesId,trainerId,pokemonId,slotId])
+                    console.log(result.rowCount)
+                }
+                await client.query('COMMIT')
+                console.log('////////////////////')
+            }
+            catch(error)
+            {
+                
+                await client.query('ROLLBACK')
+                throw error
+            }
+            finally{
+                client.release()
+            }
            
         }
         else{
@@ -62,9 +100,6 @@ async function addMoveToPokemon(trainerId,pokemonId,movesId,slotId = null){
         `,[trainerId,pokemonId,movesId,trainerId,pokemonId]);
         
         }
-        
-       
-        
     }   
     catch(error){
        
