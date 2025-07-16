@@ -34,25 +34,26 @@ router.post('/:trainerId/:pokemonId/moveset',asyncHandler(async(req,res)=>{
 
     const {trainerId,pokemonId} = req.params;
     const {moveId,slotId}= req.body;
-    
-    const result = await addMoveToPokemon(trainerId,pokemonId,moveId,slotId)
-    console.log(result)
-    if(!result.success){
-        if(result.message = 'duplicate move')
-        {
-            res.status(409).json(result)
+    console.log(`moveId: ${moveId}\nslotId: ${slotId}`)
+    try{
+        await addMoveToPokemon(trainerId,pokemonId,moveId,slotId)
+        console.log('success!')
+        res.status(201)
+    }catch(error){
+        if(error.message ==='Duplicate move'){
+            res.status(409).json({error: 'Duplicate move'})
         }
-        else if(result.message='slot is filled')
-        {
-            res.status(400).json(result)
+        else if(error.message === 'Slot is filled'){
+            res.status(400).json({error:'Slot is filled'})
+        }
+        else if(error.message === 'No Slots available'){
+            res.status(400).json({error:'No Slots available'})
+        }
+        else{
+            res.status(500).json({error:'Internal Server error'})
         }
     }
-    else{
-        console.log('success')
-        res.status(200).json(result)
-    }
-    
-    
+
 }));
 
 

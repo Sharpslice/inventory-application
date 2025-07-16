@@ -11,8 +11,6 @@ function MovesetPanel({selectedMove}){
     const {selectedTrainer} = useContext(RegionContext)
     const [selectedTileId, setSelectedTileId]= useState(null)
    
-  
-
     const emptyTiles =  [
                                     {id:0, move:null},
                                     {id:1,move:null},
@@ -79,20 +77,23 @@ function MovesetPanel({selectedMove}){
    const addMoveToDb = async()=>{
         try{
             
-            const result = await axios.post(`http://localhost:3000/api/trainer/${selectedTrainer.id}/${selectedPokemon.pokemon.id}/moveset`,{moveId: selectedMove.id,slotId:selectedTileId})
+            await axios.post(`http://localhost:3000/api/trainer/${selectedTrainer.id}/${selectedPokemon.pokemon.id}/moveset`,{moveId: selectedMove.id,slotId:selectedTileId})
             
-            if(result.data.success === false)
-            {
-                console.log(result.data.message)
-            }
-            else{
-                const response = await axios.get(`http://localhost:3000/api/trainer/${selectedTrainer.id}/${selectedPokemon.pokemon.id}/moveset`)
-                updateTilesFromDb(response.data.data)
-            }
+            
+            // const response = await axios.get(`http://localhost:3000/api/trainer/${selectedTrainer.id}/${selectedPokemon.pokemon.id}/moveset`)
+            // updateTilesFromDb(response.data.data)
+            
             
         }catch(error)
         {
-            console.error('Network error', error.message)
+            if(error.response)
+            {
+                console.log(error.response.data)
+            }
+            else{
+                 console.error('Network error', error.message)
+            }   
+           
         }
    }
     

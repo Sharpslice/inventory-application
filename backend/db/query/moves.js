@@ -32,28 +32,17 @@ async function getPokemonsMoveset(trainerId,pokemonId){
         console.log('DB error in getPokemonsMoveset')
     }
 }
-async function addMoveToPokemonSlot(trainerId,pokemonId,movesId,slotsId){
-    try{
-        await pool.query(`
-            INSERT INTO learned_moves(trainer_id,pokemon_id,moves_id,slots)
-            VALUES ($1,$2,$3,$4)
-        `,[trainerId,pokemonId,movesId,slotsId])
-        return {success:true}
-    }
-    catch(error){
-        return {success:false}
-    }
-}
+
 async function addMoveToPokemon(trainerId,pokemonId,movesId,slotId = null){
     
     try{
         if(slotId){
-            console.log('inserting into', slotId)
+             console.log('inserting into', slotId)
             await pool.query(`
                 INSERT INTO learned_moves(trainer_id,pokemon_id,moves_id,slots)
                 VALUES ($1,$2,$3,$4)
                 `,[trainerId,pokemonId,movesId,slotId])
-            return {success:true}
+           
         }
         else{
             console.log('inserting into next open slot')
@@ -71,7 +60,7 @@ async function addMoveToPokemon(trainerId,pokemonId,movesId,slotId = null){
                 )    
             )
         `,[trainerId,pokemonId,movesId,trainerId,pokemonId]);
-        return {success: true}
+        
         }
         
        
@@ -81,12 +70,18 @@ async function addMoveToPokemon(trainerId,pokemonId,movesId,slotId = null){
        
         if(error.code === '23505')
         {
-            return {success: false,error: 'duplicate move'}
+            throw new Error('Duplicate Move')
+            
         }
         if(error.code=== '23514'){
-            return {success: false,error: 'slot is filled'}
+            throw new Error('Slot is filled')
+           
         }
-        return {success: false,error:error.message}
+        if(error.code === '23502')
+        {
+            throw new Error('No Slots available')
+        }
+        throw new Error('Unknown db error')
     }
 }
 
