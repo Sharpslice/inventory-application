@@ -29,7 +29,7 @@ async function getPokemonsMoveset(trainerId,pokemonId){
         `,[trainerId,pokemonId])
         return result.rows
     }catch(error){
-        console.log('DB error in getPokemonsMoveset')
+        throw new Error()
     }
 }
 

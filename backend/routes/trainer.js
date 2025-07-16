@@ -12,21 +12,21 @@ const { getPokemonsMoveset, addMoveToPokemon } = require('../db/query/moves.js')
 router.get('/:trainerId/:pokemonId/moveset',asyncHandler(async(req,res)=>{
 
     const {trainerId,pokemonId} = req.params;
-   
-    const result = await getPokemonsMoveset(trainerId,pokemonId);
-    
-    if(!result){
-        throw new Error('getting pokemon moveset query failed');
+    try{
+        const result = await getPokemonsMoveset(trainerId,pokemonId);
+        if(result.length===0){
+            res.status(200).json([]);
+        }
+        else{
+            res.status(200).json(result)
+        }
+      
+    }catch(error){
+        console.log('error in api getPokemonMoveset')
+        res.status(500).json({error: 'Internal Server Error from getting moveset'})
     }
-    //pokemon does not know any moves
-    if(result.length===0){
-        res.json({success:false})
-    }
-    else{
-        res.json({success:true,data:result})
-    }
     
-    
+        
 }));
 
 

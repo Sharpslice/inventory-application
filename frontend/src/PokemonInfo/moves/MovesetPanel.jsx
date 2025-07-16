@@ -80,8 +80,16 @@ function MovesetPanel({selectedMove}){
             await axios.post(`http://localhost:3000/api/trainer/${selectedTrainer.id}/${selectedPokemon.pokemon.id}/moveset`,{moveId: selectedMove.id,slotId:selectedTileId})
             
             
-            // const response = await axios.get(`http://localhost:3000/api/trainer/${selectedTrainer.id}/${selectedPokemon.pokemon.id}/moveset`)
-            // updateTilesFromDb(response.data.data)
+            try{
+                const response = await axios.get(`http://localhost:3000/api/trainer/${selectedTrainer.id}/${selectedPokemon.pokemon.id}/moveset`)
+                updateTilesFromDb(response.data)
+            }catch(error){
+                if(error.response){
+                    console.log(error.response.data)
+                }else{
+                    console.error('Network error', error.message)
+                }
+            }
             
             
         }catch(error)
@@ -98,15 +106,25 @@ function MovesetPanel({selectedMove}){
    }
     
    const fetchMovesetFromDb=async()=>{
-            const response = await axios.get(`http://localhost:3000/api/trainer/${selectedTrainer.id}/${selectedPokemon.pokemon.id}/moveset`)
-            if(response.data.success){
-               
-                updateTilesFromDb(response.data.data)
-            }
-            else{
-                console.log('pokemon has no learned moves')
-                resetTilesLocally();
-            }
+    try{
+        const response = await axios.get(`http://localhost:3000/api/trainer/${selectedTrainer.id}/${selectedPokemon.pokemon.id}/moveset`)
+        if(response.data.length===0){
+            console.log('pokemon has no learned moves')
+            resetTilesLocally();
+        }
+        else{
+            updateTilesFromDb(response.data)
+        }
+        
+        
+    }catch(error){
+        if(error.response){
+            console.log(error.response.data)
+        }
+        else{
+            console.log('Network error',error.message)
+        }
+    }
         }
 
     
