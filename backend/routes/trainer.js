@@ -40,6 +40,7 @@ router.post('/:trainerId/:pokemonId/moveset',asyncHandler(async(req,res)=>{
         console.log('success!')
         res.sendStatus(201);
     }catch(error){
+        console.log(error)
         if(error.message ==='Duplicate move'){
             res.status(409).json({error: 'Duplicate move'})
         }

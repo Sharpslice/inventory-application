@@ -1,14 +1,17 @@
-.tiles img{
+.pokemonParty__tile img{
     width: 100%;
     height: auto;
     max-height: 100%;
     object-fit: cover;
 }
-.pokemonTileName,.trainerTileName{
+.pokemonParty__tile-name,.trainerParty__tile-name{
     
     align-self: center;
     padding: 10px;
 }
-.trainerTileName{
-    justify-content: center;
+.pokemonParty__tile,.trainerParty__tile{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
 }

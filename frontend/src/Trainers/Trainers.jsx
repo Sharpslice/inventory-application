@@ -41,7 +41,7 @@ function Trainers(){
             try{
                 const result = await axios.get(`http://localhost:3000/api/trainer/${selectedTrainer.id}/party`)
                 if(result.data.success){
-                    console.log(result.data.data)
+                    
                     setParty(result.data.data);
                 }
                 else{
