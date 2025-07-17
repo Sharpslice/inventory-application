@@ -105,7 +105,7 @@ async function addMoveToPokemon(trainerId,pokemonId,movesId,slotId = null){
        
         if(error.code === '23505')
         {
-            throw new Error('Duplicate Move')
+            throw new Error('Duplicate move')
             
         }
         if(error.code=== '23514'){

@@ -1,17 +1,20 @@
+/* eslint-disable no-unused-vars */
 
 import { RegionContext } from "../../context"
-
-function PokemonPartyTiles({item,onSelectPokemonClick}){
+import {motion} from "motion/react"
+function PokemonPartyTiles({className,item,onSelectPokemonClick}){
 
     
     return(
         <>
-            <li>
-                <div className="tiles" onClick={()=>{onSelectPokemonClick(item)}}>
-                    <div className="pokemonTileName">{item.name}</div>
-                    <img src={item.sprite} alt="" />
+            <motion.li className='pokemonParty' >
+                <div className="pokemonParty__tile" onClick={item?()=>{onSelectPokemonClick(item)}:null}>
+                    <div className="pokemonParty_tile-name">
+                        {item?item.name:'empty'}
+                    </div>
+                    {item && <img src={item.sprite} alt="" />}
                 </div>
-            </li>
+            </motion.li>
         
         </>
     )
